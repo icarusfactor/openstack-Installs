@@ -120,7 +120,7 @@ login with user: "cirros" and password: "cubswin:)"
 
 [20 ]: Now you should have a usable Openstack with demo project and user and test image which is now an active image
 Note Devstack can be paused with Virtualbox, but not rebooted or you will have to unstack.sh and ./stack.sh again. 
-Dashboard shoud be avaialbe at due to port forwarding from private network. WHERE I THINK THE DASHBOARD SHOULD BE
+Dashboard shoud be avaialbe at, due to port forwarding from private network. WHERE I THINK THE DASHBOARD SHOULD BE
 http://127.0.0.1:9999/dashboard
 The url given will be to the private network, but we made a tunnel to the localhost system.
 http://127.0.0.1:6080/vnc_auto.html?token=4925734a-8ccf-4ce1-b3a4-ff2a7e1a3f2d
