@@ -79,7 +79,7 @@ enable_plugin heat git://git.openstack.org/openstack/heat
 [13]: Setup SSL tunnels for private network through virtualbox public network.
      I like keeping both public and private network off my home network address.
      
-     OPTIONAL: You can test if the dashboard is working and ports are up also by using text based elinks brwoser and nmap
+     OPTIONAL: You can test if the dashboard is working and ports are up also by using text based elinks browser and nmap
      sudo zypper install elinks
      sudo zypper install nmap
      
