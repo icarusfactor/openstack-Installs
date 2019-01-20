@@ -1,0 +1,17 @@
+TODO For Learning OpenStack :
+
+[X]: Setup Dev Stack with one instance using OpenSuse Leap 15
+
+[X]: Setup inital password cloud init config with CentOS 7
+
+[ ]: Load two Debian 9 cloud instances and try to ssh between the two.
+
+[ ]: Try to get two cloud instances on my OpenStack Rocky pulbic network. 
+
+[ ]: Cloud init config setup specific applications for 2 instances. Mysql,PHP,Apache. 
+
+[ ]: Public Setup,multiple nodes at one time.4 Apache. 1 Mysql. All use same DB node.
+
+[ ]: Get Public network to talk to private network. Maybe ssh tunnel.
+
+[ ]: Install Python OpenStack SDK and work with API's
