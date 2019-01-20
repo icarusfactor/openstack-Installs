@@ -4,9 +4,29 @@ TODO For Learning OpenStack :
 
 [X]: Setup inital password cloud init config with CentOS 7
 
-[ ]: Load two Debian 9 cloud instances and try to ssh between the two.
+[X]: Load two Debian 9 cloud instances and try to ssh between the two.
 
-[ ]: Try to get two cloud instances on my OpenStack Rocky pulbic network. 
+      default key did not give me passphrase or did not see how that was done.
+      Had to log on and recreate new keys and pass the key to the public server
+      then back to each of the servers needing the system keys. 
+      
+      Maybe a better way will have to revist. 
+      
+      FROM VM's
+      Make sure key files are chmod 600 
+     
+      ssh-keygen -t rsa
+      ssh-copy-id datasci@192.168.44.1 <---Host IP
+      enter no passphrase
+      cp authorized_keys auth.backup
+      scp datasci@192.168.44.1:/home/datasci/.ssh/authorized_keys  ./.ssh
+      cat ./auth.backup >> ./authorized_keys
+
+[W]: Try to get two cloud instances on my OpenStack Rocky pulbic network. 
+      Ran out of vcpu resources will try again later.
+      But password was not working and got a file system error.
+      Also may need ot make shared network.
+      
 
 [ ]: Cloud init config setup specific applications for 2 instances. Mysql,PHP,Apache. 
 
