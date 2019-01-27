@@ -1,0 +1,56 @@
+#cloud-config
+hostname: papyrus
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+##############################################################
+# Install the LA(M)P stack MYSQL server will be on another VM.
+# Replace index.html with index.php 
+runcmd:
+ - touch /active.txt
+ - echo 'STARTING APACHE2 INSTALL' > /active.txt
+ - "apt-get install -y apache2"
+ - "apt-get install -y libapache2-mod-php"
+ - "apt-get install -y php-mysql"
+#php modules for mediawiki
+ - echo 'STARTING PHP INSTALL' >> /active.txt
+ - "apt-get install -y php-xml"
+ - "apt-get install -y php-intl"
+ - "apt-get install -y php-gd"
+ - "apt-get install -y texlive"
+ - "apt-get install -y php-horde-cache"
+ - "echo '<?php phpinfo();' > /var/www/html/index.php"
+ - "rm /var/www/html/index.html"
+#Move Apache2 to proxy port 8080
+ - "sudo sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf" 
+ - "sudo service apache2 restart"
+#Setup DB interface
+ - "sudo apt-get -y install phpmyadmin"
+ - sudo ln -s /usr/share/phpmyadmin /var/www/html
+#MediaWiki 
+ - echo 'STARTING MEDIAWIKI/WORDPRESS INSTALL' >> /active.txt
+ - "wget https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.0.tar.gz -P /opt/"
+ - "tar -zxf /opt/mediawiki-*.tar.gz -C /var/www/"
+ - "mv mediawiki-1.32.0/* /var/www/html/"
+#WordPress
+ - "wget http://wordpress.org/latest.tar.gz -P /opt/"
+ - "tar -zxf /opt/latest.tar.gz -C /var/www/html/" 
+# Support packages.
+ - echo 'SUPPORT PACKAGES' >> /active.txt
+ - "apt-get install -y curl"
+ - "sudo apt install build-essential"
+ - "sudo apt-get install cmake"
+# May need to change the IP address for /etc/memcached.conf to localhost
+ - "sudo apt-get install memcached python-memcache"
+# Node.js install
+ - echo 'STARTING NODE.JS INSTALL' >> /active.txt
+ - "curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh -o install_nvm.sh"
+ - "bash install_nvm.sh"
+ - "source ~/.profile"
+ - "nvm install v6.2.0"
+ - "nvm alias default v6.2.0"
+ - "nvm use default"
+ - "npm config set strict-ssl false"
+#Basic WebServer Install Finished
+ - echo 'FINISHED WEBSERVER INSTALL' >> /active.txt
