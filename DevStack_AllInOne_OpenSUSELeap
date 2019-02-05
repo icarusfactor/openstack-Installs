@@ -1,0 +1,126 @@
+Devstack OpenSUSE
+This is the working run for getting devstack working on OpenSUSE Leap 15 with the default Ubuntu Cirros test image.
+NOTE:Devstack is for development of older and current stacks and not for any production use. 
+
+Prolog: 
+  I run all of this on a test host(CENTOS 7.6)system from a 64G boot usb3.0 disk and my data drive is a
+usb3.0 3T drive for liberal use of the snapshot saves and downloading all sorts of test iso's and cloud images,
+8CPU AMD with 24Gigs of memeory so I can install lots of cloud images and virtual machines. Not for sure, but
+tried to isolate the network as much as possiable with this setup. But took some time and many screw ups. So
+you may be able to use your personal OS as host,mine is Debian 9. Will try this once I get a chance.
+But you want the public HOST_IP below your floating ip sets. This is my first go at openstack and hope to make
+many other setups form the other OS's. With that said, lets begin.
+
+[1]: DOWNLOAD OpenSUSE Leap 15.0 minimal network install
+wget https://download.opensuse.org/distribution/leap/15.0/iso/openSUSE-Leap-15.0-NET-x86_64.iso
+
+[2]: Oracle Virtualbox Setup
+VM recommended settings 
+ cpu(>=2) memeory(>=8G)
+ disk(>=30G)
+ network(>=2 nics) i.e bridge-192.168.1.0 bridge-192.168.44.0 <-- HOST_IP
+
+[3]: INSTALL OpenSUSE ISO as Virtualbox Guest VM with minimal install
+
+[4]: Remove MSQL server becasue OpenSTACK will do this install itself.
+sudo zypper remove mysql-server
+
+[5]: Make sure App Armor and or SELINUX is remove/disabled. 
+   sudo yast : System->Services Manager select [app armor] [Start Mode] Manually [Stop]
+
+[6]: Setup static ip for host.  
+   sudo yast : System -> Network Setting 
+       ETH0 DHCP i.e 192.168.1.13
+       ETH1 STATIC i.e 192.168.44.1
+
+[7]: INSTAll Pacckages needed for installation
+sudo zypper refresh
+sudo zypper update
+sudo zypper --non-interactive install git-core
+sudo zypper --non-interactive install python-pip
+sudo zypper --non-interactive install qemu-guest-agent
+
+[8]: SETUP STACK USER : I really like hosting the functional user in the opt directory.
+sudo useradd -s /bin/bash -d /opt/stack -m stack
+echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
+sudo su - stack
+
+[9]: Setup local repository of devstack of GITHUB
+git clone https://git.openstack.org/openstack-dev/devstack
+  :optionally set specific repo branch
+    -b stable/juno || stable/liberty || stable/mitaka || stable/ocata || stable/queens || stable/rocky || stable/stien
+cd devstack
+
+[10]: COPY example configuration file to root of the devstack:
+cp samples/local.conf local.conf
+
+[11]: EDIT local.conf  /opt/stack/devstack
+
+[[local|localrc]]
+ADMIN_PASSWORD=password1
+DATABASE_PASSWORD=stackdb
+RABBIT_PASSWORD=stackqueue
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+SERVICE_TOKEN=tokentoken
+HOST_IP=192.168.44.1
+FLAT_INTERFACE=eth1
+FLOATING_RANGE=192.168.44.224/27
+LOGFILE=$DEST/logs/stack.sh.log
+LOGDAYS=2
+SWIFT_HASH=66a3d6b56c1f479c8b4e70ab5c2000f5
+SWIFT_REPLICAS=1
+SWIFT_DATA_DIR=$DEST/data
+disable_service etcd3
+enable_plugin heat git://git.openstack.org/openstack/heat
+
+
+[12]: ./stack.sh   Let this run for around 20 mins.
+
+[13]: Setup SSL tunnels for private network through virtualbox public network.
+     I like keeping both public and private network off my home network address.
+     
+     OPTIONAL: You can test if the dashboard is working and ports are up also by using text based elinks browser and nmap
+     sudo zypper install elinks
+     sudo zypper install nmap
+     
+     DASHBOARD  : ssh -L 9999:192.168.44.1:80 192.168.1.13
+     BROWSER VNC: ssh -L 6080:192.168.44.1:6080 192.168.1.13
+
+[14]: source ./openrc  As stack user enter into openstack environment. 
+
+[15]: Check if test image is installed and enviroment is ready.
+     glance image-list  
+     openstack security group list
+     openstack network list
+     sudo vgs
+     sudo lvs
+     sudo losetup -l
+     
+     
+[16]: Create KEY for an active image to use.
+openstack keypair create key1 > /opt/stack/key1
+
+[17 ]:Boot an image from nova list. 
+nova boot --flavor m1.tiny
+          --image cirros-0.3.5-x86_64-disk
+          --key-name key1
+          --security-group default
+          --nic net-id=33ce67ac-d87d-4800-ac32-67117c1aec94
+          vmtest
+          
+[18]: The status of this should go from BUILD to ACTIVE status after a few minutes.
+watch nova list
+
+NOTE: If you get a ERROR in the status, check the logs of the host ip vm system. 
+"grep -i" for "Permission" or "ERROR" /var/log/messages
+
+[19]: Get URL to view console in dashboard browser.
+openstack console url show vmtest
+login with user: "cirros" and password: "cubswin:)"
+
+[20 ]: Now you should have a usable Openstack with demo project and user and test image which is now an active image
+Note Devstack can be paused with Virtualbox, but not rebooted or you will have to unstack.sh and ./stack.sh again. 
+Dashboard shoud be avaialbe at, due to port forwarding from private network. WHERE I THINK THE DASHBOARD SHOULD BE
+http://127.0.0.1:9999/dashboard
+The url given will be to the private network, but we made a tunnel to the localhost system.
+http://127.0.0.1:6080/vnc_auto.html?token=4925734a-8ccf-4ce1-b3a4-ff2a7e1a3f2d
