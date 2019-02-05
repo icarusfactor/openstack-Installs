@@ -1,0 +1,202 @@
+[1] Virtualbox Install of Centos7.6 minimal server install. 
+    This will be the core virtual server that the nested Openstack VM's will use.
+     set CPU's to >4.
+     set Memory >6.
+     set Bridge Adapter Network Devices >2. eth0 (eth1 <-- will attach a br-ex device here.)
+     Storage Size I set mine to 100Gig but >30 gig should work fine.
+
+     NOTE: Sometime mouse interaction does not work , you have to set the mouse to multi touch. 
+     VirtualBox bug maybe on Debian,CentOS,OpenSuse as bare metal host has no issue with this. 
+     
+[2]  Setup of Centos 7.6 netowrking. Eth0 can be DHCP or what ever yo like. This is the isolated     network so no IP on this subnet is disturbed. Also enable Eth1 just for now. this will be endited later to connect to the OpenVswitch BR-EX device. 
+
+
+[3] Size of disk , I use all ~90Gig for / of parition. As virtual vm images will be inside this. 
+Other disk can be moused later for Cinder. /boot is needed also.
+
+
+[4] Set root and user password and create with admin or sudo capabilites. 
+
+[5] Wait for the OS to install. 
+
+[6] logging into the console on virtualbox. I check to see what IP I have for enp0s3 
+    ip a
+    
+[7] Use IP to log into the system remote with ssh as user I made admin. 
+
+[8] Copy local ssh key to virtual box host. 
+    ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
+    You should now be able to log in without password. 
+    
+[9] Edit SSH config to let root in as this will make instaling packstack easier.     
+    sudo vi /etc/ssh/sshd_config
+    remove the # to have "PermitRootLogin yes" enabled. 
+    sudo service ssh restart 
+    log back out. 
+    
+[10] See if you can now log into root via remote "ssh root@192.168.1.29"
+     Copy public key to root 
+     ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
+
+     
+[11] Log back in and edit hosts file.
+     vi /etc/hosts
+     #Add two lines. Packstack is you Virtualbox host IP.
+     192.168.1.29  packstack
+     10.0.2.1      controller   
+     
+[12] Goto the network device directory for CENTOS
+     cd /etc/sysconfig/network-scripts/ 
+     cp ifcfg-enp0s8 ifcfg-br-ex
+     vi ifcfg-enp0s8
+     Remove any lines in this file and replace them with these below. 
+     
+     DEVICE=enp0s8
+     TYPE=OVSPort
+     DEVICETYPE=ovs
+     OVS_BRIDGE=br-ex
+     ONBOOT=yes
+     
+     Edit Bridge Device file we created. 
+     vi ifcfg-br-ex
+     Add below lines to file. 
+     
+     DEVICE=br-ex
+     ONBOOT=yes
+     DEVICETYPE=ovs
+     TYPE=OVSBridge
+     OVS_BRIDGE=br-ex
+     BOOTPROTO=static
+     NM_CONTROLLED=no
+     IPADDR=10.0.2.1 # Old eth1 IP since we want the network restart to not
+                       # kill the connection, otherwise pick something outside
+                       # your dhcp range
+     NETMASK=255.255.255.0  # your netmask
+     GATEWAY=192.168.1.1  # your gateway
+     DNS1=8.8.8.8     # use google as nameserver
+
+      
+[13] Update system and remove and add needed packages for netowrking and packstack.     
+     
+     This will conflict with packstack version.
+     wont be installed, but make sure its not installed.
+     pip uninstall urllib3
+     
+     yum -y update # run the update to update the kernel
+     yum -y install openvswitch # install openvswitch for BR-EX device.
+     yum -y erase NetworkManager # remove NetworkManager as it conflicts with iptables.
+     # Rocky here or what version you want replace the text name. 
+     yum install -y centos-release-openstack-rocky
+     #Check to make sure the repo made it into the list and enabled.
+     yum repolist   <--- Look for Openstack rocky
+     #This conflicts with packstack version so remove.
+     yum erase mariadb-libs
+     yum install -y openstack-packstack
+
+[14] #Disable SELinux     
+     vi /etc/selinux/config
+     Change SELINUX=enforcing to SELINUX=disabled
+          
+
+[15] At this point we can reboot to get access to the OpenVswitch device BR-EX 
+     reboot
+     #Once the system is back up check to see BR-EX is enable and has an IP.
+     ip a
+     
+[16] Create stack user.      
+     sudo useradd -s /bin/bash -d /opt/stack -m stack
+     echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
+     sudo su - stack
+     
+[17] Log in as root and clear Up DEFAULT values with Puppet installer.
+     cd /usr/share
+     grep -Ri "timeout = 300"| grep db_sync_timeout
+     #Select and edit each file from grep output. Change 300 to 0.
+     
+[18] #Now we will install packstack All In One openstack system.   
+     #this will be for a dry run and generate the answerfile we will use for actual install.  
+     sudo su
+     su - stack
+     packstack --allinone --provision-demo=n --os-cinder=n --os-heat-install=y --timeout=0 --debug --dry-run
+     #No files are changed but an answerfile is created in the stack directory.
+     
+[19] #Switch install host to device attached to OpenVSwitch by editing answerfile.
+     #NOTE: The first octet in this sed statment is your host ip, that we will not be installed to
+     #but is in the file and need to be changed to the BR-EX device.  
+     #You can manually edit the file if you wish as well.
+     sed -i -e 's/192.168.1.29/10.0.2.1/g' /opt/stack/packstack-answers-20190205-080739.txt
+      
+     
+[20] #Now we are ready to install Packstack with modified answerfile.
+     #This can take up some time and you can view var log messages with updates. 
+     packstack --debug --timeout=0 --answer-file=packstack-answers-20190202-011826.txt 
+     
+     #Open another console on your host and log in to view and monitor log of status.
+     ssh  root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
+     #I also open a console to leave "top" running to see acitivity has not stalled. 
+     
+[21] Wait for message from the installtion. **** Installation completed successfully ******
+     Check login creditals. 
+     cat /root/keystonerc_admin 
+     You will use these to login to the Openstack GUI Horizon.
+
+[22] #The listed IP's are not useful as we will have to modify them to view them from the
+     #isolated network.
+     #Install useful packages to help debug systems.
+     yum -y install mc nmap elinks wget screen
+     
+[23] #Extra addon to get login data on your screen.
+     wget -O screenfetch-dev https://git.io/vaHfR
+     sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+     sudo chmod +x /usr/bin/screenfetch
+     #Test screen fetch out. 
+     screenfetch
+     #Now add it to /etc/.bashrc and ~./.bashrc so it runs when login.
+     if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
+     #Logout and then back in to test it. 
+     
+[24] #Now to access the Webserver to configure Openstack we need to change the port.
+     #Use ssl tunnels to route it to our main system. 
+     Log into the host system. i.e. 192.168.1.29
+     Then log into the Openstack systems.  i.e 10.0.2.1
+     #From here we can use nmap to check what ports are being used.
+     nmap localhost
+     #Use elinks to check if Openstack page to the host device is working. 
+     elinks 10.0.2.1     
+     #Edit ports file and add "Listen 9999" and set port on horizon from 80 to 9999
+     vi /etc/httpd/conf/ports.conf
+     vi /etc/httpd/conf.d/15-horizon_vhost.conf
+     #Restart httpd service.
+     service httpd restart
+     #check status. 
+     service httpd status
+     #use nmap again to check if port is open.
+     nmap localhost
+
+[26] #Setup IPTABLES to get full access to WEB baed GUI port.
+     #LIST RULES BY LINE NUMBERS
+     sudo iptables -L --line-numbers
+     #You should see below the list item wew will replace.
+     8    ACCEPT     tcp  --  anywhere             anywhere             multiport dports http /* 001 horizon 80 incoming */
+     #Add in the new rule in its position.
+     sudo iptables -I INPUT 8 -p tcp -m multiport --dports 9999 -j ACCEPT -m comment --comment "001 horizon 9999 incoming"
+     #Now delete the new position of the old rule.
+     sudo iptables -D INPUT 9
+     #Check again to see the new rule in effect. 
+     sudo iptables -L --line-numbers
+     #Save state of IPTABLES
+     service iptables save
+     
+[27] #The Openstack Server should be setup and running.
+     #Log out to your main system.
+     #We just need to tunnel the web server to the main system.     
+     DASHBOARD  : ssh -L 9999:10.0.2.1:9999 datasci@192.168.1.29
+     #Also when you launch an image to access the serial interface to the cloud servers
+     BROWSER VNC: ssh -L 6080:10.0.2.1:6080 datasci@192.168.1.29
+     
+     #The Openstack web Interface Horizon shoud be avialable on localhost now.
+     127.0.0.1:9999
+     #Login with "admin" and get the password from the /root/keystone_adminrc file.
+     
+[28] You will have a clean Openstack install and to expore and add items.Look on the
+     Internet for installing openstack tentant,user and projects.
