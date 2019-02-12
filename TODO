@@ -22,13 +22,13 @@ TODO For Learning OpenStack :
       scp datasci@192.168.44.1:/home/datasci/.ssh/authorized_keys  ./.ssh
       cat ./auth.backup >> ./authorized_keys
 
-[W]: Try to get two cloud instances on my OpenStack Rocky pulbic network. 
+[X]: Try to get two cloud instances on my OpenStack Rocky pulbic network. 
       Ran out of vcpu resources will try again later.
       But password was not working and got a file system error.
       Also may need ot make shared network.
       
 
-[ ]: Cloud init config setup specific applications for 2 instances. Mysql,PHP,Apache. 
+[X]: Cloud init config setup specific applications for 2 instances. Mysql,PHP,Apache. 
 
 [ ]: Public Setup,multiple nodes at one time.4 Apache. 1 Mysql. All use same DB node.
 
