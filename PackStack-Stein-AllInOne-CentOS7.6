@@ -94,7 +94,7 @@
      DNS1=8.8.8.8     # use google as nameserver
 
       
-[13] Update system and remove and add needed packages for netowrking and packstack.     
+[13] Update system and remove and add needed packages for networking and packstack.     
      
      NOTE: This will conflict with packstack version.
      wont be installed, but make sure its not installed.
@@ -133,7 +133,8 @@
      #Select and edit each file from grep output. Change 300 to 0.
      
 [18] #Now we will install packstack All In One openstack system.   
-     #this will be for a dry run and generate the answerfile we will use for actual install. This will let us go over all the options and change them if needed before we install Openstack.
+     #This will be for a dry run and generate the answerfile we will use for actual install.
+     #This will let us go over all the options and change them if needed before we install Openstack.
      sudo su
      su - stack
      packstack --allinone --provision-demo=n --os-cinder=n --os-heat-install=y --timeout=0 --debug --dry-run
@@ -158,13 +159,13 @@
      
      #I also open a terminal to leave "top" running to see acitivity has not stalled. 
      
-[21] Wait for message from the installtion. **** Installation completed successfully ******
+[21] #Wait for message from the installtion. **** Installation completed successfully ******
 
-     If you get an error with rabbitIM, just rerun packstack AllInOne command again. 
+     #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
 
-     Check login creditals. 
+     #Check login creditals. 
      cat /root/keystonerc_admin 
-     You will use these to login to the Openstack GUI Horizon.
+     #You will use these to login to the Openstack GUI Horizon.
 
 [22] #The listed IP's are not useful as we will have to modify them to view them from the isolated network.
 
@@ -183,9 +184,9 @@
      
 [24] #Now to access the webserver for Dashboard to configure Openstack we need to change the port.
      #Use ssl tunnels to route it to our main system. 
-     Log into the main system from host. i.e. 192.168.1.29
+     #Log into the main system from host. i.e. 192.168.1.29
      ssh 192.168.1.29 
-     Then from main system,log into the Openstack systems.  i.e 10.0.2.1
+     #Then from main system,log into the Openstack systems.  i.e 10.0.2.1
      ssh 10.0.2.1
      #From here we can use nmap to check what ports are being used.
      nmap localhost
@@ -199,9 +200,9 @@
      vi /etc/httpd/conf.d/15-horizon_vhost.conf
      #Restart httpd service.
      service httpd restart
-     #check status. 
+     #Check status. 
      service httpd status
-     #use nmap again to check if port is open.
+     #Use nmap again to check if port is open.
      nmap localhost
 
 [26] #Setup IPTABLES to get full access to WEB baed GUI port.
@@ -219,7 +220,7 @@
      service iptables save
      
      #A very good rule of thumb to add comment to your IPTABLE rules.
-     #Otherwise would take time to find out and or look up.
+     #Otherwise would add time to find out and or look up.
      
 [27] #The Openstack Server should be setup and running.
      #Log out to your main system.
@@ -232,7 +233,7 @@
      127.0.0.1:9999
      #Login with "admin" and get the password from the /root/keystone_adminrc file.
      
-[28] You will have a clean Openstack install and to expore and add items.Look on the Internet for installing openstack tentant,user and projects.
-     With the AllInOne install we did not enable demo tentant, this can be enabled if you want an example to view.
-     
-     
+[28] #You will have a clean Openstack install and to expore and add items. Look on the Internet for installing
+     #Openstack tentant,user and projects. With the AllInOne install we did not enable demo tentant, this can
+     #be enabled if you want an example to view.
+       
