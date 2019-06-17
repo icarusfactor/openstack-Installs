@@ -1,17 +1,19 @@
+* Centos 7.6 Openstack Stein install.
+
 [1] Oracle Virtualbox install of CentOS7.6 1810 minimal server install. 
     This will be the core virtual server that the nested Openstack VM's will use.
      Set CPU's to >4.
-     Set Memory Size: >6.
+     Set Memory Size: >8G.
      Set Storage Size: >30 gig should work fine.
 
-     Prologue: New feature in Stien is the use of the OVN networking by default,so you can easily work with
-               a single flat network adapater and not disrupt your Internet access, but will add a couple more ip's
-               to your local Class C network. So you will have to make sure they're not used by your local DHCP
-               or are still being unused.  
+     Prologue: A new feature in Stein,is the use of the OVN networking and Geneve routing protocol by default,so you
+               can easily work with a single network adapater in a flat configuration and not disrupt your Internet 
+               access, but will add a couple more ip's to your local Class C network. So you will have to make sure
+               they're not used by your local DHCP or are still being unused.  
 
      Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
-     Setup one network adapater that will be needed while using Openstack flat network.
+     Setup one virtual network adapater that'll be needed while using Openstack flat network.
           
      (With a Flat Network setup all tentants use the same virtual switch/router to
      get out to the Internet.)     
@@ -22,40 +24,59 @@
      NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to multi
      touch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this. 
      
-[2]  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3. This will
-     be endited later to connect to the OpenVswitch BR-EX device and the newer OVS package has to be installed.
+[2]  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3 and hostname
+     packstack.This will be edited later to connect to the OpenVswitch BR-EX device.
      
-
-[3] (OPTIONAL) #Install useful packages to help debug systems.
-     sudo yum -y install mc nmap elinks wget screen
-     
-     
-[4]  Do not use the the default Centos7 package,its an outaded 2.0.x version. I've precompiled a working version,
-     so you do not have to.     
-     wget https://github.com/icarusfactor/openstack-Installs/blob/master/openvswitch-2.10.0-1.el7.x86_64.rpm
-     
-     
-     (Optional) If you want to compile your own newer version,preferably 2.6-2.7 and above which can handle OVN
-     networks. Follow these instructions. 
-     https://github.com/icarusfactor/openstack-Installs/blob/master/OpenVswitch2.10buildCentOS7.6
-
-
-[5] Size of disk , I use all of it for / of parition. As virtual vm images will be inside this. 
+[3] Size of disk , I use all of it for / of parition. As virtual vm images will be inside this. 
     Other disk can be mounted later for Cinder and a /boot is needed also. I do this by selecting 
     to clear current partition setup and delete the /home and / paritition and add the / paritition
     back with the capacity empty. This will select the entire free space. 
 
-[6] Set root and user password and create with admin or sudo capabilites. 
+[4] Set root and user password and create with admin or sudo capabilites. 
 
-[7] Wait for CentOS to install. CentOS minimal version 1810 was used.
+[5] Wait for CentOS to install. CentOS minimal version 1810 was used and reboot.
 
-[8] Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
+[6] Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
     ip a
     
-[9] Use this IP to log into the remote system from host with ssh as user we made admin.
-    This makes cut and paste easier with local terminal.  
+[7] We will login to the system with this ip using ssh. 
+    ssh <IP Reported>
+    sudo su
+    
+[8] We'll edit network setting to change it to a static ip to make things easier for switching over to OpenVswitch
+    cd /etc/sysconfig/network-settings/
+    vi ifcfg-enp0s3
+    
+    #Remove all the lines in the file and add these to become a static IP we can use throughout the rest of this installtion.     
+    
+NAME="enp0s3"   
+DEVICE="enp0s3"
+TYPE="Ethernet"
+PROXY_METHOD="none"
+BROWSER_ONLY="no"
+BOOTPROTO="static"
+DEFROUTE="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_FAILURE_FATAL="no"
+IPV6_ADDR_GEN_MODE="stable-privacy"
+UUID="538adbb0-fbee-4b38-bcf5-9c5b4efad462"
+ONBOOT="yes"
+IPADDR=192.168.1.29 # Old eth1 IP since we want the network restart to not
+                    # kill the connection, otherwise pick something outside
+                    # your dhcp range
+NETMASK=255.255.255.0  # your netmask
+GATEWAY=192.168.1.1  # your gateway
+DNS1=8.8.8.8     # use google as nameserver
+    
+    
+[9] #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
+     #user we made admin.This makes cut and paste easier with local terminal.  
+     reboot
 
-[10] Copy your local ssh key to virtual box host: 
+[10] #Copy your local machines ssh key to virtual box host to make access easy from local host system: 
 
     Make sure to add remote system to known hosts.
     ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
@@ -74,13 +95,17 @@
      ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
      
-[13] Log back in and edit hosts file.
+[13] (OPTIONAL) #Log back in root and install useful packages to help debug systems.
+     sudo yum -y install mc nmap elinks wget screen
+     
+     
+[14] Log back in and edit hosts file.
      vi /etc/hosts
      #Add two lines. Packstack is you Virtualbox host IP.
      192.168.1.29  packstack
      10.0.2.1      controller   
      
-[14] Goto the network device directory for CENTOS
+[15] Goto the network device directory for CENTOS
      cd /etc/sysconfig/network-scripts/ 
      cp ifcfg-enp0s3 ifcfg-br-ex
      vi ifcfg-enp0s3
@@ -112,14 +137,14 @@
      DNS1=8.8.8.8     # use google as nameserver
 
       
-[15] Update system and remove and add needed packages for networking and packstack.     
+[16] Update system and remove and add needed packages for networking and packstack.     
      
      NOTE: This will conflict with packstack version.
      wont be installed, but make sure its not installed.
      pip uninstall urllib3
      
-     yum -y update # run the update to update the kernel     
-     yum -y erase NetworkManager # remove NetworkManager as it conflicts with iptables.
+         
+
      # Stein here or what version you want replace the text name. 
      yum install -y centos-release-openstack-stein
      #Check to make sure the repo made it into the list and enabled.
@@ -127,81 +152,105 @@
      #This conflicts with packstack version so remove.
      yum erase mariadb-libs
      yum install -y openstack-packstack
+     
+     #Normally this is for RHEL or CENTOS I run both of them to get latest version of packages from each.
+     $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
+     $ sudo yum install -y centos-release-openstack-stein     
+     $ sudo yum update -y
+     $ sudo yum install -y openstack-packstack
+     #We need to install the openvswitch before installing packstack (packstack will install it also)
+     #So we can reboot and get the OpenVswitch bridge working before the install.
+     #(Optional) If you want to compile your own newer version,preferably 2.6-2.7 and above which can handle OVN
+     #networks. Follow these instructions. 
+     #https://github.com/icarusfactor/openstack-Installs/blob/master/OpenVswitch2.10buildCentOS7.6    
+     $ sudo yum install openvswitch
+     $ sudo systemctl disable firewalld
+     $ sudo systemctl stop firewalld
+     #Disable NetworkManager as it conflicts with iptables.
+     $ sudo systemctl disable NetworkManager
+     $ sudo systemctl stop NetworkManager
+     $ sudo systemctl enable network
+     $ sudo systemctl start network
 
-[16] #Disable SELinux     
-     vi /etc/selinux/config
-     Change SELINUX=enforcing to SELINUX=disabled
+     
+[17] #Disable SELinux     
+     $ vi /etc/selinux/config
+     $ Change SELINUX=enforcing to SELINUX=disabled
           
 
-[17] At this point we can reboot to get access to the OpenVswitch device BR-EX 
-     reboot
+[18] At this point we can reboot to get access to the OpenVswitch device BR-EX 
+     $ reboot
      #Once the system is back up check to see BR-EX is enable and has IP address 10.0.2.1.
-     ip a
+     $ ip a
      #Good to make sure you can still get to the Internet at this point. 
      
-[18] Create stack user.      
-     sudo useradd -s /bin/bash -d /opt/stack -m stack
-     echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
-     sudo su - stack
+[19] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+     $ sudo useradd -s /bin/bash -d /opt/stack -m stack
+     $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
+     S sudo su - stack
      
-[19] Log in as root and clear DEFAULT values with Puppet installer.
-     cd /usr/share/openstack-puppet
-     grep -Ri "timeout = 300"| grep db_sync_timeout
+[20] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+     $ cd /usr/share/openstack-puppet
+     $ grep -Ri "timeout = 300"| grep db_sync_timeout
      #Select and edit each file from grep output. Change 300 to 0.
      
-[20] #Now we will install packstack All In One openstack system.   
+[21] #Now we will install packstack All In One openstack system.   
      #This will be for a dry run and generate the answerfile we will use for actual install.
      #This will let us go over all the options and change them if needed before we install Openstack.
-     #We will set the flat network by default on the commandline to work with normal home networks.  
+     #The Default network is a flat network that will work with normal home networks.  
+     
      sudo su
      su - stack
-     packstack --allinone --provision-demo=n --os-neutron-ml2-type-drivers=flat,vxlan --os-cinder=n --os-heat-install=y --timeout=0 --debug --dry-run
+     packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debug --dry-run
      #No files are changed but an answerfile is created in the stack directory.
+     #I have diabled the demo project if you are not familiar with this setup you can enable it.
+     #But I will have additional instructions for setting uup different types of network installs.
           
-[21] #Now we are ready to install Packstack with answerfile that you can modify to add or
+[22] #Now we are ready to install Packstack with answerfile that you can modify to add or
      #remove certian capbilities. This can take up some time and you can view var log 
      #messages with updates. 
-     packstack --debug --timeout=0 --answer-file=packstack-answers-20190202-011826.txt 
+     packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
      
      #Open another terminal on your host and log in to view and monitor log of status.
      ssh root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
      
      #Open another terminal pointing to location and your specific log file name. 
-     ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/20190501-092740-_eR_sW/openstack-setup.log"
+     ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/openstack-setup.log"
      
      #I also open a terminal to leave "top" running to see acitivity has not stalled. 
      
-[22] #Wait for message from the installtion. **** Installation completed successfully ******
+[23] #Wait for message from the installtion. **** Installation completed successfully ******
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
-      sudo service rabbitmq-server stop
-      sudo service rabbitmq-server start
+      $ sudo service rabbitmq-server stop
+      $ sudo service rabbitmq-server start
       #To get information if the server is functioning and other system data.
-      sudo service rabbitmq-server status
+      $ sudo service rabbitmq-server status
       #If the server is hung and wont stop you can force it down.
-      pkill -KILL -u rabbitmq
-      service rabbitmq-server start
+      $ pkill -KILL -u rabbitmq
+      $ service rabbitmq-server start
       #then run the packstack command again.
 
      #Check login creditals. 
-     cat /root/keystonerc_admin 
+     $ cat /root/keystonerc_admin 
      #You will use these to login to the Openstack GUI Horizon.
      
-[23] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
-     wget -O screenfetch-dev https://git.io/vaHfR
-     sudo cp ./screenfetch-dev  /usr/bin/screenfetch
-     sudo chmod +x /usr/bin/screenfetch
+[24] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
+     $ wget -O screenfetch-dev https://git.io/vaHfR
+     $ sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+     $ sudo chmod +x /usr/bin/screenfetch
      #Test screen fetch out. 
-     screenfetch
+     $ screenfetch
      #Now add it to /etc/bashrc and also ~./.bashrc if you wish,so it runs when login.
-     if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
+     $ vi /etc/bashrc
+     $ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
      #Logout and then back in to test it. 
      
-[24] #Now to access the webserver for Dashboard to configure Openstack. 
+[25] #Now to access the webserver for Dashboard to configure Openstack. 
      #Log into the main system from host. i.e. 192.168.1.29
      ssh 192.168.1.29      
-     #From here we can use nmap to check what ports are being used.
+     #From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
      nmap localhost
      #Use elinks to check if Openstack page to the host device is working. 
      elinks 192.168.1.29     
@@ -209,7 +258,7 @@
      #If you see this , then your setup is working. 
 
      
-[25] #The Openstack Server should be setup and running.
+[26] #The Openstack Server should be setup and running.
      #The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
      #Login with "admin" and get the password from the /root/keystone_adminrc file.
      DASHBOARD  : 192.168.1.29:80
@@ -217,6 +266,11 @@
      BROWSER VNC: 192.168.1.29:6080
         
      
-[26] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
-     #installing Openstack tentant,user and projects. With the AllInOne install we did not enable demo tentant, this can
-     #be enabled if you want an example to view.     
+[27] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+     #installing Openstack tentant,user and projects. With the AllInOne install. We did not enable demo tentant, this can
+     #be enabled if you want an example to view.
+     #I will have a URL with instructions for adding a usable network with Centos7.6 ScalableWebService on Stein TBA.
+     #With the new networking and full use of only openstack only commands the older version ScalableWebService will not
+     #work in a reliable manner. So wait until I have the Stein version updated.
+     
+     
