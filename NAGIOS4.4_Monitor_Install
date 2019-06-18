@@ -1,0 +1,53 @@
+ #While I installed and tested this on CENTOS7, this is a source code compile and install, it should work
+ #on other Linux distributions. But I was needing a solution for realtime monitoring of the OpenVSwitch traffic
+ # and switch configuration. The free and Opensrouce NAGIOS core program will do this through its
+ #plugin( check_nna_flow_devices ) This is an sFlow compatiable data analyzer for doing just that. It will also
+ #perform monitoring of Openstack VM hosts over the network as they will look like any other BOX on the Internet.
+ #Another TODO will be to add a plugin to monitor the Openstack cloud functions with Apache libcloud. 
+ 
+ # Nagios  References-
+ # https://linuxhostsupport.com/blog/how-to-install-nagios-core-on-centos-7/
+ # https://www.itzgeek.com/how-tos/linux/centos-how-tos/monitor-centos-7-rhel-7-using-nagios-4-0-7.html
+ # https://exchange.nagios.org/directory/Addons/Active-Checks/check_nna_flow_devices/details
+ # https://github.com/jvandermeulen/NagiosPlugins/blob/master/check_nna_flow_devices.sh
+ # https://libcloud.apache.org/
+ 
+ #TODO: this only works with older version of NAGIOS, will upgrade it to 4.x and add 
+ #https://github.com/taha-bindas/Openstack_nagios
+
+[1] Get the source and supportting packages for 4.x version of NAGIOS Core.
+   cd /tmp
+   wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.3.tar.gz  
+   tar xzf nagioscore.tar.gz
+   cd /tmp/nagioscore-nagios-4.4.3
+   yum install php php-mysql
+   yum install gcc glibc glibc-common wget gd gd-devel perl postfix unzip
+[2] Compile and install NAGIOS 4.x into the /usr/local/nagios/ directory. 
+   ./configure
+   make all
+   make install-groups-users
+   usermod -a -G nagios apache
+   make install
+   make install-daemoninit
+   make install-config
+   make install-commandmode
+   make install-webconf
+[3] Set password and start NAGIOS as an active program. 
+   systemctl restart httpd
+   htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin  
+[4] Get NAGIOS plugins and install support packages.   
+   yum install gcc glibc glibc-common make gettext automake autoconf wget openssl-devel net-snmp net-snmp-utils epel-release perl-Net-SNMP 
+   cd /tmp
+   wget --no-check-certificate -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+   tar zxf nagios-plugins.tar.gz
+[5] Compile and install NAGIOS plugins.    
+   cd /tmp/nagios-plugins-release-2.2.1/
+   ./tools/setup
+   ./configure
+   make all
+   make install
+[6] Enable NAGIOS as a service and login and view.     
+   systemctl enable nagios
+   systemctl start nagios
+   Open a browser and hit "http://Server-IP-address/nagios" and Provide the username "nagiosadmin" and password.
+   
