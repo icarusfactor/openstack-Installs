@@ -184,6 +184,12 @@ DNS1=8.8.8.8     # use google as nameserver
      $ ip a
      #Good to make sure you can still get to the Internet at this point. 
      
+[19] #(Optional) Install NAGIOS Core monitor to view traffic and configuration from OpenVswitch.
+     #It will also monitor VM's that have network access. TODO: Need to write plugin for Openstack SDK
+     #access.
+     #https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/NAGIOS4.4_Monitor_Install
+     
+     
 [19] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
      $ sudo useradd -s /bin/bash -d /opt/stack -m stack
      $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
