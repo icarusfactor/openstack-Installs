@@ -162,7 +162,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #So we can reboot and get the OpenVswitch bridge working before the install.
      #(Optional) If you want to compile your own newer version,preferably 2.6-2.7 and above which can handle OVN
      #networks. Follow these instructions. 
-     #https://github.com/icarusfactor/openstack-Installs/blob/master/OpenVswitch2.10buildCentOS7.6    
+     #https://github.com/icarusfactor/openstack-Installs/stein/blob/master/OpenVswitch2.10buildCentOS7.6    
      $ sudo yum install openvswitch
      $ sudo systemctl disable firewalld
      $ sudo systemctl stop firewalld
@@ -187,7 +187,7 @@ DNS1=8.8.8.8     # use google as nameserver
 [19] #(Optional) Install NAGIOS Core monitor to view traffic and configuration from OpenVswitch.
      #It will also monitor VM's that have network access. TODO: Need to write plugin for Openstack SDK
      #access.
-     #https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/NAGIOS4.4_Monitor_Install
+     #https://raw.githubusercontent.com/icarusfactor/openstack-Installs/stein/master/NAGIOS4.4_Monitor_Install
      
      
 [20] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
@@ -279,7 +279,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #With the new OVN networking and full use of only openstack only commands the older version ScalableWebService will not
      #work in a reliable manner. I have made a new demo proejct that will work with Stein.
           
-     https://github.com/icarusfactor/openstack-Installs/blob/master/ScalableWebService-Stein
+     https://github.com/icarusfactor/openstack-Installs/stein/blob/master/ScalableWebService-Stein
      
      
      

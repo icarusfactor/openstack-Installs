@@ -1,0 +1,24 @@
+##!/bin/bash
+#Config file for private network setup. priv_config
+USERNAME="developer"
+USERPASS="easypassword"
+PROJECT="Developer Web Service"
+KEY_SCP_LOCATION="factor@192.168.1.5:/home/factor/.ssh/id_rsa.pub"
+KEY_NAME="MERCURY"
+SECGROUP_NAME1=WEB
+SECGROUP_NAME2=SQL
+SECGROUP_NAME3=JUMP
+SECGROUP_DESC1="Web Server HTTP=INT + EX  SSH=INT ICPM=INT"
+SECGROUP_DESC2="Database Server ICPM+MYSQL+SSH=INT"
+SECGROUP_DESC3="Access Point ICPM+SSH=EX + INT"
+PRIV_IPCLASS="192.168.3.0"
+PRIV_NET="COLOSSEUM"
+PRIV_SUBNET="ARENA"
+ROUTERNAME="LIMBO"
+PROVIDER_NET="OCEANUS"
+QCOW2_IMAGE_LOCATION="factor@192.168.1.5:/media/factor/Datadrive/home/OSimages/"
+QCOW2_IMAGE_NAME="debian-9-openstack-amd64.qcow2"
+GLANCE_NAME="debian9"
+CLOUDINIT_LOC3="/root/JUMPSERVER_DEBIAN_9.ci"
+CLOUDINIT_LOC1="/root/WEBSERVER_DEBIAN_9.ci"
+CLOUDINIT_LOC2="/root/SQLSERVER_DEBIAN_9.ci"

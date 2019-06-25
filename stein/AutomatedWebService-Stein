@@ -1,0 +1,59 @@
+Prologue:
+
+OpenStack Scalable Web Serice. 
+
+1 Jump Server , 1 Mysql server , 1 Web Service.
+
+This will install these three basic componets.
+
+This will be working with a Packstack Stein install.  
+
+Will use 1 vcpu/Ram 2G/20G for jump server. This will be a minimal setup for ssh access from outside private.
+
+Will use 1 vcpu/Ram 2G/20G for web service. Will have a Apache2/Mediawiki/Wordpress/Myphpadmin setup.
+
+Will use 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
+
+The setup and templates I will be using are on my github ending with .ci for CloudInit.
+
+[1] Start VirtualBox and the CENTOS7.6 image that had been created with. 
+    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6 
+
+[2] #Start SSH session.
+    root@192.168.1.29
+    #Start browser and point to IP and get to the login and Horizon dashboard:
+    http://192.168.1.29
+[3]    
+    #As root load environment with your keystone adminrc creditials.
+    $ cat /root/keystonerc_admin
+    $ . ./keystonerc_admin
+
+[4] Login as admin to a clean Openstack install we will need to add
+    * Basic non admin user
+    * Project : Scalable Web Server.
+    * Operating System Image
+    * Will use "Default" domain so not needed to add another.
+
+    #This is the shell script automated version to create a developers subnet.
+    #The scalable version was to manually go through each step and show you how
+    #to do it and why. This one uses only the openstack client and not the Horizon
+    #Dashboard. Some parts take a long time so you can manually log into the Dashboard
+    #to look at the logs to see what is going on and if they are showing up.
+    
+[5] #Before we start the automation we need to edit the priv_config file to match your
+    #local systems cloud-init files and QCOW2 image and SSH public key and other locations
+    # you wish to change.
+
+[6] #Now we are ready to launch the script and install the development subnet. This script
+    #presumes you have already created at least the flat network from the manual instructions.
+
+    ./create_project_web_scale.sh
+    #Again, I dont have much feed back on this script so you will have to watch the logs to know 
+    #how everything is going.  
+
+[7] # If everything finished without error you should have a working subnet for development. The end
+    # of the script will instruct you how to setup the ssh forwarding for the JUMP box so you can
+    # access the otherboxes in the subnet from it.
+
+ 
+     

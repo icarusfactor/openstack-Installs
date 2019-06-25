@@ -6,7 +6,12 @@ OpenStack Scalable Web Serice.
 
 This will install these three basic componets.
 
-This will be working with a Packstack Stein install.  
+Will later show how to add more MYSQL and APACHE service nodes on demand. 
+
+Would also like to show measurement when weakness creeps into system creating
+the need for each of these expansion.
+
+This will be working with a Packstack install.  
 
 Will use 1 vcpu/Ram 2G/20G for jump server. This will be a minimal setup for ssh access from outside private.
 
@@ -14,77 +19,72 @@ Will use 1 vcpu/Ram 2G/20G for web service. Will have a Apache2/Mediawiki/Wordpr
 
 Will use 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
+Will have another setup for installing and adding Cinder and its volumes for adding space as needed.
+
 The setup and templates I will be using are on my github ending with .ci for CloudInit.
 
-[1] Start VirtualBox and the CENTOS7.6 image that had been created with. 
-    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6 
+[1] Start VirtualBox and start the CENTOS7.6 image that had been created with. 
+    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-AllInOne-CentOS7.6 
 
-[2] #Start SSH session.
-    root@192.168.1.29
-    #Start browser and point to IP and get to the login and Horizon dashboard:
-    http://192.168.1.29
+[2] #Start SSH session with tunnel to pipe the Horizon web vew to local desktop.
+    sudo ssh -L 9999:10.0.2.1:9999 root@192.168.1.29
+    #Start browser and point to:
+    http://127.0.0.1:9999
 [3]    
     #As root load environment with your keystone adminrc creditials.
-    $ cat /root/keystonerc_admin
-    $ . ./keystonerc_admin
+    cat /root/keystonerc_admin
+    . ./keystonerc_admin
 
-[4] Login as admin to a clean Openstack install we will need to add
+[4] Login as admin to a clean openstack install we will need to add
     * Basic non admin user
+    * Tentant
     * Project : Scalable Web Server.
     * Operating System Image
     * Will use "Default" domain so not needed to add another.
-    We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the
-    first version where I was able to do this. So all of the major networking commands have been ported to the
-    openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so. 
+    We will perform the following commands with "neutron" and not "Horizon" or "openstack", this is
+    becasue its being deprecated and will be moved to a streamlines openstack CLI interface in the near future. But currently I could not find a method to do this otherwise.  
     
 [5] Create flat external network:
-    #A flat network will work with a normal home setup.      
-    $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
+    #A flat network will work with a normal home setup.  
+    neutron net-create OCEANUS --provider:network_type flat --provider:physical_network extnet  --router:external    
 
 [6] Create external subnet:
-    # Subnet with same network as your single device adapter. 
-    $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
-  --network OCEANUS --allocation-pool start=192.168.1.100,end=192.168.1.200 \
-  --dns-nameserver 8.8.4.4 RIVERS
+    #Disabling external DHCP becasue it would interfere with DHCP on the Internet router. 
+    #The first two DNS servers are Google's the third is the faster one as its a root DNS NASA server.    
+    neutron subnet-create --name RIVERS --enable_dhcp=False --allocation-pool=start=192.168.1.100,end=192.168.1.200                         --gateway=192.168.1.1 OCEANUS 192.168.1.0/24 --dns-nameserver 8.8.8.8 --dns-nameserver 8.8.4.4 --dns-nameserver 192.203.230.10    
+    
+[7] Create non admin user planner     
+    openstack project create --enable "Scalable Web Service"
+    openstack user create --project "Scalable Web Service" --password easypassword --enable planner
+    
+[8] Create user environment.
+ 
+    export OS_USERNAME=planner
+    export OS_TENANT_NAME="Scalable Web Service"
+    export OS_PASSWORD=easypassword
+    export OS_PROJECT_NAME="Scalable Web Service"
+    
+     
+[9] Create router as non-admin user attach it to external network create by admin.
 
-[7] Create Private network , attach internal subnet
+  neutron router-create LIMBO
+  neutron router-gateway-set LIMBO OCEANUS  
+
+[10] Create Private network , attach local subnet
   
-    $ openstack network create --share ELYSIUM
+  neutron net-create ELYSIUM
+  neutron subnet-create --name FIELDS ELYSIUM 10.0.2.0/24 --dns-nameserver 8.8.8.8 --dns-nameserver 8.8.4.4 --dns-nameserver 192.203.230.10
 
-    $ openstack subnet create --subnet-range 192.0.2.0/24 \
-      --network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
-      
-[8] Create router and attach it to internal subnet.
-
-    $ openstack router create LIMBO
-
-    $ openstack router add subnet LIMBO FIELDS
-
-[9] Add router interface to external network and set gateway.  
-    $ openstack router set --external-gateway OCEANUS LIMBO
-
-[10] Create a non-admin user planner in openstack and the project for the user.     
-    $ openstack project create --enable "Scalable Web Service"
-    $ openstack user create --project "Scalable Web Service" --password easypassword --enable planner    
-    
-    
-[11](Optional)Create a non-admin user user planner script if you need to run commands as user.
-    $ cp /root/keystonerc_admin /root/keystonerc_planner
-    #Edit the script to match these values.
-    #export OS_USERNAME=planner
-    #export OS_PASSWORD=easypassword
-    #export OS_PROJECT_NAME="Scalable Web Service"
-    
-    $ . /root/keystonerc_planner
+[11] Add router interface to private subnet.  
+  neutron router-interface-add LIMBO FIELDS
   
-[12] To finalize above step login to HORIZON web GUI as "admin" and add user planner to Scalable Web Service project. 
-     Project->Project->Manage Memembers on the Scalable Web Service
+[12] To finalize above step login to HORIZON web GUI as admin and add user planner to Scalable Web Service  project. 
 
 [13] Log into Horizon gui as non-admin user planner.
 
 [14] #Verify network setup.
-     Project -> Network -> Network Topology
-     #You should see your external and internal network. Non-admin users do not have access to the external router. 
+     #Project -> Network -> Network Topology
+     #You should see your external and internal network and router. 
      
 [15] #Load Operating systems cloud image.   
      Select Project -> Compute -> Images
@@ -109,7 +109,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Group Name: JUMP
      Description : Access Point SSH=EX + INT
      
-     Select Add or Manage Rules
+     Select Manage Rules
      Add ICPM Egress and Ingress
      Add TCP SSH 
      
@@ -133,8 +133,10 @@ The setup and templates I will be using are on my github ending with .ci for Clo
 
      
      NOTE: #If it takes too long to install instances you can
-           #watch the install of the server.            
-           #Dashboard has a log viewer, click the full
+           #watch the install of the server with command on
+           #the cloud instance.
+           tail -f /var/log/cloud-init-output.log 
+           #Dashboard also has a log viewer click the full
            #log option and keep it refreshed. Also, be sure
            #to update your ISO image if you want less time
            #for updating packages. 
@@ -169,7 +171,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Select MERCURY public key
      NEXT
      Copy and paste JUMP Server Cloud Init file .
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/JUMPSERVER_DEBIAN_9.ci
+     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/JUMPSERVER_DEBIAN_9.ci
      LAUNCH INSTANCE
      Select Associate Floating IP from drop down.
      Click the Plus on IP address to generate a legal IP address. 
@@ -197,14 +199,14 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Select MERCURY public key
      NEXT
      Copy and paste JUMP Server Cloud Init file .
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/SQLSERVER_DEBIAN_9.ci
+     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci
      LAUNCH INSTANCE
      
 [20] Install WEB server.      
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
-     Instance Name WEB
+     Instance Name SQL
      Description: WEB SERVER
      NEXT
      Select minimal Debian image.
@@ -219,7 +221,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Select MERCURY public key
      NEXT
      Copy and paste JUMP Server Cloud Init file .
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/WEBSERVER_DEBIAN_9.ci
+     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/WEBSERVER_DEBIAN_9.ci
      LAUNCH INSTANCE
      Select Associate Floating IP from drop down.
      Click the Plus on IP address to generate a legal IP address. 
@@ -252,17 +254,22 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      #Restart ssh server.
      service sshd restart
      
-     #No arguments will add default keys while on host system.  
+     #No arguments will add default keys. 
      ssh-add 
      
      #List keys to check 
      ssh-add -L 
      
-     #You can log back in with SSH with -A to enable forwading.
-     #Only neededon the first jump.
+     #You can log out and back in with SSH with -A to enable forwading.
      ssh -A debian@192.168.1.100
      
      #Now you should be able to log into all of the internal IPs from 
      #the jumpbox with your host box SSH key and keep only the JUMP box 
      #port open from the 192.168.1.x addresses. 
+     
+     
+     
+     
+     
+      
      
