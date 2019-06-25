@@ -13,29 +13,29 @@ export OS_PROJECT_NAME="$PROJECT"
 
 ###############################################################JUMP
 
-#openstack server create --flavor m1.small --image $GLANCE_NAME \
-#   --nic net-id=$PRIV_NET --security-group $SECGROUP_NAME3  \
-#   --user-data $CLOUDINIT_LOC3 --key-name $KEY_NAME $SECGROUP_NAME3 
+openstack server create --flavor m1.small --image $GLANCE_NAME \
+   --nic net-id=$PRIV_NET --security-group $SECGROUP_NAME3  \
+   --user-data $CLOUDINIT_LOC3 --key-name $KEY_NAME $SECGROUP_NAME3 
 
-##Create floating IP and add to provider network.
-#openstack floating ip create OCEANUS
+#Create floating IP and add to provider network.
+openstack floating ip create OCEANUS
 
-##Search for a free floating ip and attach to instance. 
-#COUNT=0
-#for OUTPUT in $(openstack floating ip list --format value)
-#do
-#let COUNT+=1
-#if [ "$COUNT" = "2" ] ; then
-#FLOAT=$OUTPUT
-#fi
-#if [ "$COUNT" = "4" ] ; then
-#PORT=$OUTPUT
-#fi
-#done
-##Check free floating IP
-#if  [ "$PORT" = "None"  ] ; then
-#openstack server add floating ip $SECGROUP_NAME3 $FLOAT 
-#fi
+#Search for a free floating ip and attach to instance. 
+COUNT=0
+for OUTPUT in $(openstack floating ip list --format value)
+do
+let COUNT+=1
+if [ "$COUNT" = "2" ] ; then
+FLOAT=$OUTPUT
+fi
+if [ "$COUNT" = "4" ] ; then
+PORT=$OUTPUT
+fi
+done
+#Check free floating IP
+if  [ "$PORT" = "None"  ] ; then
+openstack server add floating ip $SECGROUP_NAME3 $FLOAT 
+fi
 
 ###########################################################
 
