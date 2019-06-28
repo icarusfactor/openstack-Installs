@@ -1,0 +1,86 @@
+#Building ELKStack for logging and monitoring and billing on CENTOS7.6  
+
+
+#Install extra packages
+$ sudo yum -y install curl
+
+#Elasticsearch depends on Java 
+$ sudo yum -y install java-openjdk-devel java-openjdk
+
+#Add ELK stack repository which provides alll ELK stack packages.
+
+$ cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
+  [elasticsearch-7.x]
+  name=Elasticsearch repository for 7.x packages
+  baseurl=https://artifacts.elastic.co/packages/oss-7.x/yum
+  gpgcheck=1
+  gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  enabled=1
+  autorefresh=1
+  type=rpm-md
+  EOF
+
+#Clear and update YUM package index.
+$ sudo yum clean all
+$ sudo yum makecache
+
+#Import GPG key.
+$ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+#Install Open Source Version of the ELKStack 
+$ sudo yum -y install elasticsearch-oss
+$ sudo yum -y install logstash-oss
+$ sudo yum -y install kibana-oss
+
+#Confirm package install
+$ rpm -qi elasticsearch-oss 
+$ rpm -qi logstash-oss
+$ rpm -qi kibana-oss
+
+#Start and enable persistant services for eleasticsearch 
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable elasticsearch.service
+
+#Test REST interface with curl. 
+$ curl http://127.0.0.1:9200 
+
+#Start and enable persistant services for logstash
+$ sudo systemctl start logstash.service
+$ sudo systemctl status logstash.service
+$ sudo systemctl enable logstash.service
+
+#Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
+$ cd /etc/logstash/conf.d/
+
+#To monitor OPENSTACK networking with OpenVswitch we will need to add a 
+#plugin to gather information for the SDN switch.
+$ /usr/share/logstash/bin/logstash-plugin install logstash-codec-sflow
+
+#NOTE: These files have to pass a syntax check, if they have any problem it
+#will stop entire losgstash system from working so do not put just any file
+#in here unless it passes this test.
+/usr/share/logstash/bin/logstash --configtest -f <LOGSTASH CONFIG FILE>
+
+#Edit Kibana YAML config for your system and use local elasticsearch server.  
+sudo vim /etc/kibana/kibana.yml
+
+ server.host: "192.168.1.29"
+ server.name: "packstack"
+ elasticsearch.url: "http://localhost:9200"
+ 
+#Start and enable persistant services for Kibana
+sudo systemctl enable --now kibana
+#Test in browser that url is working and accessable. 
+http://192.168.1.29:5601
+
+#Install Open Source edge computing monitors. These are lightweight servers that 
+#will run on VM's and ship data to Elasticsearch service node.
+#We will install them on the host server to test and use them locally. 
+sudo yum -y install filebeat auditbeat metricbeat packetbeat heartbeat-elastic
+
+
+#Reason for using an ELKSTACK is for billing,monitoring and tracing to subvert problems
+#when they occur in real world situations. So next I will setup monitors for  
+#OpenVswitch,Apache and basic bare metal systems health checks on controller/compute
+#node that the ELKSTACK and OPENSTACK are hosted on.
+
