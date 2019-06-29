@@ -96,7 +96,7 @@ DNS1=8.8.8.8     # use google as nameserver
 
      
 [13] (OPTIONAL) #Log back in root and install useful packages to help debug systems.
-     sudo yum -y install mc nmap elinks wget screen
+     sudo yum -y install mc nmap elinks wget screen curl
      
      
 [14] Log back in and edit hosts file.
@@ -106,8 +106,7 @@ DNS1=8.8.8.8     # use google as nameserver
      10.0.2.1      controller   
      
 [15] Goto the network device directory for CENTOS
-     cd /etc/sysconfig/network-scripts/ 
-     cp ifcfg-enp0s3 ifcfg-br-ex
+     cd /etc/sysconfig/network-scripts/      
      vi ifcfg-enp0s3
      Remove any lines in this file and replace them with these below. 
      
@@ -117,7 +116,7 @@ DNS1=8.8.8.8     # use google as nameserver
      OVS_BRIDGE=br-ex
      ONBOOT=yes
      
-     Edit Bridge Device file we created. 
+     Edit Bridge Device file. 
      vi ifcfg-br-ex
      Add below lines to file. 
      
@@ -143,26 +142,20 @@ DNS1=8.8.8.8     # use google as nameserver
      wont be installed, but make sure its not installed.
      pip uninstall urllib3
      
-         
-
-     # Stein here or what version you want replace the text name. 
-     yum install -y centos-release-openstack-stein
+     #Normally CENTOS has this but I run RHEL to get latest version of packages from each.
+     #This may change in the future , but works best for now.
+     $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm     
      #Check to make sure the repo made it into the list and enabled.
-     yum repolist   <--- Look for Openstack stein
-     #This conflicts with packstack version so remove.
-     yum erase mariadb-libs
-     yum install -y openstack-packstack
-     
-     #Normally this is for RHEL or CENTOS I run both of them to get latest version of packages from each.
-     $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
+     $ yum repolist   <--- Look for Openstack stein     
+     # Stein here or what version you want replace the text name. 
      $ sudo yum install -y centos-release-openstack-stein     
+     #This conflicts with packstack version so remove.
+     $ yum erase mariadb-libs     
      $ sudo yum update -y
      $ sudo yum install -y openstack-packstack
+     
      #We need to install the openvswitch before installing packstack (packstack will install it also)
-     #So we can reboot and get the OpenVswitch bridge working before the install.
-     #(Optional) If you want to compile your own newer version,preferably 2.6-2.7 and above which can handle OVN
-     #networks. Follow these instructions. 
-     #https://github.com/icarusfactor/openstack-Installs/stein/blob/master/OpenVswitch2.10buildCentOS7.6    
+     #So we can reboot and get the OpenVswitch bridge working before the install.     
      $ sudo yum install openvswitch
      $ sudo systemctl disable firewalld
      $ sudo systemctl stop firewalld
@@ -184,11 +177,11 @@ DNS1=8.8.8.8     # use google as nameserver
      $ ip a
      #Good to make sure you can still get to the Internet at this point. 
      
-[19] #(Optional) Install NAGIOS Core monitor to view traffic and configuration from OpenVswitch.
-     #It will also monitor VM's that have network access. TODO: Need to write plugin for Openstack SDK
-     #access.
-     #https://raw.githubusercontent.com/icarusfactor/openstack-Installs/stein/master/NAGIOS4.4_Monitor_Install
-     
+[19] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+     #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
+     #gather,setup collections and vizualize realtime data from your network. I needed this for
+     #this lab setup to monitor and test resources on vm's,SDN routers and switch.
+     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
      
 [20] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
      $ sudo useradd -s /bin/bash -d /opt/stack -m stack
