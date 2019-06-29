@@ -16,24 +16,42 @@ MISC - Various programs that can help facilitate Openstack
 
 
 TODO:
+
  ELKSTACK
+
    Logstash - Elasticsearch
+
  [ ] Setup for Sflow OpenVswitch
+
  [ ] Setup for Apache Web Server. 
+
  [ ] Setup for localhost system. 
+
  [ ] Setup Openstack Router "if" SDN router data can be monitored
+
    Kibana
+
  [ ] Setup Sflow monitor
+
  [ ] Setup Apache monitor. 
+
  [ ] Setup Localhost resource  monitor 
+
  [ ] Setup SDN Router "if" applicable. 
 
+
 FAR OFF TODO:
+
    Python Openstack examples.
+
    Puppet Openstack Examples.
+
    Magnum: Docker Openstack images
+
    Trove: Openstack DBaaS
+
    Cinder: Openstack SAN
+
    
    
 
