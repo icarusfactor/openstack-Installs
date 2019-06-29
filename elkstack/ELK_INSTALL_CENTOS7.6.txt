@@ -6,7 +6,7 @@ $ sudo yum -y install java-openjdk-devel java-openjdk
 
 #Add ELK stack repository which provides all ELK stack OSS packages.
 
-$ cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
+$ sudo cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
 [elasticsearch-7.x]
 name=Elasticsearch repository for 7.x packages
 baseurl=https://artifacts.elastic.co/packages/oss-7.x/yum
@@ -16,8 +16,6 @@ enabled=1
 autorefresh=1
 type=rpm-md
 EOF
-
-<HIT ENTER THEN CTRL+D TO END AND SAVE FILE>
 
 #Clear and update YUM package index.
 $ sudo yum clean all
