@@ -37,6 +37,7 @@ $ rpm -qi kibana-oss
 #Start and enable persistant services for eleasticsearch 
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable elasticsearch.service
+$ sudo systemctl start elasticsearch.service
 
 #Test REST interface with curl. 
 $ curl http://127.0.0.1:9200 
