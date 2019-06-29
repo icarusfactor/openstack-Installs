@@ -1,8 +1,9 @@
 #Compile and Install sflowtool
- git clone https://github.com/sflow/sflowtool.git
- yum -y install gcc gcc-c++
- yum install automake autoconf
- ./boot.sh
- ./configure
- make
- sudo make install 
+$ git clone https://github.com/sflow/sflowtool.git
+$ sudo yum -y install gcc gcc-c++
+$ sudo yum install automake autoconf
+$ cd sflowtool
+$ ./boot.sh
+$ ./configure
+$ make
+$ sudo make install 
