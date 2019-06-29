@@ -1,24 +1,23 @@
-#Building ELKStack for logging and monitoring and billing on CENTOS7.6  
+#Building ELKStack 7.x for logging and monitoring and billing on CENTOS7.6  
 
-
-#Install extra packages
-$ sudo yum -y install curl
 
 #Elasticsearch depends on Java 
 $ sudo yum -y install java-openjdk-devel java-openjdk
 
-#Add ELK stack repository which provides alll ELK stack packages.
+#Add ELK stack repository which provides all ELK stack OSS packages.
 
 $ cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
-  [elasticsearch-7.x]
-  name=Elasticsearch repository for 7.x packages
-  baseurl=https://artifacts.elastic.co/packages/oss-7.x/yum
-  gpgcheck=1
-  gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-  enabled=1
-  autorefresh=1
-  type=rpm-md
-  EOF
+[elasticsearch-7.x]
+name=Elasticsearch repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/oss-7.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+
+<HIT ENTER THEN CTRL+D TO END AND SAVE FILE>
 
 #Clear and update YUM package index.
 $ sudo yum clean all
