@@ -98,8 +98,18 @@ sudo vim /etc/kibana/kibana.yml
  
 #Start and enable persistant services for Kibana
 sudo systemctl enable --now kibana
-#Test in browser that url is working and accessable. 
-http://192.168.1.29:5601
+
+
+#Packstack IPTABLES will block Kibana access, so we need to open this port.
+#Check the line numbers for all of the rules that were added by Packstack.
+#Look for the the last rule before any DENY or REJECT rules as putting any
+#rules after these will make them useless.
+$ sudo iptables -L --line-numbers
+# Should be ok to insert a rule at line 30 or before. We will put it at the end.
+$ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comment --comment "Kibana 5601 incoming"
+# Now you can start your browser and load the URL on your desktop system.
+$ elinks http://192.168.1.29:5601    
+
 
 #Install Open Source edge computing monitors. These are lightweight servers that 
 #will run on VM's and ship data to Elasticsearch service node.
