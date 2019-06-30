@@ -107,6 +107,8 @@ sudo systemctl enable --now kibana
 $ sudo iptables -L --line-numbers
 # Should be ok to insert a rule at line 30 or before. We will put it at the end.
 $ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comment --comment "Kibana 5601 incoming"
+#Save state of IPTABLES
+$ service iptables save
 # Now you can start your browser and load the URL on your desktop system.
 $ elinks http://192.168.1.29:5601    
 
