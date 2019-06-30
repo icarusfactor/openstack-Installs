@@ -57,11 +57,41 @@ $ /usr/share/logstash/bin/logstash-plugin install logstash-codec-sflow
 #NOTE: These files have to pass a syntax check, if they have any problem it
 #will stop entire losgstash system from working so do not put just any file
 #in here unless it passes this test.
-/usr/share/logstash/bin/logstash --configtest -f <LOGSTASH CONFIG FILE>
+/usr/share/logstash/bin/logstash -t -f <LOGSTASH CONFIG FILE>
+
+#Create conf file for sflow in tmp directory and test it ,then if OK copy it to conf directory.
+#NOTE: This file has errors in it! Using it as a test. You will have to change the paratheses 
+#to the correct ones from “ to ".
+ 
+sudo cat <<EOF | sudo tee /tmp/sflow.conf
+input {
+udp {
+port => 6343
+codec => sflow {}
+}
+}
+
+output {
+elasticsearch {
+index => “sflow-%{+YYYY.MM.dd}”
+hosts => [“localhost”]
+}
+stdout {
+codec => rubydebug }
+}
+EOF
+
+#Run test on config file and do not proceed to next step until fixed and says OK
+$ /usr/share/logstash/bin/logstash -t -f /tmp/sflow.conf
+# copy file to conf directory now that it has passed test. 
+$ cp /tmp/sflow.conf /etc/logstash/conf.d/
+
+
 
 #Edit Kibana YAML config for your system and use local elasticsearch server.  
 sudo vim /etc/kibana/kibana.yml
 
+ server.port: 5601
  server.host: "192.168.1.29"
  server.name: "packstack"
  elasticsearch.url: "http://localhost:9200"

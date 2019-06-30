@@ -95,8 +95,8 @@ DNS1=8.8.8.8     # use google as nameserver
      ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
      
-[13] (OPTIONAL) #Log back in root and install useful packages to help debug systems.
-     sudo yum -y install mc nmap elinks wget screen curl
+[13] (OPTIONAL) #Log back in root and install useful commandline packages to help debug systems.
+     sudo yum -y install mc nmap elinks wget screen curl wireshark
      
      
 [14] Log back in and edit hosts file.
@@ -177,23 +177,17 @@ DNS1=8.8.8.8     # use google as nameserver
      $ ip a
      #Good to make sure you can still get to the Internet at this point. 
      
-[19] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
-     #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
-     #gather,setup collections and vizualize realtime data from your network. I needed this for
-     #this lab setup to monitor and test resources on vm's,SDN routers and switch.
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
-     
-[20] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+[19] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
      $ sudo useradd -s /bin/bash -d /opt/stack -m stack
      $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
      S sudo su - stack
      
-[21] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+[20] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
      $ cd /usr/share/openstack-puppet
      $ grep -Ri "timeout = 300"| grep db_sync_timeout
      #Select and edit each file from grep output. Change 300 to 0.
      
-[22] #Now we will install packstack All In One openstack system.   
+[21] #Now we will install packstack All In One openstack system.   
      #This will be for a dry run and generate the answerfile we will use for actual install.
      #This will let us go over all the options and change them if needed before we install Openstack.
      #The Default network is a flat network that will work with normal home networks.  
@@ -205,7 +199,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #I have diabled the demo project if you are not familiar with this setup you can enable it.
      #But I will have additional instructions for setting uup different types of network installs.
           
-[23] #Now we are ready to install Packstack with answerfile that you can modify to add or
+[22] #Now we are ready to install Packstack with answerfile that you can modify to add or
      #remove certian capbilities. This can take up some time and you can view var log 
      #messages with updates. 
      packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
@@ -218,7 +212,7 @@ DNS1=8.8.8.8     # use google as nameserver
      
      #I also open a terminal to leave "top" running to see acitivity has not stalled. 
      
-[24] #Wait for message from the installtion. **** Installation completed successfully ******
+[23] #Wait for message from the installtion. **** Installation completed successfully ******
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
@@ -235,7 +229,7 @@ DNS1=8.8.8.8     # use google as nameserver
      $ cat /root/keystonerc_admin 
      #You will use these to login to the Openstack GUI Horizon.
      
-[25] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
+[24] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
      $ wget -O screenfetch-dev https://git.io/vaHfR
      $ sudo cp ./screenfetch-dev  /usr/bin/screenfetch
      $ sudo chmod +x /usr/bin/screenfetch
@@ -246,7 +240,7 @@ DNS1=8.8.8.8     # use google as nameserver
      $ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
      #Logout and then back in to test it. 
      
-[26] #Now to access the webserver for Dashboard to configure Openstack. 
+[25] #Now to access the webserver for Dashboard to configure Openstack. 
      #Log into the main system from host. i.e. 192.168.1.29
      ssh 192.168.1.29      
      #From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
@@ -257,13 +251,20 @@ DNS1=8.8.8.8     # use google as nameserver
      #If you see this , then your setup is working. 
 
      
-[27] #The Openstack Server should be setup and running.
+[26] #The Openstack Server should be setup and running.
      #The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
      #Login with "admin" and get the password from the /root/keystone_adminrc file.
      DASHBOARD  : 192.168.1.29:80
      #Browser VNC access of the serial interface to the cloud servers
      BROWSER VNC: 192.168.1.29:6080
-        
+     
+
+[27] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+     #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
+     #gather,setup collections and vizualize realtime data from your network. I needed this for
+     #this lab setup to monitor and test resources on vm's,SDN routers and switch.
+     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
+   
      
 [28] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
      #installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can

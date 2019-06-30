@@ -29,6 +29,8 @@ TODO:
 
  [ ] Setup Openstack Router "if" SDN router data can be monitored
 
+ [ ] Setup for Openstack VM's
+
    Kibana
 
  [ ] Setup Sflow monitor
@@ -39,6 +41,7 @@ TODO:
 
  [ ] Setup SDN Router "if" applicable. 
 
+ [ ] Setup for Openstack VM's
 
 FAR OFF TODO:
 
