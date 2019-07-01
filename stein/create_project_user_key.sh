@@ -22,4 +22,5 @@ export OS_PROJECT_NAME="$PROJECT"
 #Importing your local key pair as new user to the local openstack install and name it.  
 scp $KEY_SCP_LOCATION /tmp/id_rsa.pub
 openstack keypair create --public-key /tmp/id_rsa.pub $KEY_NAME
-
+#Remove the key from temp directory
+rm /tmp/id_rsa.pub
