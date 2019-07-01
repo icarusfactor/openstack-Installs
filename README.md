@@ -10,7 +10,7 @@ Stein - CENTOS7:
 Cloud-init - DEBIAN9:
              Automated script files for cloud-init.
 
-ELKSTACK -7.x  Elasticsearch - Logstash - Kibana setup. 
+ELKSTACK -7.x  Elasticsearch - Logstash - Kibana setup with CENTOS7.6 and Openstack. 
 
 MISC - Various programs that can help facilitate Openstack
 
