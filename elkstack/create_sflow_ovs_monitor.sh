@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# This will setup an sflow monitor that logstash can track.
-#This needs to be ran each system startup to enable.
+# This will setup sflow monitors that logstash can track.
+#This only needs to be ran one time and should be persitant. 
 
 #If I need to remove the bridge
 #Get UUID of sflow
