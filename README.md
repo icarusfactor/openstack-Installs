@@ -21,15 +21,17 @@ TODO:
 
    Logstash - Elasticsearch
 
- [ ] Setup for Sflow OpenVswitch
+ [X] Setup for Sflow OpenVswitch
 
- [ ] Setup for Apache Web Server. 
+ [X] Setup for local Apache Web Server. 
 
- [ ] Setup for localhost system. 
+ [ ] Setup metrics for localhost system. 
 
  [ ] Setup Openstack Router "if" SDN router data can be monitored
 
- [ ] Setup for Openstack VM's
+ [ ] Setup for Openstack VM's edge compute cloud
+
+ [X] Setup for Openstack metrics
 
    Kibana
 
@@ -37,7 +39,7 @@ TODO:
 
  [ ] Setup Apache monitor. 
 
- [ ] Setup Localhost resource  monitor 
+ [ ] Setup Localhost resource monitor 
 
  [ ] Setup SDN Router "if" applicable. 
 
