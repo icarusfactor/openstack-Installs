@@ -7,6 +7,7 @@
 #Get UUID of sflow
 # $ ovs-vsctl list sflow
 # $ ovs-vsctl remove bridge $BRIDGENAME sflow <sFlow UUID>
+# $ ovs-vsctl clear Bridge br-ex sflow
 #Troubleshoot sflow
 # $ tcpdump -ni $AGENT_IP udp port 6343
 
@@ -16,10 +17,17 @@ export AGENT_IP=enp0s3
 export HEADER_BYTES=128
 export SAMPLING_N=64
 export POLLING_SECS=10
-export BRIDGENAME=br-ex
+export BRIDGENAME1=br-ex
+export BRIDGENAME2=br-int
+
 
 ovs-vsctl -- --id=@sflow create sflow agent=${AGENT_IP} \
 	    target="\"${COLLECTOR_IP}:${COLLECTOR_PORT}\"" header=${HEADER_BYTES} \
 	        sampling=${SAMPLING_N} polling=${POLLING_SECS} \
-		      -- set bridge $BRIDGENAME sflow=@sflow
+		      -- set bridge $BRIDGENAME1 sflow=@sflow
 
+
+ovs-vsctl -- --id=@sflow create sflow agent=${AGENT_IP} \
+	    target="\"${COLLECTOR_IP}:${COLLECTOR_PORT}\"" header=${HEADER_BYTES} \
+	        sampling=${SAMPLING_N} polling=${POLLING_SECS} \
+		      -- set bridge $BRIDGENAME2 sflow=@sflow

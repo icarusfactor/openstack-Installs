@@ -59,6 +59,11 @@ $ /usr/share/logstash/bin/logstash-plugin install logstash-codec-sflow
 #in here unless it passes this test.
 /usr/share/logstash/bin/logstash -t -f <LOGSTASH CONFIG FILE>
 
+#Logstash has strict block segment parsing for input/filter and out
+#You will need an empty line between them. No inital top empty line needed.
+#use double parenthese "" on items using them. Strick no empty space inside
+#segments, unless its an "if" statement.
+
 #Create conf file for sflow in tmp directory and test it ,then if OK copy it to conf directory.
 #NOTE: This file has errors in it! Using it as a test. You will have to change the paratheses 
 #to the correct ones from “ to ".
@@ -86,6 +91,24 @@ $ /usr/share/logstash/bin/logstash -t -f /tmp/sflow.conf
 # copy file to conf directory now that it has passed test. 
 $ cp /tmp/sflow.conf /etc/logstash/conf.d/
 
+#If you want to use logstash with local logs within the /var/log directory you will
+#have to give permissions to logstash in order to do this. This will be for the Apache
+#logs but can be use for any directory in this tree.
+
+#Put logstash in the adm directory
+$ sudo usermod -a -G adm logstash
+#Change logs directory to group readable and executable and files to group readable. 
+$ sudo chmod 754 /var/log/httpd/
+$ sudo chmod 640 /var/log/httpd/*
+#Change group to adm for directory and files. 
+$ sudo chgrp adm /var/log/httpd/
+$ sudo chgrp adm /var/log/httpd/*
+
+
+#Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
+#or needing to clear out and start again.
+curl -X GET "http://localhost:9200/osapache-*/_count"
+curl -X DELETE "localhost:9200/osapache-*"
 
 
 #Edit Kibana YAML config for your system and use local elasticsearch server.  
@@ -117,7 +140,6 @@ $ elinks http://192.168.1.29:5601
 #will run on VM's and ship data to Elasticsearch service node.
 #We will install them on the host server to test and use them locally. 
 sudo yum -y install filebeat auditbeat metricbeat packetbeat heartbeat-elastic
-
 
 #Reason for using an ELKSTACK is for billing,monitoring and tracing to subvert problems
 #when they occur in real world situations. So next I will setup monitors for  
