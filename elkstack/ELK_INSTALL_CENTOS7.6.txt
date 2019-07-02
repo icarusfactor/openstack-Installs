@@ -135,10 +135,11 @@ $ service iptables save
 # Now you can start your browser and load the URL on your desktop system.
 $ elinks http://192.168.1.29:5601    
 
-#While this installtion shows you how to monitor local logs, you can
-#install Open Source edge computing monitor collectd.
-#this is a default Logstash plugin to collect metrics
-#from VMs and other systems. 
+#While this installtion shows you how to monitor local
+#logs, you can install Open Source edge computing monitor
+#collectd. This is a default Logstash plugin to collect
+#metrics from VMs and other systems. I will move this
+#section to its own page when I get it worked out. 
 
 #Make sure you have the epel repo 
 $ yum install epel-release
