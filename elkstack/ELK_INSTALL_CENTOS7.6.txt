@@ -95,7 +95,7 @@ $ cp /tmp/sflow.conf /etc/logstash/conf.d/
 #have to give permissions to logstash in order to do this. This will be for the Apache
 #logs but can be use for any directory in this tree.
 
-#Put logstash in the adm directory
+#Put logstash in the adm group
 $ sudo usermod -a -G adm logstash
 #Change logs directory to group readable and executable and files to group readable. 
 $ sudo chmod 754 /var/log/httpd/
