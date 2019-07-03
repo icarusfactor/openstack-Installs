@@ -257,16 +257,26 @@ DNS1=8.8.8.8     # use google as nameserver
      DASHBOARD  : 192.168.1.29:80
      #Browser VNC access of the serial interface to the cloud servers
      BROWSER VNC: 192.168.1.29:6080
+
+[27] #Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
+     #and they are not in the standard repos,so for your system to be ready for the event, we will add
+     #the extra Python3 repo.   
+
+     $ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+     $ sudo yum update
+     $ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+     $ python3.6 -V 
+     #Now you're ready for Py2020
      
 
-[27] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+[28] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
      #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
      #gather,setup collections and vizualize realtime data from your network. I needed this for
      #this lab setup to monitor and test resources on vm's,SDN routers and switch.
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
    
  
-[28] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+[29] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
      #installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
      #be enabled if you want an example to view.
           
