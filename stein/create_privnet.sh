@@ -7,13 +7,6 @@
 # Load admin creditials as root then switch to user
 . /root/keystonerc_admin
 
-export OS_USERNAME=$USERNAME
-export OS_PASSWORD=$USERPASS
-export OS_PROJECT_NAME="$PROJECT"
-
-# Load admin creditials 
-. ./keystonerc_admin
-
 # Create Private network , attach internal subnet
 openstack network create --share $PRIV_NET
 openstack subnet create --subnet-range $PRIV_IPCLASS/24 \

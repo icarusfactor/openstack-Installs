@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-#Create image as admin
-./create_osc_img.sh
-
 #Create user as admin and key as user
 ./create_project_user_key.sh
+
+#Create image as admin
+./create_osc_img.sh
 
 #Create secuirty groups for network
 ./create_privnet_secgroups.sh

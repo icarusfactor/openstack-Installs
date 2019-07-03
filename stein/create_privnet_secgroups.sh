@@ -7,7 +7,7 @@
 # Load admin creditials as root then switch to user
 . /root/keystonerc_admin
 
-# Create Security Groups 
+# Create Security Groups as admin
 openstack security group create --description "$SECGROUP_DESC1" --project "$PROJECT" $SECGROUP_NAME1    
 openstack security group create --description "$SECGROUP_DESC2" --project "$PROJECT" $SECGROUP_NAME2   
 openstack security group create --description "$SECGROUP_DESC3" --project "$PROJECT" $SECGROUP_NAME3   

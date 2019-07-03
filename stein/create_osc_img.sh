@@ -7,8 +7,10 @@
 #Load image to openstack image list that is located on remote system using bash
 #and scp by copying it to the local tmp directory that will be deleted on reboot.
 
+# Load admin creditials as root then switch to user
+. /root/keystonerc_admin
 #Load config data
-. /root/priv_config 
+. /root/priv_config
 
  
  scp $QCOW2_IMAGE_LOCATION$QCOW2_IMAGE_NAME /tmp/
