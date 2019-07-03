@@ -135,6 +135,61 @@ $ service iptables save
 # Now you can start your browser and load the URL on your desktop system.
 $ elinks http://192.168.1.29:5601    
 
+#KIBANA DASHBOARD SETUP
+
+#Go to the URL 
+http://192.168.1.29:5601/
+#This will bring you to the main page 
+#click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
+#Click on "Index Patterns"
+#Click on "Create Index Patterns"
+#Fill in the Index Pattern entry "osapache=*"
+#Once Logstash starts collecting logs and sends it to Elasticsearch archive ,Kibana
+#should auto detect that it found information and you shoudl see Success! and "> Next step" will be enabled. 
+#After clicking the enabled button click on the drop down box and select "@timestamp".
+#Now the trick is to prime the pump to get some of the data generated we want to monitor.
+#Having now setup Openstack,log into the Horizon interface. this will generate some Keystone data.
+#Wait a short time. Less than 5mins.
+#Click on left menu item "Discovery" tooltip will show up on hover.
+#Above title "Selected fields" Make sure "osapache-*" is selected in the dropdown. 
+#In Avaialable fields click fileds "type".
+#You should see "keystone-access" with a spyglass + on it. Click it.
+#Keystone-access should be highlighted.
+#Next to further refine data is to select "add" on Available field "messages".
+#You should now have a list of times and what ip accessed the Openstack login.
+
+#We're after createing useful data to monitor. So we will save this conifg as is.
+#by clicking on the "Save" option in the upper menu and calling it Keystone Access.
+#Now we are going to click on left icon "Visualize".
+#Click on "+ Create new visualization".
+#This will bring up the type of display we want to conifgure the data for. 
+#We will use "Metric". Then click our configured index pattern+filter we called Keystone Access. 
+#Leave default as count and fill Custom Label with "Keystone Access".
+#Click the play icon. You should see the label change. 
+#Next click split group. Next Aggresgation and select Date Range.
+#Field leave as @timestamp.
+#From change to "now-1w/w" and to to now.  
+#The -1 means only look in the logs back 1 week and /w means round to closest week. 
+#Next turn off the split group data by moving the slider to off, so we only see the number and label.
+#Now we will save this visualization as Access Vis.
+#Now to make another visual. Pick vertical bar and Keystone Access
+#Y axis we want to know amount of access during this time frame. Leave as count and label as Accesses.
+#X axis aggregation. Date histogram. @timestamp minimal interval as Auto. Click the play. 
+#Save this vis as Access Time Vis.
+#Now you can access the Openstack Horizon dashboard to see if it picks up this access. You wil have to
+#Wait an interval and click on some areas while in the dashboard. 
+#Click on Dahsboard icon. +Create new dashboard.
+#Add Keystone Access itself. 
+#Add Access Time Vis.
+#Access vis.
+#Then click X to get out of the add menu. You shoudl see your visuals in one page now.
+#Move the items aruond and strech them to your liking. 
+#After you do this. You can save your dashboard as Keystone Access Dashboard.
+#Now to set it as a desktop Dashboard you can. click Full Screen an monitor your data and set the page
+#to refresh from your browser plugin. Hope this gives you insight into how to make a dashboard in
+#Kibana to now create your own. 
+
+
 #While this installtion shows you how to monitor local
 #logs, you can install Open Source edge computing monitor
 #collectd. This is a default Logstash plugin to collect
@@ -177,4 +232,3 @@ input {
 #when they occur in real world situations. So next I will setup monitors for  
 #OpenVswitch,Apache and basic bare metal systems health checks on controller/compute
 #node that the ELKSTACK and OPENSTACK are hosted on.
-
