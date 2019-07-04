@@ -14,6 +14,8 @@ runcmd:
  - apt-get install -y elinks mc screen
  - apt-get install -y taskwarrior
  - apt-get install -y python-openstacksdk
+# Remote monitor package and utils.
+ - apt-get install -y collectd collectd-utils
 # install ASCII art packages
  - apt-get install -y figlet lolcat 
  - apt-get install -y fonts-powerline powerline
