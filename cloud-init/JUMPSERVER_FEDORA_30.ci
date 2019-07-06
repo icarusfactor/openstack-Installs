@@ -1,0 +1,24 @@
+#cloud-config
+hostname: jump5
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+#
+# Install the JUMP server.
+runcmd:
+ # Support packages.
+ - yum -y install curl wget nmap
+ - yum -y install elinks mc screen
+ - yum -y install python3-openstacksdk 
+ # Remote monitor package.
+ - yum -y install collectd collectd-lvm collectd-ping collectd-rrdtool collectd-sensors
+ # create login MOTD
+ - yum -y install pciutils
+ - wget -O screenfetch-dev https://git.io/vaHfR
+ - sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+ - sudo chmod +x /usr/bin/screenfetch
+ #add 2 lines to the end of /etc/profile
+ - echo ' ' >> /etc/profile
+ - echo 'if [ -f /usr/bin/screenfetch ]; then screenfetch; fi' >> /etc/bashrc
+ #Jump Server Install Finished

@@ -17,6 +17,7 @@ CLOUD IMAGE URLS
 #Login account is cirros. The password is gocubsgo.
 
 #-----------------------------------------------------------------
+
 #Debian 9--:
 
 #URL-------: https://cdimage.debian.org/cdimage/openstack/current/
@@ -47,11 +48,15 @@ CLOUD IMAGE URLS
 
 #---------------------------------------------------------------
 
-#THESE URLS I HAVE NOT TESTED OR GOTTEN TO WORK YET
-
-#Fedora----:
+#Fedora 30--:
 
 #URL-------: https://alt.fedoraproject.org/cloud/
+
+#TESTED----: Fedora-Cloud-Base-30-1.2.x86_64.qcow2
+
+#---------------------------------------------------------------
+
+#THESE URLS I HAVE NOT TESTED OR GOTTEN TO WORK YET
 
 #OPENSUSE--: 
 
