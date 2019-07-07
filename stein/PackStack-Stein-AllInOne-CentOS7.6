@@ -182,12 +182,7 @@ DNS1=8.8.8.8     # use google as nameserver
      $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
      S sudo su - stack
      
-[20] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
-     $ cd /usr/share/openstack-puppet
-     $ grep -Ri "timeout = 300"| grep db_sync_timeout
-     #Select and edit each file from grep output. Change 300 to 0.
-     
-[21] #Now we will install packstack All In One openstack system.   
+[20] #Now we will install packstack All In One openstack system.   
      #This will be for a dry run and generate the answerfile we will use for actual install.
      #This will let us go over all the options and change them if needed before we install Openstack.
      #The Default network is a flat network that will work with normal home networks.  
@@ -199,7 +194,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #I have diabled the demo project if you are not familiar with this setup you can enable it.
      #But I will have additional instructions for setting uup different types of network installs.
           
-[22] #Now we are ready to install Packstack with answerfile that you can modify to add or
+[21] #Now we are ready to install Packstack with answerfile that you can modify to add or
      #remove certian capbilities. This can take up some time and you can view var log 
      #messages with updates. 
      packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
@@ -212,7 +207,7 @@ DNS1=8.8.8.8     # use google as nameserver
      
      #I also open a terminal to leave "top" running to see acitivity has not stalled. 
      
-[23] #Wait for message from the installtion. **** Installation completed successfully ******
+[22] #Wait for message from the installtion. **** Installation completed successfully ******
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
@@ -228,6 +223,13 @@ DNS1=8.8.8.8     # use google as nameserver
      #Check login creditals. 
      $ cat /root/keystonerc_admin 
      #You will use these to login to the Openstack GUI Horizon.
+
+
+[23] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+     $ cd /usr/share/openstack-puppet
+     $ grep -Ri "timeout = 300"| grep db_sync_timeout
+     #Select and edit each file from grep output. Change 300 to 0.
+
      
 [24] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
      $ wget -O screenfetch-dev https://git.io/vaHfR
