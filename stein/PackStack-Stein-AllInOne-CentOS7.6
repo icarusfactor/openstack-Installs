@@ -188,14 +188,44 @@ DNS1=8.8.8.8     # use google as nameserver
      #Select and edit each file from grep output. Change 300 to 0.
 
  
-[21] #Now we will install packstack All In One openstack system.   
+[21] #Now we will install packstack All In One Openstack system.   
      #This will be for a dry run and generate the answerfile we will use for actual install.
-     #This will let us go over all the options and change them if needed before we install Openstack.
-     #The Default network is a flat network that will work with normal home networks.  
+
+     #  Generating this dry run will also let us go over all the options and change them if needed before
+     #we install Openstack. You can talor your stack according to your memory,cpu cores,storage,gpu cores
+     #and passthrough and networking setup.Password are also set with this file. Note This is "packstack"
+     #so everything is on one node. I've not tested if this setup is good for setting up only compute nodes
+     #on one system and controller on another.I imagine it could do so,but how much configuration is needed,
+     #I can not answer that.
+     
+     #Some of the options in the packstack answer file. 
+     -------------------------------------------------
+     #Dashboard or Horion: Web Based Admin. Default set to "Y"
+     #TROVE      : Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. 
+     #MAGNUM     : Container orchestration for Docker and Kubernetes and Apache Mesos
+     #HEAT       : General Orchestration.
+     #CINDER     : Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm
+     #MANILA     : Shared Filesystem.
+     #SWIFT      : Object Store for unstructured data. Default set to "Y"
+     #CEILOMETER( gnocchi ) : Metering, billing, resource tracking,event data . Default set to "Y"
+     #AODH       : Trigger and alerting. Default set to "Y"
+     #IRONIC     : Bare metal provisioning.
+     #PANKO      : Event Service
+     #SAHARA     : Big Data prcoessing for HADOOP,SPARK or STORM
+     #TEMPEST    : Integration Test Suite
+     #DEMO       : Example project
+     #MARIADB    : Primary Database. Default set to "Y"
+     #GLANCE     : Image Service. Images can be saved as file or in Swift. Default set to "Y" and saved as file. 
+     #NEUTRON    : Networking. Default to "Y" and type will be flat. This will work with normal home networks.  
+     #NOVA       : Compute service.  
+     #RABBITMQ   : AMQP broker or message service. Default service.
+     #KEYSTONE   : Identity service version 2 or 3. Backend can be sql or ldap. 3 and sql are the default settings.   
+
      
      sudo su
      su - stack
      packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debug --dry-run
+
      #No files are changed but an answerfile is created in the stack directory.
      #I have diabled the demo project if you are not familiar with this setup you can enable it.
      #But I will have additional instructions for setting uup different types of network installs.
