@@ -300,16 +300,30 @@ DNS1=8.8.8.8     # use google as nameserver
      $ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
      $ python3.6 -V 
      #Now you're ready for Py2020
+
+[28] # With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
+     # newer Linux VM's may run into a Boottime Entropy Starvation condition. For me this casued many
+     # cloud-init problems and is linked to systemd and ssh package and its keys. To resolve this issue
+     # where urandom needs to make sure it gets its randomness checked in a timley manner you should only
+     # have to install a single package.
+  
+     #A check to find problems around this issue are to 
+     dmesg | grep -E "(rng|random)" 
+
+     #Haveged is a user-space daemon that gathers entropy though the timing jitter any CPU has.
+     #This programs runs late in the boot process, but should fix the ssh issue if you cant get 
+     #kernel 4.19 or newer. 
+     yum -y install haveged  
      
 
-[28] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+[29] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
      #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
      #gather,setup collections and vizualize realtime data from your network. I needed this for
      #this lab setup to monitor and test resources on vm's,SDN routers and switch.
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
    
  
-[29] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+[30] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
      #installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
      #be enabled if you want an example to view.
           
