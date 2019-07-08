@@ -6,7 +6,7 @@ CLOUD IMAGE URLS
 
 #NOTE: The Cirros and Ubuntu QCOW2 image is a .img. 
 
-# I have ran into a problem with older kernels (Older than 4.19 ) and
+#I have ran into a problem with older kernels (Older than 4.19 ) and
 
 #newer images not working or with long delays. This problem has been
 
