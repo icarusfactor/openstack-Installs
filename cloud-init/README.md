@@ -6,12 +6,21 @@ CLOUD IMAGE URLS
 
 #NOTE: The Cirros and Ubuntu QCOW2 image is a .img. 
 
-# I have ran into a problem with older kernels(<= 4.18 ) and newer images
-#not working or with long delays. This problem has been diagnosed as
-#BoottimeEntropyStarvation. This is a problem with SystemD and SSH
-#casuing it to hang. To fix this problem, you need to have a nwer kernel
-#with CONFIG_RANDOM_TRUST_CPU enabled or install the havaged package. 
+# I have ran into a problem with older kernels (Older than 4.19 ) and
+
+#newer images not working or with long delays. This problem has been
+
+#diagnosed as BoottimeEntropyStarvation. This is a problem with SystemD
+
+#and SSH casuing it to hang. To fix this problem, you need to have a
+
+#newer kernel with CONFIG_RANDOM_TRUST_CPU enabled or install the
+
+#havaged package.
+
+
 #sudo apt-get install havaged
+
 #sudo yum -y install havaged
 
 #-----------------------------------------------------------------
@@ -45,12 +54,6 @@ CLOUD IMAGE URLS
 #Login account is debian. The password is cloud.
 
 #----------------------------------------------------------------
-
-
-
-
-
-
 
 #Ubuntu 18-:
 
