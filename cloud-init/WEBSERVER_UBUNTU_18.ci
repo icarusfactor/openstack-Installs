@@ -1,0 +1,107 @@
+#cloud-config
+hostname: papyrus
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+##############################################################
+# Install the LA(M)P stack MYSQL server will be on another VM.
+# Replace index.html with index.php
+runcmd:
+ # Support packages.
+ - apt-get install -y curl wget nmap
+ - apt-get install -y elinks mc screen
+ - apt-get install -y taskwarrior
+ - apt-get install -y python-openstacksdk
+ # Remote monitor package and utils.
+ - apt-get install -y collectd collectd-utils
+ # install ASCII art packages
+ - apt-get install -y figlet lolcat
+ - apt-get install -y fonts-powerline powerline
+# create dynamic files
+ - sudo touch /etc/update-motd.d/00-header && touch /etc/update-motd.d/90-footer
+# make files executable
+ - sudo chmod +x /etc/update-motd.d/*
+# remove MOTD file and create an empty file
+ - sudo rm /etc/motd
+ - touch /etc/motd
+#comment out line /etc/pam.d/login
+ - sed -i 's/^session    optional   pam_motd.so noupdate/#session    optional   pam_motd.so noupdate/g' /etc/pam.d/login
+#add 3 lines to the end of /etc/ssh/sshd_config to stop ssh from printing banner.
+ - echo ' ' >> /etc/ssh/sshd_config
+ - echo 'PrintMotd   no' >> /etc/ssh/sshd_config
+ - echo 'Banner      none' >> /etc/ssh/sshd_config
+ - echo 'UsePAM      yes' >> /etc/ssh/sshd_config
+#Web Server Support
+ - "apt-get install -y apache2"
+ - "apt-get install -y libapache2-mod-php"
+ - "apt-get install -y php-mysql"
+#php modules for mediawiki
+ - "apt-get install -y php-xml"
+ - "apt-get install -y php-intl"
+ - "apt-get install -y php-gd"
+ - "apt-get install -y php-intl"
+ - "apt-get install -y php-gd"
+ - "apt-get install -y texlive"
+ - "apt-get install -y php-horde-cache"
+ - "echo '<?php phpinfo();' > /var/www/html/index.php"
+ - "rm /var/www/html/index.html"
+#Move Apache2 to proxy port 8080
+ - "sudo sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf"
+ - "sudo service apache2 restart"
+#MediaWiki
+ - "wget https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.0.tar.gz -P /opt/"
+ - "tar -zxf /opt/mediawiki-*.tar.gz -C /var/www/"
+ - "mv /var/www/mediawiki-1.32.0 /var/www/html/mediawiki"
+#WordPress
+ - "wget http://wordpress.org/latest.tar.gz -P /opt/"
+ - "tar -zxf /opt/latest.tar.gz -C /var/www/html/"
+#Install mysql password
+ - echo "mysql-server mysql-server/root_password password easyone" | sudo debconf-set-selections
+ - echo "mysql-server mysql-server/root_password_again password easyone" | sudo debconf-set-selections
+# Setup MariaDB
+ - apt install -y mariadb-server mariadb-client
+ - mysqld_safe --skip-grant-tables
+ - systemctl restart mariadb.service
+ - systemctl enable mariadb.service
+#Install MyphpAdmin
+ - echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/mysql/admin-pass password easyone" | sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/mysql/app-pass password easyone" | sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/app-password-confirm password easyone"| sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/database-type select mysql"| sudo debconf-set-selections
+ - echo "phpmyadmin phpmyadmin/setup-password password easyone" | sudo debconf-set-selections
+ - apt-get install -y phpmyadmin
+ - ln -s /usr/share/phpmyadmin /var/www/html
+# Support packages.
+ - "sudo apt-get install -y curl"
+ - "sudo apt install build-essential"
+ - "sudo apt-get install cmake"
+# Node.js install
+ - export NVM_DIR="$HOME/.nvm"
+ - "sudo curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh -o /root/install_nvm.sh"
+ - "sudo mkdir /root/.nvm"
+ - "sudo bash /root/install_nvm.sh"
+ - "source ~/.profile"
+ - echo "export NVM_DIR=\"$HOME/.nvm\"" >> /etc/bash.bashrc
+ - echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> /etc/bash.bashrc
+ - echo "[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"  " >> /etc/bash.bashrc
+ - "sudo nvm install v6.2.0"
+ - "sudo nvm alias default v6.2.0"
+ - "sudo nvm use default"
+ - "sudo npm config set strict-ssl false"
+#Basic WebServer Install Finished
+#Need to put bash MOTD files here.
+write_files:
+ -  encoding: b64
+    content: IyEvYmluL3NoICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgMDAtaGVhZGVyIC0gY3JlYXRlIHRoZSBoZWFkZXIgb2YgdGhlIE1PVEQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICBDb3B5cmlnaHQgKGMpIDIwMTMgTmljayBDaGFybHRvbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIENvcHlyaWdodCAoYykgMjAwOS0yMDEwIENhbm9uaWNhbCBMdGQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgTW9kaWZpZWQgICAgICAyMDE5IGJ5IERhbmllbCBZb3VudCAKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIEF1dGhvcnM6IE5pY2sgQ2hhcmx0b24gPGhlbGxvQG5pY2tjaGFybHRvbi5uZXQ+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgICAgICAgICAgRHVzdGluIEtpcmtsYW5kIDxraXJrbGFuZEBjYW5vbmljYWwuY29tPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvciAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMKIyAgICBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKIyAgICBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgojICAgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKIyAgICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgojCiMgICAgWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYWxvbmcKIyAgICB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLCBJbmMuLAojICAgIDUxIEZyYW5rbGluIFN0cmVldCwgRmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCiAKWyAtciAvZXRjL2xzYi1yZWxlYXNlIF0gJiYgLiAvZXRjL2xzYi1yZWxlYXNlCiAKaWYgWyAteiAiJERJU1RSSUJfREVTQ1JJUFRJT04iIF0gJiYgWyAteCAvdXNyL2Jpbi9sc2JfcmVsZWFzZSBdOyB0aGVuCiAgICAgICAgIyBGYWxsIGJhY2sgdG8gdXNpbmcgdGhlIHZlcnkgc2xvdyBsc2JfcmVsZWFzZSB1dGlsaXR5CiAgICAgICAgRElTVFJJQl9ERVNDUklQVElPTj0kKGxzYl9yZWxlYXNlIC1zIC1kKQpmaQogCmZpZ2xldCAkKGhvc3RuYW1lKSB8IC91c3IvZ2FtZXMvbG9sY2F0IC1mCnByaW50ZiAiXG4iCiAKcHJpbnRmICJXZWxjb21lIHRvICVzICglcykuXG4iICIkRElTVFJJQl9ERVNDUklQVElPTiIgIiQodW5hbWUgLXIpIgpwcmludGYgIlxuIg==
+    owner: root:root
+    path: /etc/update-motd.d/00-header
+    permissions: '0644'
+ -  encoding: b64
+    content: IyEvYmluL3NoCiMKIyAgICA5MC1mb290ZXIgLSB3cml0ZSB0aGUgYWRtaW4ncyBmb290ZXIgdG8gdGhlIE1PVEQKIyAgICBDb3B5cmlnaHQgKGMpIDIwMTMgTmljayBDaGFybHRvbgojICAgIENvcHlyaWdodCAoYykgMjAwOS0yMDEwIENhbm9uaWNhbCBMdGQuCiMKIyAgICBBdXRob3JzOiBOaWNrIENoYXJsdG9uIDxoZWxsb0BuaWNrY2hhcmx0b24ubmV0PgojICAgICAgICAgICAgIER1c3RpbiBLaXJrbGFuZCA8a2lya2xhbmRAY2Fub25pY2FsLmNvbT4KIwojICAgIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5CiMgICAgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKIyAgICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvcgojICAgIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiMKIyAgICBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKIyAgICBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgojICAgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKIyAgICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgojCiMgICAgWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYWxvbmcKIyAgICB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLCBJbmMuLAojICAgIDUxIEZyYW5rbGluIFN0cmVldCwgRmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCiAKWyAtZiAvZXRjL21vdGQudGFpbCBdICYmIGNhdCAvZXRjL21vdGQudGFpbCB8fCB0cnVlCg==
+    owner: root:root
+    path: /etc/update-motd.d/90-footer
+    permissions: '0644'
