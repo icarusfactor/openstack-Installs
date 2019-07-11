@@ -1,0 +1,51 @@
+#cloud-config
+hostname: jump2
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+#
+# Install the JUMP server.
+runcmd:
+# Enable Extra Repos
+ #RDO Packstack
+ - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm  
+ #RHEL EPEL 
+ - sudo wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ - sudo rpm -ivh epel-release-latest-7.noarch.rpm
+ # Python 3  
+ - sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+ - sudo yum update -y --skip-broken
+ # Support packages.
+ - yum -y install curl wget nmap
+ - yum -y install elinks mc screen
+ - yum -y install taskwarrior
+ - yum -y install python2-openstacksdk
+ # Remote monitor package.
+ - yum -y install collectd collectd-lvm collectd-ping collectd-rrdtool collectd-sensors 
+ # create login MOTD
+ - wget -O screenfetch-dev https://git.io/vaHfR
+ - sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+ - sudo chmod +x /usr/bin/screenfetch
+ #add 2 lines to the end of /etc/bashrc
+ - echo ' ' >> /etc/bashrc
+ - echo 'if [ -f /usr/bin/screenfetch ]; then screenfetch; fi' >> /etc/bashrc 
+# Install the MYSQL server .
+ - echo 'STARTING DBSUPPORT PACKAGE INSTALL' >> /active.txt
+# Support packages.
+ - yum install -y build-essential cmake 
+# Setup Password Questions for MariaDB
+#- echo "mysql-server mysql-server/root_password password easyone" | sudo debconf-set-selections
+#- echo "mysql-server mysql-server/root_password_again password easyone" | sudo debconf-set-selections
+## Setup MariaDB
+#- echo 'INSTALLING DB' > /active.txt
+#- apt install -y mariadb-server mariadb-client
+#- sed -i 's/bind-address.*/bind-address = '"$(hostname -I)"'/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+#- mysqld_safe --skip-grant-tables
+#- systemctl restart mariadb.service 
+#- systemctl enable mariadb.service 
+## Database testing programs.
+#- apt-get install -y sysbench
+##SQLServer Install Finished
+#- echo 'FINISHED SQLSERVER INSTALL' >> /active.txt
+##Need to put bash MOTD files here. 

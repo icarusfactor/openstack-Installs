@@ -7,7 +7,7 @@ Rocky - CENTOS7/OpenSUSE15:
 Stein - CENTOS7:
         Openstack Stein installs Packstack / Manual DEMO Network / Automated DEMO Network.
 
-Cloud-init - DEBIAN9:
+Cloud-init - Loads for many of the primary Linux OS's:
              Automated script files for cloud-init.
 
 ELKSTACK -7.x  Elasticsearch - Logstash - Kibana setup with CENTOS7.6 and Openstack. 
