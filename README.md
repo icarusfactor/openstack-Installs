@@ -19,16 +19,16 @@
   * Ubuntu 18
   * CentOS 7
   * Fedora 30
-* Automated script files for cloud-init to generate specific types of servers.
-    * JUMP
-    * WEB
-    * SQL
-    * PUPPETMASTER
+* Cloud-init - Automated script to generate specific types of servers:
+  * JUMP
+  * WEB
+  * SQL
+  * PUPPETMASTER
 
-* ELKSTACK -7.x Elasticsearch - Logstash - Kibana
-  * Setup with CENTOS7.6 and for Openstack. 
+* ELKSTACK 7.x - Elasticsearch & Logstash & Kibana:
+  * Setup on CENTOS7.6 and for Openstack. 
   * Script to setup sFlow device for OpenVswitch.
-  * Logstash configuration examples:
+* Logstash configuration examples:
     * Openstack 
     * Apache2
     * System Resources using SAR.   
@@ -48,7 +48,7 @@
 ## FAR OFF TODO:
   * Magnum:  Docker Openstack images.
   * Magnum:  Kubernetes Openstack images.
-  * Heat:    Templates.
+  * Heat:    Network Templates.
   * Trove:   Openstack DBaaS.
   * Cinder:  Openstack SAN.
   * Octavia: Load Balancer. 
