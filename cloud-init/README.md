@@ -3,29 +3,29 @@
 
 ## CLOUD IMAGE INFORMATION
 
->   I only have debian for all three items currently.
-> Will make a WEB and SQL server for Ubuntu, CENTOS and Fedora and OpenSUSE
-> NOTE: The Cirros and Ubuntu QCOW2 image is a .img. 
+> I only have Debian and Ubuntu for all three items currently.
+> Will make a ***WEB*** and ***SQL*** server for CENTOS and Fedora. OpenSUSE does not have
+> or use cloud-init. Will have to figure out what they use to boot thier cloud images.
+> NOTE: The Cirros and Ubuntu QCOW2 image is a ***.img*** file . 
 > I have ran into a problem with older kernels (Older than 4.19 ) and
-> newer images not working or with long delays. This problem has been
-> diagnosed as ***BoottimeEntropyStarvation***. This is a problem with SystemD
-> and SSH casuing it to hang. To fix this problem, you need to have a
-> newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install the
-> havaged package.
+> newer images not working at all or with long delays. This problem has been
+> diagnosed as ***BoottimeEntropyStarvation*** problem. This is a problem with
+> SystemD and SSH(OpenSSL) casuing it to hang. The fix this problem, you need
+> to have a newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install
+> the havaged package.
 
+APT based package systems.
 `sudo apt-get install havaged`
 
+YUM based package systems.
 `sudo yum -y install havaged`
 
-#-----------------------------------------------------------------
-
-#Cirros 4--:
-
-#URL-------: http://download.cirros-cloud.net/
-
-#TESTED----:cirros-0.4.0-x86_64-disk.img 
-
-#Login account is cirros. The password is gocubsgo.
+Cirros 4                                           |
+---------------------------------------------------|
+URL-------: http://download.cirros-cloud.net/      |
+TESTED----:cirros-0.4.0-x86_64-disk.img            |
+                                                   |
+Login account is cirros. The password is gocubsgo. |
 
 #-----------------------------------------------------------------
 
