@@ -15,7 +15,15 @@
   * Automated DEMO Network with BASH scripts.
 
 * Cloud-init - Loads for many of the primary Linux OS's:
-  * Automated script files for cloud-init to generate specific types of servers.
+  * Debian 8/9
+  * Ubuntu 18
+  * CentOS 7
+  * Fedora 30
+* Automated script files for cloud-init to generate specific types of servers.
+    * JUMP
+    * WEB
+    * SQL
+    * PUPPETMASTER
 
 * ELKSTACK -7.x Elasticsearch - Logstash - Kibana
   * Setup with CENTOS7.6 and for Openstack. 
