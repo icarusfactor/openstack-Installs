@@ -10,17 +10,19 @@
 > I have ran into a problem with older kernels (Older than 4.19 ) and
 > newer images not working at all or with long delays. This problem has been
 > diagnosed as ***BoottimeEntropyStarvation*** problem. This is a problem with
-> SystemD and SSH(OpenSSL) casuing it to hang. The fix this problem, you need
+> SystemD and SSH(OpenSSL) causing it to hang. The fix this problem, you need
 > to have a newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install
 > the havaged package.
 
 APT based package systems.
+
 `sudo apt-get install havaged`
 
 YUM based package systems.
+
 `sudo yum -y install havaged`
 
-Cirros 4                                           |
+Cirros 4 |                                         |
 ---------------------------------------------------|
 URL      | http://download.cirros-cloud.net/       |
 TESTED   | cirros-0.4.0-x86_64-disk.img            |
