@@ -3,46 +3,33 @@
 ![openstack Installs](./gh_img/openstack_installs.png)
 
 
-Openstack Installs from Host system to cloud images. 
+Openstack Installs from Host system to Setup to install cloud images. 
 
-Rocky - CENTOS7/OpenSUSE15:
-        Openstack Rocky installs Packstack / DevStack/ Demo network.
+* Rocky - CENTOS7/OpenSUSE15:
+       * CentOS7 Openstack Rocky installs Packstack
+       * Opensuse15 DevStack
+       * CentOS7 Demo network.
 
-Stein - CENTOS7:
-        Openstack Stein installs Packstack / Manual DEMO Network / Automated DEMO Network.
+* Stein - CENTOS7:
+       * Openstack Stein installs Packstack.
+       * Manual DEMO Network 
+       * Automated DEMO Network.
 
-Cloud-init - Loads for many of the primary Linux OS's:
-             Automated script files for cloud-init.
+* Cloud-init - Loads for many of the primary Linux OS's:
+       * Automated script files for cloud-init to generate spcefici types of servers.
 
-ELKSTACK -7.x  Elasticsearch - Logstash - Kibana setup with CENTOS7.6 and Openstack. 
+* ELKSTACK -7.x Elasticsearch - Logstash - Kibana
+      *  Setup with CENTOS7.6 and for Openstack. 
 
-MISC - Various programs that can help facilitate Openstack
+* MISC - Various programs that can help facilitate Openstack
 
 
-TODO:
-
- ELKSTACK
-
-   Logstash - Elasticsearch
+* TODO:
 
  [~] Setup Openstack Router "if" SDN router data can be monitored
      *Waiting to install VMs on Openstack to test it out. 
 
- [ ] Setup for Openstack VM's edge compute cloud
-     *Need to make cloud image with collectd and basic metric setups.
-     *I have Debian images I work with but want CENTOS/Ubuntu as well. 
-
-   Kibana
-
- [ ] Setup Sflow monitor
-
- [ ] Setup Localhost resource monitor 
-
- [ ] Setup SDN Router "if" applicable. 
-
- [ ] Setup for Openstack VM's
-
-FAR OFF TODO:
+* FAR OFF TODO:
 
    Python Openstack examples.
 
