@@ -1,6 +1,6 @@
 # openstack-Installs
 
-![openstack Installs](../gh_img/openstack_installs.png)
+![openstack Installs](./gh_img/openstack_installs.png)
 
 
 Openstack Installs from Host system to cloud images. 
