@@ -3,7 +3,7 @@
 
 ## CLOUD IMAGE INFORMATION
 
-> I've only Debian and Ubuntu for all threeimage items currently.
+> I've only Debian and Ubuntu made for all three image items currently.
 > Will make a ***WEB*** and ***SQL*** server image for CENTOS and Fedora. But
 > have to configure them with Puppet instead of debconf. OpenSUSE does not have
 > or use cloud-init. Will have to figure out what they use to boot thier cloud 
@@ -61,7 +61,7 @@ URL       | https://alt.fedoraproject.org/cloud/
 TESTED    | Fedora-Cloud-Base-30-1.2.x86_64.qcow2
 LOGIN     | username:fedora password:cloud
 
-## THESE URLS I HAVE NOT TESTED OR GOTTEN TO WORK YET
+## Os's I've tested but not gotten to work yet.
 
 OS        | OpenSUSE 15 or 42/43                                       
 --------- | --------------------------------------
