@@ -1,3 +1,5 @@
+![ Openstack Cloud-init ](https://github.com/icarusfactor/openstack-Installs/gh_img/openstack_cloud-init.png)
+
 CLOUD IMAGE URLS
 
 #I only have debian for all three items currently.
