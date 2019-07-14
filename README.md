@@ -28,7 +28,7 @@
 * MISC - Various programs that can help facilitate Openstack
 
 
-* TODO:
+## TODO:
 
  - [ ] Setup Openstack Router "if" SDN router data can be monitored. Waiting to install VMs on Openstack to test it out. 
  - [X] Basic Puppet Server cloud-init image for CentOS7 
@@ -37,7 +37,7 @@
  - [ ] Puppet SQL and WEB setups for CentOS7 and Fedora
  - [ ] Python Openstack SDK script examples.
 
-* FAR OFF TODO:
+## FAR OFF TODO:
   * Magnum: Docker Openstack images.
   * Trove: Openstack DBaaS.
   * Cinder: Openstack SAN.
