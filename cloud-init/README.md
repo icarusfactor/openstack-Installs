@@ -24,58 +24,47 @@ YUM based package systems.
 
 ## Cloud Location and Image tested against. 
 
-Cirros 4 | DATA                                        
+OS       | Cirros 4                                        
 -------- | --------------------------------------
 URL      | http://download.cirros-cloud.net/   
 TESTED   | cirros-0.4.0-x86_64-disk.img      
-Login    | username:cirros  password: gocubsgo 
+LOGIN    | username:cirros  password: gocubsgo 
 
-Debian 9 | DATA                                        
+OS       | Debian 9                                        
 -------- | --------------------------------------
 URL      | https://cdimage.debian.org/cdimage/openstack/current/
 TESTED   | debian-9.9.4-20190703-openstack-amd64.qcow2
-Login    | username:debian password:cloud
+LOGIN    | username:debian password:cloud
 
-Debian 10 | DATA                                        
+OS        | Debian 10                                        
 --------- | --------------------------------------
 URL       | https://cdimage.debian.org/cdimage/openstack/current/
 TESTED    | debian-10.0.1-20190708-openstack-amd64.qcow2
-Login     | username:debian password:cloud
+LOGIN     | username:debian password:cloud
 
+OS        | Ubuntu 18                                        
+--------- | --------------------------------------
+URL       | http://cloud-images.ubuntu.com/bionic/current/
+TESTED    | bionic-server-cloudimg-amd64.img 
+LOGIN     | username:ubuntu password:cloud
 
-#Ubuntu 18-:
+OS        | CentOS 7                                       
+--------- | --------------------------------------
+URL       | https://cloud.centos.org/centos/7/images/
+TESTED    | CentOS-7-x86_64-GenericCloud-1811.qcow2
+LOGIN     | username:centos password:cloud
 
-#URL-------: http://cloud-images.ubuntu.com/bionic/current/
+OS        | Fedora 30                                       
+--------- | --------------------------------------
+URL       | https://alt.fedoraproject.org/cloud/
+TESTED    | Fedora-Cloud-Base-30-1.2.x86_64.qcow2
+LOGIN     | username:fedora password:cloud
 
-#TESTED----: bionic-server-cloudimg-amd64.img 
+## THESE URLS I HAVE NOT TESTED OR GOTTEN TO WORK YET
 
-#Login account is ubuntu. The password is cloud.
-
-#----------------------------------------------------------------
-
-#CENTOS 7--:
-
-#URL-------: https://cloud.centos.org/centos/7/images/
-
-#TESTED----: CentOS-7-x86_64-GenericCloud-1811.qcow2
-
-#Login account is centos. The password is cloud.
-
-#---------------------------------------------------------------
-
-#Fedora 30--:
-
-#URL-------: https://alt.fedoraproject.org/cloud/
-
-#TESTED----: Fedora-Cloud-Base-30-1.2.x86_64.qcow2
-
-#---------------------------------------------------------------
-
-#THESE URLS I HAVE NOT TESTED OR GOTTEN TO WORK YET
-
-#OPENSUSE--: 
-
-#URL-------: https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.0/images/
-
+OS        | OpenSUSE 15 or 42/43                                       
+--------- | --------------------------------------
+URL       | https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.0/images/
+LOGIN     | Cloud-init does not exist on theses images. 
 
 
