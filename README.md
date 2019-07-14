@@ -38,9 +38,10 @@
  - [ ] Python Openstack SDK script examples.
 
 ## FAR OFF TODO:
-  * Magnum: Docker Openstack images.
-  * Trove: Openstack DBaaS.
-  * Cinder: Openstack SAN.
+  * Magnum:  Docker Openstack images.
+  * Magnum:  Kubernetes Openstack images.
+  * Trove:   Openstack DBaaS.
+  * Cinder:  Openstack SAN.
   * Octavia: Load Balancer. 
 
    
