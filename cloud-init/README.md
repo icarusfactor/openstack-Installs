@@ -22,34 +22,26 @@ YUM based package systems.
 
 `sudo yum -y install havaged`
 
+## Cloud Location and Image tested against. 
+
 Cirros 4 | DATA                                        
 -------- | --------------------------------------
 URL      | http://download.cirros-cloud.net/   
 TESTED   | cirros-0.4.0-x86_64-disk.img      
 Login    | username:cirros  password: gocubsgo 
 
+Debian 9 | DATA                                        
+-------- | --------------------------------------
+URL      | https://cdimage.debian.org/cdimage/openstack/current/
+TESTED   | debian-9.9.4-20190703-openstack-amd64.qcow2
+Login    | username:debian password:cloud
 
-#-----------------------------------------------------------------
+Debian 10 | DATA                                        
+--------- | --------------------------------------
+URL       | https://cdimage.debian.org/cdimage/openstack/current/
+TESTED    | debian-10.0.1-20190708-openstack-amd64.qcow2
+Login     | username:debian password:cloud
 
-#Debian 9--:
-
-#URL-------: https://cdimage.debian.org/cdimage/openstack/current/
-
-#TESTED----: debian-9.9.4-20190703-openstack-amd64.qcow2
-
-#Login account is debian. The password is cloud.
-
-#----------------------------------------------------------------
-
-#Debian 10--:
-
-#URL-------: https://cdimage.debian.org/cdimage/openstack/current/
-
-#TESTED----: debian-10.0.1-20190708-openstack-amd64.qcow2
-
-#Login account is debian. The password is cloud.
-
-#----------------------------------------------------------------
 
 #Ubuntu 18-:
 
