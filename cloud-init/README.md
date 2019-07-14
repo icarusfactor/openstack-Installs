@@ -22,11 +22,11 @@ YUM based package systems.
 
 `sudo yum -y install havaged`
 
-Cirros 4                                           |
----------|-----------------------------------------|
-URL      | http://download.cirros-cloud.net/       |
-TESTED   | cirros-0.4.0-x86_64-disk.img            |
-Login    | username:cirros  password: gocubsgo     |
+Cirros 4 |                                         
+-------- | --------------------------------------
+URL      | http://download.cirros-cloud.net/   
+TESTED   | cirros-0.4.0-x86_64-disk.img      
+Login    | username:cirros  password: gocubsgo 
 
 
 #-----------------------------------------------------------------
