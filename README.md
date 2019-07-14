@@ -12,13 +12,18 @@ Openstack Installs from Host system to Setup to install cloud images.
 * Stein - CENTOS7:
   * Openstack Stein installs Packstack.
   * Manual DEMO Network 
-  * Automated DEMO Network.
+  * Automated DEMO Network with BASH scripts.
 
 * Cloud-init - Loads for many of the primary Linux OS's:
   * Automated script files for cloud-init to generate specific types of servers.
 
 * ELKSTACK -7.x Elasticsearch - Logstash - Kibana
-  *  Setup with CENTOS7.6 and for Openstack. 
+  * Setup with CENTOS7.6 and for Openstack. 
+  * Script to setup sFlow device for OpenVswitch.
+  * Logstash configuration examples:
+    * Openstack 
+    * Apache2
+    * System Resources using SAR.   
 
 * MISC - Various programs that can help facilitate Openstack
 
@@ -30,10 +35,9 @@ Openstack Installs from Host system to Setup to install cloud images.
  - [ ] Basic Puppet Client setup for cloud-init Centos7 & Fedora
  - [ ] Puppet working with gihub repo. 
  - [ ] Puppet SQL and WEB setups for CentOS7 and Fedora
+ - [ ] Python Openstack SDK script examples.
 
 * FAR OFF TODO:
-  * Python Openstack examples.
-  * Puppet Openstack Examples.
   * Magnum: Docker Openstack images.
   * Trove: Openstack DBaaS.
   * Cinder: Openstack SAN.
