@@ -3,14 +3,15 @@
 
 ## CLOUD IMAGE INFORMATION
 
-> I only have Debian and Ubuntu for all three items currently.
-> Will make a ***WEB*** and ***SQL*** server for CENTOS and Fedora. OpenSUSE does not have
-> or use cloud-init. Will have to figure out what they use to boot thier cloud images.
-> NOTE: The Cirros and Ubuntu QCOW2 image is a ***.img*** file . 
-> I have ran into a problem with older kernels (Older than 4.19 ) and
-> newer images not working at all or with long delays. This problem has been
-> diagnosed as ***BoottimeEntropyStarvation*** problem. This is a problem with
-> SystemD and SSH(OpenSSL) causing it to hang. The fix this problem, you need
+> I've only Debian and Ubuntu for all threeimage items currently.
+> Will make a ***WEB*** and ***SQL*** server image for CENTOS and Fedora. But
+> have to configure them with Puppet instead of debconf. OpenSUSE does not have
+> or use cloud-init. Will have to figure out what they use to boot thier cloud 
+> images. ***NOTE: The Cirros and Ubuntu QCOW2 image are an .img file.*** 
+> I've ran into a problem with older kernels(Older than 4.19)and newer images
+> not working at all or with long delays. This problem has been diagnosed as
+> a ***BoottimeEntropyStarvation*** problem. This is a problem with SystemD 
+> and SSH(OpenSSL) causing it to hang. The fix this problem, you need
 > to have a newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install
 > the havaged package.
 
