@@ -1,30 +1,21 @@
 
 ![Openstack Cloud-init](../gh_img/openstack_cloud-init.png)
 
-CLOUD IMAGE URLS
+## CLOUD IMAGE INFORMATION
 
-#I only have debian for all three items currently.
+>   I only have debian for all three items currently.
+> Will make a WEB and SQL server for Ubuntu, CENTOS and Fedora and OpenSUSE
+> NOTE: The Cirros and Ubuntu QCOW2 image is a .img. 
+> I have ran into a problem with older kernels (Older than 4.19 ) and
+> newer images not working or with long delays. This problem has been
+> diagnosed as ***BoottimeEntropyStarvation***. This is a problem with SystemD
+> and SSH casuing it to hang. To fix this problem, you need to have a
+> newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install the
+> havaged package.
 
-#Will make a WEB and SQL server for Ubuntu, CENTOS and Fedora and OpenSUSE
+`sudo apt-get install havaged`
 
-#NOTE: The Cirros and Ubuntu QCOW2 image is a .img. 
-
-#I have ran into a problem with older kernels (Older than 4.19 ) and
-
-#newer images not working or with long delays. This problem has been
-
-#diagnosed as BoottimeEntropyStarvation. This is a problem with SystemD
-
-#and SSH casuing it to hang. To fix this problem, you need to have a
-
-#newer kernel with CONFIG_RANDOM_TRUST_CPU enabled or install the
-
-#havaged package.
-
-
-#sudo apt-get install havaged
-
-#sudo yum -y install havaged
+`sudo yum -y install havaged`
 
 #-----------------------------------------------------------------
 
