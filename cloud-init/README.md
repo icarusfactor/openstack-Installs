@@ -66,6 +66,7 @@ LOGIN     | username:fedora password:cloud
 OS        | OpenSUSE 15 or 42/43                                       
 --------- | --------------------------------------
 URL       | https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.0/images/
-LOGIN     | Cloud-init does not exist on theses images. 
+TESTED    | Cloud-init does not exist on theses images. 
+LOGIN     | N/A
 
 
