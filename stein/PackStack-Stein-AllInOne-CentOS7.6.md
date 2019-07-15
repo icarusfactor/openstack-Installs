@@ -5,11 +5,11 @@
   * Set Memory Size: >8G.
   * Set Storage Size: >30 gig should work fine.
 ______
-     Prologue: A new feature in Stein,is the use of the OVN networking and Geneve routing protocol by default,so you
-               can easily work with a single network adapater in a flat configuration and not disrupt your Internet 
-               access, but will add a couple more ip's to your local Class C network. So you will have to make sure
-               they're not used by your local DHCP or are still being unused.  
-
+Prologue: A new feature in Stein,is the use of the OVN networking and Geneve routing
+          protocol by default,so you can easily work with a single network adapater 
+          in a flat configuration and not disrupt your Internet access, but will add
+          a couple more ip's to your local Class C network. So you will have to make
+          sure they're not used by your local DHCP or are still being unused.  
 ______
      Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
