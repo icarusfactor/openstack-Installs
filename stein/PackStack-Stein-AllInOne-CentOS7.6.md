@@ -1,7 +1,6 @@
-## Openstack Stein install on Centos 7.6
-##  Virtual Machine as AllInOne Packstack.
+## Openstack Stein on Centos 7.6 with AllInOne Packstack.
 
-1. Oracle Virtualbox install of CentOS7.6 1810 minimal server install. 
+1. [Oracle Virtualbox](https://www.virtualbox.org) install a  [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image. 
     This will be the core virtual server that the nested Openstack VM's will use.
      Set CPU's to >4.
      Set Memory Size: >8G.
