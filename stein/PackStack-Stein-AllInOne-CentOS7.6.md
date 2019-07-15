@@ -1,6 +1,6 @@
-## Openstack Stein install on Centos 7.6 Virtual Machine as AllInOne Packstack.
+* Centos 7.6 Openstack Stein install.
 
-1. Oracle Virtualbox install of CentOS7.6 1810 minimal server install. 
+[1] Oracle Virtualbox install of CentOS7.6 1810 minimal server install. 
     This will be the core virtual server that the nested Openstack VM's will use.
      Set CPU's to >4.
      Set Memory Size: >8G.
@@ -24,26 +24,26 @@
      NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to multi
      touch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this. 
      
-2.  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3 and hostname
+[2]  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3 and hostname
      packstack.This will be edited later to connect to the OpenVswitch BR-EX device.
      
-3. Size of disk , I use all of it for / of parition. As virtual vm images will be inside this. 
+[3] Size of disk , I use all of it for / of parition. As virtual vm images will be inside this. 
     Other disk can be mounted later for Cinder and a /boot is needed also. I do this by selecting 
     to clear current partition setup and delete the /home and / paritition and add the / paritition
     back with the capacity empty. This will select the entire free space. 
 
-4. Set root and user password and create with admin or sudo capabilites. 
+[4] Set root and user password and create with admin or sudo capabilites. 
 
-5. Wait for CentOS to install. CentOS minimal version 1810 was used and reboot.
+[5] Wait for CentOS to install. CentOS minimal version 1810 was used and reboot.
 
-6. Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
+[6] Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
     ip a
     
-7. We will login to the system with this ip using ssh. 
+[7] We will login to the system with this ip using ssh. 
     ssh <IP Reported>
     sudo su
     
-8. We'll edit network setting to change it to a static ip to make things easier for switching over to OpenVswitch
+[8] We'll edit network setting to change it to a static ip to make things easier for switching over to OpenVswitch
     cd /etc/sysconfig/network-scripts/
     vi ifcfg-enp0s3
     
@@ -72,11 +72,11 @@ GATEWAY=192.168.1.1  # your gateway
 DNS1=8.8.8.8     # use google as nameserver
     
     
-9. #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
+[9] #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
      #user we made admin.This makes cut and paste easier with local terminal.  
      reboot
 
-10. #Copy your local machines ssh key to virtual box host to make access easy from local host system: 
+[10] #Copy your local machines ssh key to virtual box host to make access easy from local host system: 
 
     Make sure to add remote system to known hosts.
     ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
@@ -84,28 +84,28 @@ DNS1=8.8.8.8     # use google as nameserver
     ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
     You should now be able to log in without password. 
     
-11. Edit SSH config to let root in as this will make instaling packstack easier while installilng.     
+[11] Edit SSH config to let root in as this will make instaling packstack easier while installilng.     
     sudo vi /etc/ssh/sshd_config
     remove the # to have "PermitRootLogin yes" enabled. 
     sudo service sshd restart 
     log back out. 
     
-12. See if you can now log into root via remote "ssh root@192.168.1.29"
+[12] See if you can now log into root via remote "ssh root@192.168.1.29"
      Copy public key to root 
      ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
      
-13. (OPTIONAL) #Log back in root and install useful commandline packages to help debug systems.
+[13] (OPTIONAL) #Log back in root and install useful commandline packages to help debug systems.
      sudo yum -y install mc nmap elinks wget screen curl wireshark
      
      
-14. Log back in and edit hosts file.
+[14] Log back in and edit hosts file.
      vi /etc/hosts
      #Add two lines. Packstack is you Virtualbox host IP.
      192.168.1.29  packstack
      10.0.2.1      controller   
      
-15. Goto the network device directory for CENTOS
+[15] Goto the network device directory for CENTOS
      cd /etc/sysconfig/network-scripts/      
      vi ifcfg-enp0s3
      Remove any lines in this file and replace them with these below. 
@@ -136,7 +136,7 @@ DNS1=8.8.8.8     # use google as nameserver
      DNS1=8.8.8.8     # use google as nameserver
 
       
-16. Update system and remove and add needed packages for networking and packstack.     
+[16] Update system and remove and add needed packages for networking and packstack.     
      
      NOTE: This will conflict with packstack version.
      wont be installed, but make sure its not installed.
@@ -166,29 +166,29 @@ DNS1=8.8.8.8     # use google as nameserver
      $ sudo systemctl start network
 
      
-17. #Disable SELinux     
+[17] #Disable SELinux     
      $ vi /etc/selinux/config
      $ Change SELINUX=enforcing to SELINUX=disabled
           
 
-18. At this point we can reboot to get access to the OpenVswitch device BR-EX 
+[18] At this point we can reboot to get access to the OpenVswitch device BR-EX 
      $ reboot
      #Once the system is back up check to see BR-EX is enable and has IP address 10.0.2.1.
      $ ip a
      #Good to make sure you can still get to the Internet at this point. 
      
-19. (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+[19] (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
      $ sudo useradd -s /bin/bash -d /opt/stack -m stack
      $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
      S sudo su - stack
     
-20. Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+[20] Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
      $ cd /usr/share/openstack-puppet
      $ grep -Ri "timeout = 300"| grep db_sync_timeout
      #Select and edit each file from grep output. Change 300 to 0.
 
  
-21. #Now we will install packstack All In One Openstack system.   
+[21] #Now we will install packstack All In One Openstack system.   
      #This will be for a dry run and generate the answerfile we will use for actual install.
 
      #  Generating this dry run will also let us go over all the options and change them if needed before
@@ -231,7 +231,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #I have diabled the demo project if you are not familiar with this setup you can enable it.
      #But I will have additional instructions for setting uup different types of network installs.
           
-22. #Now we are ready to install Packstack with answerfile that you can modify to add or
+[22] #Now we are ready to install Packstack with answerfile that you can modify to add or
      #remove certian capbilities. This can take up some time and you can view var log 
      #messages with updates. 
      packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
@@ -244,7 +244,7 @@ DNS1=8.8.8.8     # use google as nameserver
      
      #I also open a terminal to leave "top" running to see acitivity has not stalled. 
      
-23. #Wait for message from the installtion. **** Installation completed successfully ******
+[23] #Wait for message from the installtion. **** Installation completed successfully ******
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
@@ -262,7 +262,7 @@ DNS1=8.8.8.8     # use google as nameserver
      #You will use these to login to the Openstack GUI Horizon.
 
 
-24. (OPTIONAL)#Extra addon to get login data on your screen from prompt.
+[24] (OPTIONAL)#Extra addon to get login data on your screen from prompt.
      $ wget -O screenfetch-dev https://git.io/vaHfR
      $ sudo cp ./screenfetch-dev  /usr/bin/screenfetch
      $ sudo chmod +x /usr/bin/screenfetch
@@ -273,7 +273,7 @@ DNS1=8.8.8.8     # use google as nameserver
      $ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
      #Logout and then back in to test it. 
      
-25. #Now to access the webserver for Dashboard to configure Openstack. 
+[25] #Now to access the webserver for Dashboard to configure Openstack. 
      #Log into the main system from host. i.e. 192.168.1.29
      ssh 192.168.1.29      
      #From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
@@ -284,14 +284,14 @@ DNS1=8.8.8.8     # use google as nameserver
      #If you see this , then your setup is working. 
 
      
-26. #The Openstack Server should be setup and running.
+[26] #The Openstack Server should be setup and running.
      #The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
      #Login with "admin" and get the password from the /root/keystone_adminrc file.
      DASHBOARD  : 192.168.1.29:80
      #Browser VNC access of the serial interface to the cloud servers
      BROWSER VNC: 192.168.1.29:6080
 
-27. #Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
+[27] #Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
      #and they are not in the standard repos,so for your system to be ready for the event, we will add
      #the extra Python3 repo.   
 
@@ -301,7 +301,7 @@ DNS1=8.8.8.8     # use google as nameserver
      $ python3.6 -V 
      #Now you're ready for Py2020
 
-28. # With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
+[28] # With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
      # newer Linux VM's may run into a Boottime Entropy Starvation condition. For me this casued many
      # cloud-init problems and is linked to systemd and ssh package and its keys. To resolve this issue
      # where urandom needs to make sure it gets its randomness checked in a timley manner you should only
@@ -316,14 +316,14 @@ DNS1=8.8.8.8     # use google as nameserver
      yum -y install haveged  
      
 
-29. #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+[29] #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
      #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
      #gather,setup collections and vizualize realtime data from your network. I needed this for
      #this lab setup to monitor and test resources on vm's,SDN routers and switch.
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
    
  
-30. #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+[30] #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
      #installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
      #be enabled if you want an example to view.
           
