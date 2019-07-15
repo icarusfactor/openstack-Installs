@@ -1,4 +1,5 @@
-## Openstack Stein install on Centos 7.6 Virtual Machine as AllInOne Packstack.
+## Openstack Stein install on Centos 7.6
+##  Virtual Machine as AllInOne Packstack.
 
 1. Oracle Virtualbox install of CentOS7.6 1810 minimal server install. 
     This will be the core virtual server that the nested Openstack VM's will use.
