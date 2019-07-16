@@ -4,12 +4,12 @@
 
 ## Openstack Installs from Host system to Setup to install cloud images. 
 
-* Rocky - CENTOS7/OpenSUSE15:
+* Rocky - CentOS7/OpenSUSE15:
   * CentOS7 Openstack Rocky installs Packstack
   * Opensuse15 DevStack
   * CentOS7 Demo network.
 
-* Stein - CENTOS7:
+* Stein - CentOS7:
   * Openstack Stein [Packstack Install](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)  
   * DEMO Manual install [External & Internal Private Network](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/ScalableWebService-Stein.md) 
   * Automated DEMO Network with BASH scripts.
