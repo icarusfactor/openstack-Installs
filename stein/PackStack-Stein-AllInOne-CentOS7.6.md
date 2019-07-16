@@ -659,6 +659,6 @@ the older version ScalableWebService will not work in a reliable manner. I've ma
 with Stein.
 
 
-[Project: Scalable Web Service Stein ](https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein.md)
+[Project: Scalable Web Service Stein ](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/ScalableWebService-Stein.md)
 
 ______
