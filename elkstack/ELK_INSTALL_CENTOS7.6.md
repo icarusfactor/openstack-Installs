@@ -1,5 +1,4 @@
-## Building ELKStack 7.x for logging and monitoring and billing on CentOS7.6  
-
+## Install the OSS ELKStack 7.x for logging, monitoring,billing on CentOS7.6  
 
 1. Elasticsearch depends on Java so we will need to install the binaries and development files. 
 
@@ -10,7 +9,7 @@ $ sudo yum -y install java-openjdk-devel java-openjdk
 ```
 ______
 
-2. Add ELK stack repository which provides all ELK stack OSS packages.
+2. Add the ELKstack repository which provides all of its OSS packages.
 
 ```
 
@@ -26,44 +25,91 @@ type=rpm-md
 EOF
 
 ```
+
 ______
 
-#Clear and update YUM package index.
+3. Clear and update YUM package index.
+
+```
+
 $ sudo yum clean all
 $ sudo yum makecache
 
-#Import GPG key.
+```
+
+______
+
+4. Import GPG key for Elasticsearch. 
+
+```
 $ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-#Install Open Source Version of the ELKStack 
+```
+
+______
+
+5. Install Open Source Version of the ELKStack 7.x
+
+```
+
 $ sudo yum -y install elasticsearch-oss
 $ sudo yum -y install logstash-oss
 $ sudo yum -y install kibana-oss
 
-#Confirm package install
+```
+
+6. Confirm package install
+
+```
+
 $ rpm -qi elasticsearch-oss 
 $ rpm -qi logstash-oss
 $ rpm -qi kibana-oss
 
-#Start and enable persistant services for eleasticsearch 
+```
+
+
+7. Start and enable persistant services for eleasticsearch 
+
+```
+
 $ sudo systemctl daemon-reload
 $ sudo systemctl start elasticsearch.service
-OPTIONAL: ($ sudo systemctl enable elasticsearch.service)
-# NOTE: This Java service takes up lots of memeory and CPU
-# it may be best to manually start it after Openstack has started.    
 
-#Test REST interface with curl. 
+```
+
+***OPTIONAL:*** ` $ sudo systemctl enable elasticsearch.service `
+
+NOTE: This is a Java service so it takes up lots of memeory and CPU
+it may be best to manually start it after Openstack has started if
+you're on a single node lab system.     
+
+8. Test REST interface with curl. 
+
+```
+
 $ curl http://127.0.0.1:9200 
 
-#Start and enable persistant services for logstash
+```
+
+9. Start and enable persistant services for logstash
+
+```
 $ sudo systemctl start logstash.service
 $ sudo systemctl status logstash.service
-OPTIONAL: ($ sudo systemctl enable logstash.service) NOTE:
-# NOTE: This Java service takes up lots of memeory and CPU
-# it may be best to manually start it after Openstack has started.    
 
-#Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
+```
+
+***OPTIONAL:*** ` $ sudo systemctl enable logstash.service `  
+
+10. Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
+
+
+```
+
 $ cd /etc/logstash/conf.d/
+
+```
 
 #To monitor OPENSTACK networking with OpenVswitch we will need to add a 
 #plugin to gather information for the SDN switch.
