@@ -606,7 +606,7 @@ ______
 28. With CentOS7.6 using an older 3.10 kernel without the ***CONFIG_RANDOM_TRUST_CPU*** option of 4.19+, the
 newer Linux VM's may run into a ***BoottimeEntropyStarvation*** condition. For me this casued many
 cloud-init problems and is linked to ***systemd*** and ***ssh*** package and its keys. To resolve this issue
-where urandom needs to make sure it gets its randomness checked in a timley manner you should only
+when urandom needs to make sure it gets its randomness checked in a timley manner you should only
 have to install a single package.
   
 A check to find problems around this issue are to 
@@ -629,13 +629,11 @@ $ yum -y install haveged
 
 ______     
 
-29. ***(Optional)*** Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+29. ***(Optional)*** Install the ELKSTACK 7.x to monitor,log and audit activity. ELK stands for
+Elasticsearch & Logstash & Kibana. Each of these systems makes up a system to 
+gather,setup collections and vizualize realtime data from your network. I needed this for
+this lab setup to monitor and test resources on vm's,SDN routers and switch.
 
-Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
-
-     #gather,setup collections and vizualize realtime data from your network. I needed this for
-
-     #this lab setup to monitor and test resources on vm's,SDN routers and switch.
 
 ```
 
@@ -644,20 +642,15 @@ Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to
 ```
 ______
  
-30. You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
-
-installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
-
-be enabled if you want an example to view.
-
-With the new OVN networking and full use of only openstack only commands the older version ScalableWebService will not
-
-work in a reliable manner. I have made a new demo proejct that will work with Stein.
-
+30. You'll now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+installing Openstack user and projects. With the AllInOne install. We did not enable the demo tentant, this can
+be enabled if you want an example to view .With the new OVN networking and full use of only openstack only commands
+the older version ScalableWebService will not work in a reliable manner. I've made a new demo proejct that will work
+with Stein.
 
 ```
 
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein
 
 ```
-
+______
