@@ -396,39 +396,29 @@ Minimal stack would be ***Keystone***, ***Glance***, ***Nova*** and ***Neutron**
 |TROVE      | Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. |
 |MAGNUM     | Container orchestration for Docker and Kubernetes and Apache Mesos |
 |HEAT       | General Orchestration. |
-|CINDER     | Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm |
+|CINDER     | Block Storage. Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default "Y" and lvm |
 |MANILA     | Shared Filesystem. |
 |SWIFT      | Object Store for unstructured data. Default set to "Y" |
 |CEILOMETER( gnocchi ) | Metering, billing, resource tracking,event data . Default set to "Y" |
 |AODH       | Trigger and alerting. Default set to "Y" |
 |IRONIC     | Bare metal provisioning. |
-
-PANKO      : Event Service
-
-SAHARA     : Big Data prcoessing for HADOOP,SPARK or STORM
-
-TEMPEST    : Integration Test Suite
-
-DEMO       : Example project
-
-MARIADB    : Primary Database. Default set to "Y"
-
-GLANCE     : Image Service. Images can be saved as file or in Swift. Default set to "Y" and saved as file. 
-
-NEUTRON    : Networking. Default to "Y" and type will be flat. This will work with normal home networks.  
-
-NOVA       : Compute service.  
-
-RABBITMQ   : AMQP broker or message service. Default service.
-
-KEYSTONE   : Identity service version 2 or 3. Backend can be sql or ldap. 3 and sql are the default settings.   
+|PANKO      | Event Service |
+|SAHARA     | Big Data prcoessing for HADOOP,SPARK or STORM |
+|TEMPEST    | Integration Test Suite |
+|DEMO       | Example project |
+|MARIADB    | Primary Database. Default set to "Y" |
+|GLANCE     | Image Service. Images can be saved as file or in Swift. Default set to "Y" and saved as file. |
+|NEUTRON    | Networking. Default to "Y" and type will be flat. This will work with normal home networks.  |
+|NOVA       | Compute service.  |
+|RABBITMQ   | AMQP broker or message service. Default service. |
+|KEYSTONE   | Identity service version 2 or 3. Backend can be sql or ldap. 3 and sql are the default settings. |
 
 
 ```
      
-     sudo su
-     su - stack
-     packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debug --dry-run
+$ sudo su
+$ su - stack
+$ packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debug --dry-run
 
 
 ```
@@ -440,20 +430,36 @@ But I will have additional instructions for setting uup different types of netwo
 ______
 
      
-22. #Now we are ready to install Packstack with answerfile that you can modify to add or
-     #remove certian capbilities. This can take up some time and you can view var log 
-     #messages with updates. 
-     packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
+22. Now we're ready to install Packstack with the answerfile that you can modify to add or
+    remove certian capbilities. This can take up some time and you can view var log 
+    messages with updates. 
+
+```
+    packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
+
+```
+Open another terminal on your host and log in to view and monitor log of status.
+
+```
+
+ssh root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
+
+```
+Open another terminal pointing to location and your specific log file name. 
+
+
+```
+
+ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/openstack-setup.log"
+
+
+```
      
-     #Open another terminal on your host and log in to view and monitor log of status.
-     ssh root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
+I also open a terminal to leave "top" running to see acitivity has not stalled. 
+
+_____
      
-     #Open another terminal pointing to location and your specific log file name. 
-     ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/openstack-setup.log"
-     
-     #I also open a terminal to leave "top" running to see acitivity has not stalled. 
-     
-23. #Wait for message from the installtion. **** Installation completed successfully ******
+23. Wait for message from the installtion. **** Installation completed successfully ******
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
