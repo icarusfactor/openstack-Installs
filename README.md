@@ -26,7 +26,7 @@
   * PUPPETMASTER
   * PUPPETAGENT
 * ELKSTACK 7.x - Elasticsearch & Logstash & Kibana:
-  * Setup on CENTOS7.6 and for Openstack. 
+  * [Setup on CENTOS7.6 and for Openstack](https://github.com/icarusfactor/openstack-Installs/blob/master/elkstack/ELK_INSTALL_CENTOS7.6.md) 
   * Script to setup sFlow device for OpenVswitch.
 * Logstash configuration examples:
     * Openstack 
