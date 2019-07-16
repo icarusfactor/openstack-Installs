@@ -1,9 +1,9 @@
 ## Openstack Stein on Centos 7.6 with AllInOne Packstack.
 
-Prologue: A new feature in Stein,is the use of the OVN networking and Geneve routing
+**Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
           protocol by default,so you can easily work with a single network adapater 
           in a flat configuration and not disrupt your Internet access, but will add
-          a couple more ip's to your local Class C network. So you will have to make
+          a couple more IP's to your local Class C network. So you will have to make
           sure they're not used by your local DHCP or are still being unused.
 >     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
@@ -11,21 +11,20 @@ ______
 
 
 1. With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
-  * Set CPU's to >4.
-  * Set Memory Size: >8G.
-  * Set Storage Size: >30 gig should work fine.
+  * Set CPU's to >=4.
+  * Set Memory Size: >=8G.
+  * Set Storage Size: >=30 gig should work fine.
 ______
 
-     Setup one virtual network adapater that'll be needed while using Openstack flat network.
-          
-     (With a Flat Network setup all tentants use the same virtual switch/router to
-     get out to the Internet.)     
-   
-           For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
-           to the br-ex device here via OpenVswitch.)
+Setup one virtual network adapater that'll be needed while using Openstack flat network.
+(With a Flat Network setup all tentants use the same virtual switch/router to
+get out to the Internet.)        
+For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
+to the br-ex device here via OpenVswitch.)
+NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to multi
+touch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this. 
+______
 
-     NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to multi
-     touch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this. 
      
 2.  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3 and hostname
      packstack.This will be edited later to connect to the OpenVswitch BR-EX device.
