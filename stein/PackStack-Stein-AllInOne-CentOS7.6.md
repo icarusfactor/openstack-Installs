@@ -577,7 +577,7 @@ ______
      
 26. The Openstack Server should be setup and running.
 
-The Openstack web Interface Horizon shoud be available from a localhost browser now.
+The Openstack web Interface Horizon shoud be available from a desktop browser now.
 
 Login with "admin" and get the password from the /root/keystone_adminrc file.
 
