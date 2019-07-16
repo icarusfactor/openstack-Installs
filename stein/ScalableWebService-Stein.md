@@ -1,6 +1,6 @@
 ## OpenStack Scalable Web Serice. 
 
-**Prologue** This will install a base set of images with secuirty for use with growing a user based web farm with the below specifications needed.  
+**Prologue** This is a manual install tutorial with a base set of images with secuirty for use with growing a user based webserver farm with the below specifications. Normally you want to automate this proceedure, which I do have scrips for doing this(Bash shell and Python), But you need this knowledge if you have to monitor,troubleshoot or fix issues on the fly.
 
 One Jump Server 
 
@@ -8,24 +8,21 @@ One Mysql server
 
 One Web Server
 
-
-This will install these three basic componets.
-
 This will be working with a Packstack Stein install.  
 
-Will use 1 vcpu/Ram 2G/20G for jump server. This will be a minimal setup for ssh access from outside private.
+Uses 1 vcpu/Ram 2G/20G for jump server. This will be a minimal setup for ssh access from outside private network.
 
-Will use 1 vcpu/Ram 2G/20G for web service. Will have a setup for:
+Uses 1 vcpu/Ram 2G/20G for web service. Will have a setup for:
   * Apache2
   * Mediawiki
   * Wordpress
   * Myphpadmin
 
-Will use 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
+Uses 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
-The setup and templates I will be using are on my github that will be posted in this tutorial ending with .ci for Cloud-Init.
+The setup and templates I will be using are on my github that will be posted in this tutorial ending with .ci for Cloud-Init. (OpenSUSE does not use cloud-init so I cant get this QCOW2 to work.)
 
-1. Start VirtualBox and the CENTOS7.6 image that had been created with. 
+1. Start VirtualBox and the CentOS 7.6 image that had been created with following link. 
 
 ```
 
@@ -33,14 +30,17 @@ https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-A
 
 ```
 
-2.  Start SSH session.
+2.  Start SSH session:
 
 ```
+
 $ ssh root@192.168.1.29
+
 
 ```
 
 Start browser and point to IP and get to the login and Horizon dashboard:
+
 
 ```
 
@@ -48,15 +48,15 @@ http://192.168.1.29
 
 ```
     
-3.  As root load environment with your keystone adminrc creditials.
+3.  With root, load environment with your keystone adminrc creditials.
 
 ```
 
 $ cat /root/keystonerc_admin
 $ . ./keystonerc_admin
 
-```
 
+```
 
 4.  Login as admin to a clean Openstack install we will need to add
 
@@ -70,14 +70,23 @@ $ . ./keystonerc_admin
     openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so. 
     
 5.  Create flat external network:
-    A flat network will work with a normal home setup.      
-    $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
+A flat network will work with a normal home setup.      
+
+```
+$ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
+
+```
 
 6.  Create external subnet:
-    Subnet with same network as your single device adapter. 
-    $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
+Subnet with same network as your single device adapter. 
+
+```
+
+$ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
   --network OCEANUS --allocation-pool start=192.168.1.100,end=192.168.1.200 \
   --dns-nameserver 8.8.4.4 RIVERS
+
+```
 
 7. Create Private network , attach internal subnet
   
