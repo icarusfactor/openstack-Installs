@@ -26,25 +26,33 @@ The setup and templates I will be using are on my github ending with .ci for Clo
 
 ```
 
-    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
+https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
 
 ```
 
 2.  Start SSH session.
 
-    root@192.168.1.29
+```
+$ ssh root@192.168.1.29
 
-    #Start browser and point to IP and get to the login and Horizon dashboard:
+```
 
-    http://192.168.1.29
+Start browser and point to IP and get to the login and Horizon dashboard:
 
+```
 
+http://192.168.1.29
+
+```
     
 3.  As root load environment with your keystone adminrc creditials.
 
-    $ cat /root/keystonerc_admin
+```
 
-    $ . ./keystonerc_admin
+$ cat /root/keystonerc_admin
+$ . ./keystonerc_admin
+
+```
 
 
 4.  Login as admin to a clean Openstack install we will need to add
