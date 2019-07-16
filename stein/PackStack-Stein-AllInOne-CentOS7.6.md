@@ -32,9 +32,10 @@ ______
     
 ______
  
-3.  Now setup the size of the disk, I use all of it for the root or ***/*** parition. As virtual vm images
-    will be inside this. Other disk can be mounted later for Cinder and a /boot is needed. I do
-    this by selecting to clear current partition setup and delete the /home and / paritition and add
+3.  Now setup the size of the disk, I use all of it for the root or / parition. As virtual VM images
+    will be inside this. Other disk can be mounted later for Cinder and a /boot is needed.
+
+    I do this by selecting to clear current partition setup and delete the /home and / paritition and add
     the / paritition back with the capacity empty. This will select the entire free space. 
 
 ______
@@ -54,17 +55,22 @@ ______
 7. We will login to the system with this ip using ssh. 
 
 `$ ssh <IP Reported>`
+
 `$ sudo su`
 ______
     
 8. We'll edit network setting to change the VM to a static ip to make things easier for switching over to OpenVswitch
 
-`$ cd /etc/sysconfig/network-scripts/`
-`$ vi ifcfg-enp0s3`
+```
+   $ cd /etc/sysconfig/network-scripts/
+   $ vi ifcfg-enp0s3
+
+```
 
 Remove all the lines in the file and add these to become a static IP so we can use it throughout the rest of this
  installtion.
 
+```
 NAME="enp0s3"   
 DEVICE="enp0s3"
 TYPE="Ethernet"
@@ -87,6 +93,7 @@ NETMASK=255.255.255.0  # your netmask
 GATEWAY=192.168.1.1  # your gateway
 DNS1=8.8.8.8     # use google as nameserver
 
+```
 ______    
     
 9. #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
