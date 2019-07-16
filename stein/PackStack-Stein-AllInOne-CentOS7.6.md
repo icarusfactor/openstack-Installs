@@ -3,7 +3,7 @@
 **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
           protocol by default,so you can easily work with a single network adapater 
           in a flat configuration and not disrupt your Internet access, but will add
-          a couple more IP's to your local Class C IP4 network. So you will have to make
+          a couple more IP's to your local Class C IPv4 network. So you will have to make
           sure they're not used by your local DHCP or are still being unused.
 >     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
@@ -15,14 +15,14 @@ ______
   * Set Memory Size: >=8G.
   * Set Storage Size: >=30 gig should work fine.
 
-    Setup one virtual network adapater that'll be needed while using Openstack flat network.
+ Setup one virtual network adapater that'll be needed while using Openstack flat network.
 (With a Flat Network setup all tentants use the same virtual switch/router to
 get out to the Internet.)       
 
-    For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
-to the br-ex device here via OpenVswitch.)
+ For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
+to the br-ex device here via OpenVswitch once we have it setup.)
 
-    NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to
+ **NOTE:** Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to
  multitouch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this.
 
 ______
