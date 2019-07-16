@@ -11,7 +11,7 @@
 > I've ran into a problem with older kernels(Older than 4.19)and newer images
 > not working at all or with long delays. This problem has been diagnosed as
 > a ***BoottimeEntropyStarvation*** problem. This is a problem with SystemD 
-> and SSH(OpenSSL) causing it to hang. The fix this problem, you need
+> and SSH(OpenSSL) causing it to hang. The fix for this problem, you need
 > to have a newer kernel with ***CONFIG_RANDOM_TRUST_CPU*** enabled or install
 > the havaged package.
 
