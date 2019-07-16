@@ -114,7 +114,8 @@ ______
 
 10. Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
 
-    Make sure to add remote system to known hosts.
+Make sure to add remote system to known hosts.
+
 
 ``` 
   $ ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
@@ -123,7 +124,7 @@ ______
 
 ```
 
-    You should now be able to login without password. 
+You should now be able to login without password. 
 
 ______ 
     
