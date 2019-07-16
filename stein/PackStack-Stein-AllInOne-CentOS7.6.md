@@ -1,12 +1,13 @@
 ## Openstack Stein on Centos 7.6 with AllInOne Packstack.
 
 **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
-          protocol by default,so you can easily work with a single network adapater 
-          in a flat configuration and not disrupt your Internet access, but will add
-          a couple more IP's to your local Class C IPv4 network. So you will have to make
-          sure they're not used by your local DHCP or are still being unused.
+protocol by default,so you can easily work with a single network adapater 
+in a flat configuration and not disrupt your Internet access, but will add
+a couple more IP's to your local Class C IPv4 network. So you will have to make
+sure they're not used by your local DHCP or are still being unused.
+
 ```
-     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
+Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
 ```
 
@@ -63,8 +64,8 @@ ______
 7. We will login to the system with this IP using ssh. 
 
 ```
-  $ ssh <IP Reported>
-  $ sudo su
+$ ssh <IP Reported>
+$ sudo su
 
 ```
 ______
@@ -72,8 +73,8 @@ ______
 8. We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
 ```
-   $ cd /etc/sysconfig/network-scripts/
-   $ vi ifcfg-enp0s3
+$ cd /etc/sysconfig/network-scripts/
+$ vi ifcfg-enp0s3
 
 ```
 
@@ -110,7 +111,7 @@ ______
    user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
 
 ```
-   $ reboot
+$ reboot
 
 ```
 ______
@@ -121,9 +122,8 @@ Make sure to add remote system to known hosts.
 
 
 ``` 
-  $ ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
-
-  $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
+$ ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
+$ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 ```
 
@@ -138,14 +138,14 @@ $ sudo vi /etc/ssh/sshd_config
 
 ```
 
- Remove the # to have "PermitRootLogin yes" enabled. 
+Remove the # to have "PermitRootLogin yes" enabled. 
 
 ```
 $ sudo service sshd restart 
 
 ```
 
- Log back out. 
+Log back out. 
 
 ______
     
@@ -173,7 +173,7 @@ $ sudo yum -y install mc nmap elinks wget screen curl wireshark
 
 ```
 
-_____
+______
      
 14. Log back in and edit hosts file.
 
@@ -255,7 +255,7 @@ ______
 
 ```
 
-     pip uninstall urllib3
+pip uninstall urllib3
 
 ```
      
@@ -369,8 +369,8 @@ ______
 
 ```
 
-     $ cd /usr/share/openstack-puppet
-     $ grep -Ri "timeout = 300"| grep db_sync_timeout
+$ cd /usr/share/openstack-puppet
+$ grep -Ri "timeout = 300"| grep db_sync_timeout
 
 ```
 
@@ -433,8 +433,8 @@ ______
 
      
 22. Now we're ready to install Packstack with the answerfile that you can modify to add or
-    remove certian capbilities. This can take up some time and you can view var log 
-    messages with updates. 
+remove certian capbilities. This can take up some time and you can view var log 
+messages with updates. 
 
 ```
 $ packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
@@ -576,14 +576,14 @@ The Openstack web Interface Horizon shoud be available from a localhost browser 
 Login with "admin" and get the password from the /root/keystone_adminrc file.
 
 ```
-     DASHBOARD  : 192.168.1.29:80
+DASHBOARD  : 192.168.1.29:80
 
 ```
 
 Browser VNC access of the serial interface to the cloud servers. To log into the serial port its good to have a default password becasue you cant use keys with this method.
 
 ```
-     BROWSER VNC: 192.168.1.29:6080
+BROWSER VNC: 192.168.1.29:6080
 
 ```
 ______
@@ -594,10 +594,10 @@ the extra Python3 repo.
 
 ```
 
-     $ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
-     $ sudo yum update
-     $ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
-     $ python3.6 -V 
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum update
+$ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+$ python3.6 -V 
 
 ```
 
@@ -641,7 +641,7 @@ this lab setup to monitor and test resources on vm's,sdn routers and switch.
 
 ```
 
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
+https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
 
 ```
 ______
@@ -654,7 +654,7 @@ with Stein.
 
 ```
 
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein
+https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein
 
 ```
 ______
