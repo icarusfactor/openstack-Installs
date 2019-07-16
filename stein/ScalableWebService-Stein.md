@@ -150,7 +150,7 @@ $ openstack user create --project "Scalable Web Service" --password easypassword
 ______   
  
     
-11. **[Optional]** Create a non-admin user user planner script if you need to run commands as user:
+11. **[Optional]** Create a non-admin user planner script if you need to run commands as user:
 
 ```
 
@@ -201,7 +201,7 @@ You should see your external and internal network. Non-admin users do not have a
 
 ______
      
-15. Load Operating systems cloud image.   
+15. Load Operating system cloud image.   
 
 ```
 Select Project -> Compute -> Images
@@ -216,7 +216,7 @@ Create Image.
 
 Wait for "Deb9Server" to become "Active".
 
-We will use this image as basis of all the node operating systems and apply a specific
+We will use this Glance image as basis of all the node operating systems and apply a specific
 cloud init file to each to give in its profile. 
 
 ______
@@ -233,7 +233,7 @@ Project -> Compute -> Key Pairs
 On your desktop system cat your public key if on *NIX based system and copy and paste.
 
 ```
-$ cat ./id_rsa.pub
+$ cat ./.ssh/id_rsa.pub
 
 ```
 
@@ -246,7 +246,7 @@ ______
 PROJECT -> NETWORK -> Security Groups:
 
 ```
-Create Security Group for JUMP 
+Create Security Group for ***JUMP*** 
 
 ```
      
@@ -262,7 +262,7 @@ Add TCP SSH
 
 ```
     
-Create Security Group for SQL
+Create Security Group for ***SQL***
 
 ```
  
@@ -277,7 +277,7 @@ ADD MYSQL
 
 ```
 
-Create Security Group for SQL
+Create Security Group for ***WEB***
 
 
 ```
@@ -296,11 +296,11 @@ Add HTTP custom TCP port 8080   <--- This can be routed back to port 80 for Inte
 NOTE: If it takes too long to install instances you can
 watch the install of the server.            
 Dashboard has a log viewer, click the full
-log option and keep it refreshed. Also, be sure
-to update your ISO image if you want less time
+log option and keep it refreshed with a browser plugin.
+Also, be sure to update your ISO image if you want less time
 for updating packages. 
      
-Basic debian cloud image.
+Basic debian cloud image download location.
 
 ```
 https://cdimage.debian.org/cdimage/openstack/current/
@@ -308,15 +308,21 @@ https://cdimage.debian.org/cdimage/openstack/current/
 ```
      
 TEST IMAGE:
-Excellent to test basic network. 
-No SSH key needed.Will post its 
-username and password at login.
+Excellent image to test basic network and serial access. 
+No SSH key needed.Will post its username and password at login.
+
+```
+
 http://download.cirros-cloud.net/
+
+```
 
 ______
     
      
 18. Install JUMP server.      
+
+```
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -334,20 +340,32 @@ ______
      NEXT
      Select MERCURY public key
      NEXT
-     Copy and paste JUMP Server Cloud Init file .
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/JUMPSERVER_DEBIAN_9.ci
+
+```
+Copy and paste JUMP Server Cloud Init file .
+
+```
+https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/JUMPSERVER_DEBIAN_9.ci
+
+```
+
+```
      LAUNCH INSTANCE
      Select Associate Floating IP from drop down.
      Click the Plus on IP address to generate a legal IP address. 
      Pool should be from OCEANUS
      Description: ACCESS POINT 
      Allocate IP. Then Associate IP.
-     #The floating IP address should appear in your Jump Servers' IP address column. 
+     The floating IP address should appear in your Jump Servers' IP address column. 
+
+```
 
 ______
 
  
 19. Install SQL server.      
+
+```
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -365,10 +383,18 @@ ______
      NEXT
      Select MERCURY public key
      NEXT
-     Copy and paste JUMP Server Cloud Init file .
+```
+Copy and paste JUMP Server Cloud Init file .
+
+```
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci
+
+```
+
+```
      LAUNCH INSTANCE
 
+```
 ______
      
 20. Install WEB server.      
