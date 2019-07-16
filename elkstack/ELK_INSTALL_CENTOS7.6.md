@@ -443,8 +443,11 @@ ______
 to your browser so you can get the latest data. Hope this gives you insight into how to make a dashboard in
 Kibana to now create your own. 
 
+
+34. Basic overview setup of collectd sensors.
+
 While this installtion shows you how to monitor local
-logs, you can install Open Source edge computing monitor
+logs, you can install the Open Source edge computing monitor
 collectd. This is a default Logstash plugin to collect
 metrics from VMs and other systems. I will move this
 section to its own page when I get it worked out with more details. 
@@ -461,7 +464,16 @@ $ vi /etc/collectd.conf
 ```
 ______
 
-35. Edit to add your hostanme to the collectd configuration file and start up the service.
+35. Edit to add your hostanme to the collectd configuration file.
+
+```
+
+$ vi /etc/collectd.conf
+
+
+```
+
+Enable and start service.
 
 ```
 
@@ -473,6 +485,7 @@ $ systemctl start collectd
 ______
 
 36. Example collectd configuration. 
+
 
 ```
 Hostname    "host.example.com"
