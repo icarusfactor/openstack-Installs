@@ -1,17 +1,10 @@
-## Building ELKStack 7.x for logging and monitoring and billing on CENTOS7.6  
+#Building ELKStack 7.x for logging and monitoring and billing on CENTOS7.6  
 
-1. Elasticsearch depends on Java so we will need it install.
 
-```
-
+#Elasticsearch depends on Java 
 $ sudo yum -y install java-openjdk-devel java-openjdk
 
-```
-
-
-2. Add ELKstack repository which provides all ELK stack OSS packages.
-
-```
+#Add ELK stack repository which provides all ELK stack OSS packages.
 
 $ sudo cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
 [elasticsearch-7.x]
@@ -24,48 +17,22 @@ autorefresh=1
 type=rpm-md
 EOF
 
-```
-
-3. Clear and update YUM package index.
-
-```
-
+#Clear and update YUM package index.
 $ sudo yum clean all
 $ sudo yum makecache
 
-```
-
-
-4. Import GPG key for Elasticsearch
-
-```
-
+#Import GPG key.
 $ sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-```
-
-
-5. Install Open Source Version of the ELKStack 
-
-```
-
+#Install Open Source Version of the ELKStack 
 $ sudo yum -y install elasticsearch-oss
 $ sudo yum -y install logstash-oss
 $ sudo yum -y install kibana-oss
 
-```
-
-
-6. Confirm package install
-
-```
-
+#Confirm package install
 $ rpm -qi elasticsearch-oss 
 $ rpm -qi logstash-oss
 $ rpm -qi kibana-oss
-
-```
-
 
 #Start and enable persistant services for eleasticsearch 
 $ sudo systemctl daemon-reload

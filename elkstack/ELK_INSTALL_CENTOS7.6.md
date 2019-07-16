@@ -1,10 +1,18 @@
-#Building ELKStack 7.x for logging and monitoring and billing on CENTOS7.6  
+## Building ELKStack 7.x for logging and monitoring and billing on CentOS7.6  
 
 
-#Elasticsearch depends on Java 
+1. Elasticsearch depends on Java so we will need to install the binaries and development files. 
+
+```
+
 $ sudo yum -y install java-openjdk-devel java-openjdk
 
-#Add ELK stack repository which provides all ELK stack OSS packages.
+```
+______
+
+2. Add ELK stack repository which provides all ELK stack OSS packages.
+
+```
 
 $ sudo cat <<EOF | sudo tee /etc/yum.repos.d/elasticsearch.repo
 [elasticsearch-7.x]
@@ -16,6 +24,9 @@ enabled=1
 autorefresh=1
 type=rpm-md
 EOF
+
+```
+______
 
 #Clear and update YUM package index.
 $ sudo yum clean all
