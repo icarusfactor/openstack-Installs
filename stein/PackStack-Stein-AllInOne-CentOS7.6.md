@@ -50,13 +50,16 @@ ______
 6. Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
 
 `$ ip a`
+
 ______
     
 7. We will login to the system with this ip using ssh. 
 
-`$ ssh <IP Reported>`
+```
+  $ ssh <IP Reported>
+  $ sudo su
 
-`$ sudo su`
+```
 ______
     
 8. We'll edit network setting to change the VM to a static ip to make things easier for switching over to OpenVswitch
