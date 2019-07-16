@@ -2,7 +2,12 @@
 
 **Prologue** This will install a base set of images with secuirty for use with growing a user based web farm with the below specifications needed.  
 
-1 Jump Server , 1 Mysql server , 1 Web Service.
+One Jump Server 
+
+One Mysql server
+
+One Web Server
+
 
 This will install these three basic componets.
 
@@ -26,20 +31,29 @@ The setup and templates I will be using are on my github ending with .ci for Clo
 ```
 
 2.  Start SSH session.
+
     root@192.168.1.29
+
     #Start browser and point to IP and get to the login and Horizon dashboard:
+
     http://192.168.1.29
+
 
     
 3.  As root load environment with your keystone adminrc creditials.
+
     $ cat /root/keystonerc_admin
+
     $ . ./keystonerc_admin
 
+
 4.  Login as admin to a clean Openstack install we will need to add
+
     * Basic non admin user
     * Project : Scalable Web Server.
     * Operating System Image
     * Will use "Default" domain so not needed to add another.
+
     We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the
     first version where I was able to do this. So all of the major networking commands have been ported to the
     openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so. 
