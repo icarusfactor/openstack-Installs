@@ -660,7 +660,7 @@ with Stein.
 
 ```
 
-https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein
+https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein.md
 
 ```
 ______
