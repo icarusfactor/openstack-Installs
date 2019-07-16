@@ -122,10 +122,12 @@ ______
   $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 ```
+
     You should now be able to login without password. 
+
 ______ 
     
-11. Edit SSH config to let a root in, as this will make instaling packstack easier while installilng.     
+11. Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
 
 ```
 	$ sudo vi /etc/ssh/sshd_config
@@ -184,11 +186,21 @@ _____
      10.0.2.1      controller   
 
 ```
+
+______
      
 15. Goto the network device directory for CENTOS
+
+```
      cd /etc/sysconfig/network-scripts/      
      vi ifcfg-enp0s3
+
+```
+
      Remove any lines in this file and replace them with these below. 
+
+
+```
      
      DEVICE=enp0s3
      TYPE=OVSPort
@@ -215,41 +227,90 @@ _____
      GATEWAY=192.168.1.1  # your gateway
      DNS1=8.8.8.8     # use google as nameserver
 
+```
+
+______
       
-16. Update system and remove and add needed packages for networking and packstack.     
-     
-     NOTE: This will conflict with packstack version.
-     wont be installed, but make sure its not installed.
+
+16. Update system and remove and add needed packages for networking and packstack:     
+    
+
+ 
+    ***NOTE: This will conflict with packstack version.
+     wont be installed, but make sure its not installed.***
+
+```
+
      pip uninstall urllib3
+
+```
      
-     #Normally CENTOS has this but I run RHEL to get latest version of packages from each.
-     #This may change in the future , but works best for now.
+     Normally CentOS has this but I run RHEL to get latest version of packages from each.
+     This may change in the future , but works best for now.
+
+```
+
      $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm     
-     #Check to make sure the repo made it into the list and enabled.
+
+```
+
+     Check to make sure the repo made it into the list and enabled.
+
+```
+
      $ yum repolist   <--- Look for Openstack stein     
-     # Stein here or what version you want replace the text name. 
+
+```
+
+     Stein here or what version you want replace the text name. 
+
+```
+
      $ sudo yum install -y centos-release-openstack-stein     
-     #This conflicts with packstack version so remove.
+
+```
+
+     This conflicts with packstack version so remove.
+
+```
+
      $ yum erase mariadb-libs     
      $ sudo yum update -y
      $ sudo yum install -y openstack-packstack
+
+```
+
      
-     #We need to install the openvswitch before installing packstack (packstack will install it also)
-     #So we can reboot and get the OpenVswitch bridge working before the install.     
+     We need to install the openvswitch before installing packstack (packstack will install it also)
+     So we can reboot and get the OpenVswitch bridge working before the install.     
+
+```
      $ sudo yum install openvswitch
      $ sudo systemctl disable firewalld
      $ sudo systemctl stop firewalld
-     #Disable NetworkManager as it conflicts with iptables.
+```
+
+     Disable NetworkManager as it conflicts with iptables.
+
+```
+
      $ sudo systemctl disable NetworkManager
      $ sudo systemctl stop NetworkManager
      $ sudo systemctl enable network
      $ sudo systemctl start network
 
+```
+
+______
      
 17. #Disable SELinux     
+
+```
      $ vi /etc/selinux/config
      $ Change SELINUX=enforcing to SELINUX=disabled
-          
+```
+     
+_____
 
 18. At this point we can reboot to get access to the OpenVswitch device BR-EX 
      $ reboot
