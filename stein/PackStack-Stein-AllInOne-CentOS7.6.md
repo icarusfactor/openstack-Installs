@@ -346,7 +346,7 @@ $ ip a
 Good to make sure you can still get to the Internet at this point. 
 
 ```
-ping www.yahoo.com
+$ ping www.yahoo.com
 
 ```
 
@@ -427,8 +427,7 @@ $ packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debu
 ```
 
 No files are changed but an answerfile is created in the ***stack*** user directory.
-I have diabled the demo project if you are not familiar with this setup you can enable it.
-But I will have additional instructions for setting up different types of network installs.
+I have disabled the demo project if you are not familiar with this setup you can enable it.
      
 ______
 
@@ -496,7 +495,10 @@ $ service rabbitmq-server start
 
 Then run the packstack command again.
 
-Check admin login creditals. 
+
+
+Once you complete the installation you can check the admin login creditals. 
+
 
 ```
 
@@ -505,7 +507,7 @@ $ cat /root/keystonerc_admin
 ```
 
 
-You will use these to login to the Openstack GUI Horizon.
+You will use these to login to the Openstack GUI Horizon to manage the system.
 
 ______
 
