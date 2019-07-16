@@ -15,12 +15,15 @@ This will be working with a Packstack Stein install.
 
 Will use 1 vcpu/Ram 2G/20G for jump server. This will be a minimal setup for ssh access from outside private.
 
-Will use 1 vcpu/Ram 2G/20G for web service. Will have a Apache2/Mediawiki/Wordpress/Myphpadmin setup.
+Will use 1 vcpu/Ram 2G/20G for web service. Will have a setup for:
+  * Apache2
+  * Mediawiki
+  * Wordpress
+  * Myphpadmin
 
 Will use 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
-The setup and templates I will be using are on my github ending with .ci for CloudInit.
-
+The setup and templates I will be using are on my github that will be posted in this tutorial ending with .ci for Cloud-Init.
 
 1. Start VirtualBox and the CENTOS7.6 image that had been created with. 
 
