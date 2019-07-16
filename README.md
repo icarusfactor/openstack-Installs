@@ -38,21 +38,24 @@
 
 ## TODO:
 
- - [ ] Setup Openstack Router "if" SDN router data can be monitored. Waiting to install VMs on Openstack to test it out. 
+ - [ ] Software Defined Router data for Logstash to view. 
  - [X] Basic Puppet Server cloud-init image for CentOS7 
- - [ ] Basic Puppet Client setup for cloud-init Centos7 & Fedora
+ - [X] Basic Puppet Client setup for cloud-init Centos7 
+ - [ ] Basic Puppet Server cloud-init image for Fedora 
+ - [ ] Basic Puppet Client setup for cloud-init Fedora 
+ - [ ] Puppet SQL and WEB setups for CentOS7 
+ - [ ] Puppet SQL and WEB setups for Fedora 
  - [ ] Puppet working with gihub repo. 
- - [ ] Puppet SQL and WEB setups for CentOS7 and Fedora
  - [ ] Python Openstack SDK script examples.
 
 ## FAR OFF TODO:
   * Magnum:   Docker Openstack images.
   * Magnum:   Kubernetes Openstack images.
-  * Heat:     Network Templates.
-  * Trove:    Openstack DBaaS.
-  * Cinder:   Openstack SAN.
-  * Octavia:  Load Balancer. 
   * ELKSTACK: Cloud-init image.
+  * Trove:    Openstack Database as a service at least for MariaDB and PostgreSQL images.
+  * Heat:     Network Templates.
+  * Cinder:   Openstack SAN mounting.
+  * Octavia:  Load Balancer. 
 
    
    
