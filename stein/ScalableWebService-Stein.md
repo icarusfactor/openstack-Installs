@@ -1,7 +1,6 @@
-#Prologue:
+## OpenStack Scalable Web Serice. 
 
-```
-OpenStack Scalable Web Serice. 
+**Prologue** This will install a base set of images with secuirty for use with growing a user based web farm with the below specifications needed.  
 
 1 Jump Server , 1 Mysql server , 1 Web Service.
 
@@ -17,21 +16,26 @@ Will use 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
 The setup and templates I will be using are on my github ending with .ci for CloudInit.
 
+
+1. Start VirtualBox and the CENTOS7.6 image that had been created with. 
+
 ```
 
-[1] Start VirtualBox and the CENTOS7.6 image that had been created with. 
-    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6 
+    https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
 
-[2] #Start SSH session.
+```
+
+2.  Start SSH session.
     root@192.168.1.29
     #Start browser and point to IP and get to the login and Horizon dashboard:
     http://192.168.1.29
-[3]    
-    #As root load environment with your keystone adminrc creditials.
+
+    
+3.  As root load environment with your keystone adminrc creditials.
     $ cat /root/keystonerc_admin
     $ . ./keystonerc_admin
 
-[4] Login as admin to a clean Openstack install we will need to add
+4.  Login as admin to a clean Openstack install we will need to add
     * Basic non admin user
     * Project : Scalable Web Server.
     * Operating System Image
@@ -40,120 +44,123 @@ The setup and templates I will be using are on my github ending with .ci for Clo
     first version where I was able to do this. So all of the major networking commands have been ported to the
     openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so. 
     
-[5] Create flat external network:
-    #A flat network will work with a normal home setup.      
+5.  Create flat external network:
+    A flat network will work with a normal home setup.      
     $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
 
-[6] Create external subnet:
-    # Subnet with same network as your single device adapter. 
+6.  Create external subnet:
+    Subnet with same network as your single device adapter. 
     $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
   --network OCEANUS --allocation-pool start=192.168.1.100,end=192.168.1.200 \
   --dns-nameserver 8.8.4.4 RIVERS
 
-[7] Create Private network , attach internal subnet
+7. Create Private network , attach internal subnet
   
-    $ openstack network create --share ELYSIUM
+$ openstack network create --share ELYSIUM
 
-    $ openstack subnet create --subnet-range 192.0.2.0/24 \
-      --network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
+$ openstack subnet create --subnet-range 192.0.2.0/24 \
+--network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
       
-[8] Create router and attach it to internal subnet.
+8. Create router and attach it to internal subnet.
 
-    $ openstack router create LIMBO
+$ openstack router create LIMBO
 
-    $ openstack router add subnet LIMBO FIELDS
+$ openstack router add subnet LIMBO FIELDS
 
-[9] Add router interface to external network and set gateway.  
-    $ openstack router set --external-gateway OCEANUS LIMBO
+9. Add router interface to external network and set gateway.  
 
-[10] Create a non-admin user planner in openstack and the project for the user.     
-    $ openstack project create --enable "Scalable Web Service"
-    $ openstack user create --project "Scalable Web Service" --password easypassword --enable planner    
+$ openstack router set --external-gateway OCEANUS LIMBO
+
+
+10. Create a non-admin user planner in openstack and the project for the user.     
+
+$ openstack project create --enable "Scalable Web Service"
+$ openstack user create --project "Scalable Web Service" --password easypassword --enable planner    
     
     
-[11](Optional)Create a non-admin user user planner script if you need to run commands as user.
-    $ cp /root/keystonerc_admin /root/keystonerc_planner
-    #Edit the script to match these values.
-    #export OS_USERNAME=planner
-    #export OS_PASSWORD=easypassword
-    #export OS_PROJECT_NAME="Scalable Web Service"
+11. **[Optional]** Create a non-admin user user planner script if you need to run commands as user.
+$ cp /root/keystonerc_admin /root/keystonerc_planner
+Edit the script to match these values.
+export OS_USERNAME=planner
+export OS_PASSWORD=easypassword
+export OS_PROJECT_NAME="Scalable Web Service"
     
-    $ . /root/keystonerc_planner
+$ . /root/keystonerc_planner
   
-[12] To finalize above step login to HORIZON web GUI as "admin" and add user planner to Scalable Web Service project. 
+12. To finalize above step login to HORIZON web GUI as "admin" and add user planner to Scalable Web Service project. 
      Project->Project->Manage Memembers on the Scalable Web Service
 
-[13] Log into Horizon gui as non-admin user planner.
+13. Log into Horizon gui as non-admin user planner.
 
-[14] #Verify network setup.
-     Project -> Network -> Network Topology
-     #You should see your external and internal network. Non-admin users do not have access to the external router. 
+14. Verify network setup.
+    Project -> Network -> Network Topology
+    You should see your external and internal network. Non-admin users do not have access to the external router. 
      
-[15] #Load Operating systems cloud image.   
-     Select Project -> Compute -> Images
-     image Name  : Deb9Server
-     Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
-     Format      : qcow2
-     Create Image. 
-     Wait for "Deb9Server" to become "Active".
-     We will use this image as basis of all the node operating systems and apply a specific
-     cloud init file to each to give it its profile. 
+15. Load Operating systems cloud image.   
+    Select Project -> Compute -> Images
+    image Name  : Deb9Server
+    Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
+    Format      : qcow2
+    Create Image. 
+    Wait for "Deb9Server" to become "Active".
+    We will use this image as basis of all the node operating systems and apply a specific
+    cloud init file to each to give it its profile. 
      
-[16] Import Public Key.     
-     Project -> Compute -> Key Pairs
-     + Import Public Key
-     #on your local system cat your public key and copy and paste.
-     cat ./id_rsa.pub
+16. Import Public Key.     
+    Project -> Compute -> Key Pairs
+    + Import Public Key
+    on your local system cat your public key and copy and paste.
+    cat ./id_rsa.pub
 
-[17] Create Security Group.
-     PROJECT -> NETWORK -> Security Groups:
+17. Create Security Group.
+PROJECT -> NETWORK -> Security Groups:
      
-     +Create Security Group
-     Group Name: JUMP
-     Description : Access Point SSH=EX + INT
++Create Security Group
+Group Name: JUMP
+Description : Access Point SSH=EX + INT
      
-     Select Add or Manage Rules
-     Add ICPM Egress and Ingress
-     Add TCP SSH 
+Select Add or Manage Rules
+Add ICPM Egress and Ingress
+Add TCP SSH 
      
-     +Create Security Group
-     Group Name: SQL
-     Description : Database Server ICPM+MYSQL+SSH=INT
++Create Security Group
+Group Name: SQL
+Description : Database Server ICPM+MYSQL+SSH=INT
      
-     Select Manage Rules
-     Add ICPM Ingress
-     Add TCP SSH 
-     ADD MYSQL
+Select Manage Rules
+Add ICPM Ingress
+Add TCP SSH 
+ADD MYSQL
      
-     +Create Security Group
-     Group Name: WEB
-     Description : Web Server HTTP=INT + EX  SSH=INT  
++Create Security Group
+Group Name: WEB
+Description : Web Server HTTP=INT + EX  SSH=INT  
      
-     Select Manage Rules
-     Add ICPM Ingress Egress
-     Add TCP SSH 
-     Add HTTP custom TCP port 8080   <--- This can be routed back to port 80 for Internet, or left as proxy.
+Select Manage Rules
+Add ICPM Ingress Egress
+Add TCP SSH 
+Add HTTP custom TCP port 8080   <--- This can be routed back to port 80 for Internet, or left as proxy.
 
      
-     NOTE: #If it takes too long to install instances you can
-           #watch the install of the server.            
-           #Dashboard has a log viewer, click the full
-           #log option and keep it refreshed. Also, be sure
-           #to update your ISO image if you want less time
-           #for updating packages. 
+NOTE: If it takes too long to install instances you can
+watch the install of the server.            
+Dashboard has a log viewer, click the full
+log option and keep it refreshed. Also, be sure
+to update your ISO image if you want less time
+for updating packages. 
      
-           #Basic debian cloud image.
-           https://cdimage.debian.org/cdimage/openstack/current/
+Basic debian cloud image.
+https://cdimage.debian.org/cdimage/openstack/current/
      
-           #TEST IMAGE:
-           #Excellent to test basic network. 
-           #No SSH key needed.Will post its 
-           #username and password at login.
-           http://download.cirros-cloud.net/
+TEST IMAGE:
+Excellent to test basic network. 
+No SSH key needed.Will post its 
+username and password at login.
+http://download.cirros-cloud.net/
 
     
      
-[18] Install JUMP server.      
+18. Install JUMP server.      
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -181,7 +188,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Allocate IP. Then Associate IP.
      #The floating IP address should appear in your Jump Servers' IP address column. 
  
-[19] Install SQL server.      
+19. Install SQL server.      
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -203,7 +210,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci
      LAUNCH INSTANCE
      
-[20] Install WEB server.      
+20. Install WEB server.      
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -231,12 +238,12 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      Allocate IP. Then Associate IP.
      #The floating IP address should appear in your Jump Servers' IP address column.        
     
-[21] Now all nodes are setup and have uploaded your public key,mine wass called MERCURY
+21. Now all nodes are setup and have uploaded your public key,mine wass called MERCURY
      to the servers via cloud-init and a JUMP server to log into as a central server to
      reduce port activty and manage connections. But to do this you will have to setup 
      SSH on the JUMP instance as a FORWARDER. 
      
-[22] Log onto JUMP instance:
+22. Log onto JUMP instance:
      
      cat /etc/ssh_config
       # Print out the /etc/ssh_config file
@@ -247,8 +254,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
        If you see the following, you will need to comment out the ForwardAgent.
      This will override your home directory config if so.
      
-[23]    
-     touch ~/.ssh/config
+23.  touch ~/.ssh/config
      Host *
      ForwardAgent yes
      
