@@ -328,9 +328,10 @@ ______
 
 ```
 $ vi /etc/selinux/config
-$ Change SELINUX=enforcing to SELINUX=disabled
 
 ```
+
+Change SELINUX=enforcing to SELINUX=disabled
 
 ______
 
