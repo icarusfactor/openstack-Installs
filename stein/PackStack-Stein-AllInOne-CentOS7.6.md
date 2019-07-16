@@ -316,29 +316,36 @@ $ sudo systemctl start network
 
 ______
      
-17. #Disable SELinux     
+17. Disable SELinux     
 
 ```
 $ vi /etc/selinux/config
 $ Change SELINUX=enforcing to SELINUX=disabled
+
 ```
-_____
+
+______
 
 18. At this point we can reboot to get access to the OpenVswitch device BR-EX 
 
 ```
-     $ reboot
+$ reboot
 
 ```
 
 Once the system is back up check to see BR-EX is enable and has IP address 10.0.2.1.
 
 ```
-     $ ip a
+$ ip a
 
 ```
 
 Good to make sure you can still get to the Internet at this point. 
+
+```
+ping www.yahoo.com
+
+```
 
 ______
      
@@ -346,9 +353,9 @@ ______
 
 ```
 
-     $ sudo useradd -s /bin/bash -d /opt/stack -m stack
-     $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
-     S sudo su - stack
+$ sudo useradd -s /bin/bash -d /opt/stack -m stack
+$ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
+$ sudo su - stack
 
 ```
 
@@ -364,32 +371,25 @@ ______
 
 ```
 
-     #Select and edit each file from grep output. Change 300 to 0.
+Select and edit each file from grep output. Change ***300*** to ***0***.
 
 ______
  
-21. Now we will install packstack All In One Openstack system.   
+21. Now we'll install packstack All In One Packstack system.   
 
 This will be for a dry run and generate the answerfile we will use for actual install.
-
 Generating this dry run will also let us go over all the options and change them if needed before
-
 we install Openstack. You can talor your stack according to your memory,cpu cores,storage,gpu cores
-
 and passthrough and networking setup.Passwords are also set with this file. Note This is "packstack"
-
 so everything is on one node. I've not tested if this setup is good for setting up only compute nodes
-
 on one system and controller on another.I imagine it could do so,but how much configuration is needed,
-
 I can not answer that.
 
      
 Some of the options in the packstack answer file. 
 
-Minimal stack would be Keystone, Glance, Nova and Neutron.
+Minimal stack would be ***Keystone***, ***Glance***, ***Nova*** and ***Neutron***.
 
--------------------------------------------------
 
 Dashboard or Horion: Web Based Admin. Default set to "Y"
 
