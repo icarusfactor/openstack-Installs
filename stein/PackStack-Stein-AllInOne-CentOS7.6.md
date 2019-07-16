@@ -587,9 +587,7 @@ Browser VNC access of the serial interface to the cloud servers. To log into the
 ______
 
 27. Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
-
 and they are not in the standard repos,so for your system to be ready for the event, we will add
-
 the extra Python3 repo.   
 
 ```
@@ -605,16 +603,11 @@ Now you're ready for Py2020
 
 ______
 
-28. With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
-
-newer Linux VM's may run into a Boottime Entropy Starvation condition. For me this casued many
-
-cloud-init problems and is linked to systemd and ssh package and its keys. To resolve this issue
-
+28. With CentOS7.6 using an older 3.10 kernel without the ***CONFIG_RANDOM_TRUST_CPU*** option of 4.19+, the
+newer Linux VM's may run into a ***BoottimeEntropyStarvation*** condition. For me this casued many
+cloud-init problems and is linked to ***systemd*** and ***ssh*** package and its keys. To resolve this issue
 where urandom needs to make sure it gets its randomness checked in a timley manner you should only
-
 have to install a single package.
-
   
 A check to find problems around this issue are to 
 
@@ -623,12 +616,10 @@ A check to find problems around this issue are to
 
 ```
 
-
 Haveged is a user-space daemon that gathers entropy though the timing jitter any CPU has.
-
 This programs runs late in the boot process, but should fix the ssh issue if you cant get 
+kernel 4.19 or newer installed. 
 
-kernel 4.19 or newer. 
 
 ```
 
