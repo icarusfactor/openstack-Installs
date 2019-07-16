@@ -456,7 +456,7 @@ ______
 22. Log onto JUMP instance:
 
 ```     
-cat /etc/ssh_config
+$ cat /etc/ssh_config
 
 ```
 Print out the /etc/ssh_config file
@@ -473,7 +473,7 @@ This will override your home directory config if so.
 
 ______
      
-23.
+23. Create user configuration file and add forwarding capabilites to ssh.
  
 ```
 touch ~/.ssh/config
@@ -482,30 +482,35 @@ ForwardAgent yes
 
 ```
      
- Restart ssh server.
+Restart ssh server.
 
 ```
 
- service sshd restart
+$ service sshd restart
 
 ```
      
 No arguments will add default keys while on host system.  
 
 ```
-ssh-add 
+
+$ ssh-add 
+
 
 ```
      
 List keys to check 
 
+
 ```
-ssh-add -L 
+
+$ ssh-add -L 
+
 
 ```
      
 You can log back in with SSH with -A to enable forwading.
-Only neededon the first jump.
+Only needed on the first jump.
 
 ```
 ssh -A debian@192.168.1.100
@@ -513,7 +518,7 @@ ssh -A debian@192.168.1.100
 ```
      
 Now you should be able to log into all of the internal IPs from 
-the jumpbox with your host box SSH key and keep only the JUMP box 
+the jumpbox with your desktop SSH key and keep only the JUMP box 
 port open from the 192.168.1.x addresses. 
 
 ______
