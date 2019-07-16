@@ -39,8 +39,6 @@
 ## TODO:
 
  - [ ] Software Defined Router data for Logstash to view. 
- - [X] Basic Puppet Server cloud-init image for CentOS7 
- - [X] Basic Puppet Client setup for cloud-init Centos7 
  - [ ] Basic Puppet Server cloud-init image for Fedora 
  - [ ] Basic Puppet Client setup for cloud-init Fedora 
  - [ ] Puppet SQL and WEB setups for CentOS7 
