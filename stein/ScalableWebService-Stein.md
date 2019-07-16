@@ -29,12 +29,6 @@ ______
 
 [Openstack: OVN flat network for Stein](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)
 
-```
-
-https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
-
-```
-
 ______
 
 
