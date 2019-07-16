@@ -3,7 +3,7 @@
 **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
           protocol by default,so you can easily work with a single network adapater 
           in a flat configuration and not disrupt your Internet access, but will add
-          a couple more IP's to your local Class C network. So you will have to make
+          a couple more IP's to your local Class C IP4 network. So you will have to make
           sure they're not used by your local DHCP or are still being unused.
 >     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
 
