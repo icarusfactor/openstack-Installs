@@ -379,8 +379,8 @@ ______
 
 This will be for a dry run and generate the answerfile we will use for actual install.
 Generating this dry run will also let us go over all the options and change them if needed before
-we install Openstack. You can talor your stack according to your memory,cpu cores,storage,gpu cores
-and passthrough and networking setup.Passwords are also set with this file. Note This is "packstack"
+we install Openstack. You can taylor your stack according to your memory,cpu cores,storage,gpu cores
+and gpu passthrough and networking setup. Passwords are also set with this file. Note This is "packstack"
 so everything is on one node. I've not tested if this setup is good for setting up only compute nodes
 on one system and controller on another.I imagine it could do so,but how much configuration is needed,
 I can not answer that.
@@ -390,26 +390,18 @@ Some of the options in the packstack answer file.
 
 Minimal stack would be ***Keystone***, ***Glance***, ***Nova*** and ***Neutron***.
 
-
-Dashboard or Horion: Web Based Admin. Default set to "Y"
-
-TROVE      : Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. 
-
-MAGNUM     : Container orchestration for Docker and Kubernetes and Apache Mesos
-
-HEAT       : General Orchestration.
-
-CINDER     : Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm
-
-MANILA     : Shared Filesystem.
-
-SWIFT      : Object Store for unstructured data. Default set to "Y"
-
-CEILOMETER( gnocchi ) : Metering, billing, resource tracking,event data . Default set to "Y"
-
-AODH       : Trigger and alerting. Default set to "Y"
-
-IRONIC     : Bare metal provisioning.
+|Stack Option|Summary
+| ---------- |:-----------:|
+|Dashboard or Horion | Web Based Admin. Default set to "Y" |
+|TROVE      | Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. |
+|MAGNUM     | Container orchestration for Docker and Kubernetes and Apache Mesos |
+|HEAT       | General Orchestration. |
+|CINDER     | Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm |
+|MANILA     | Shared Filesystem. |
+|SWIFT      | Object Store for unstructured data. Default set to "Y" |
+|CEILOMETER( gnocchi ) | Metering, billing, resource tracking,event data . Default set to "Y" |
+|AODH       | Trigger and alerting. Default set to "Y" |
+|IRONIC     | Bare metal provisioning. |
 
 PANKO      : Event Service
 
