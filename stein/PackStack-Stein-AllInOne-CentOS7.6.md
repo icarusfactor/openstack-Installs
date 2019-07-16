@@ -519,7 +519,7 @@ $ sudo chmod +x /usr/bin/screenfetch
 
 ```
 
-Test screen fetch out. 
+Test screenfetch out. 
 
 ```
 $ screenfetch
@@ -543,14 +543,14 @@ ______
 Log into the main system from host. i.e. 192.168.1.29
 
 ```
-     ssh 192.168.1.29      
+$ ssh root@192.168.1.29      
 
 ```
 
 From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
 
 ```
-     nmap localhost
+$ nmap localhost
 
 ```
 
@@ -558,7 +558,7 @@ Use elinks to check if Openstack page to the host device is working.
 
 ```
 
-elinks 192.168.1.29     
+$ elinks 192.168.1.29     
 
 ```
 
