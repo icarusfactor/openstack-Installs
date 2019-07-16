@@ -204,19 +204,20 @@ ______
 15. Load Operating systems cloud image.   
 
 ```
- Select Project -> Compute -> Images
- Image Name  : Deb9Server
- Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
- Format      : qcow2
+Select Project -> Compute -> Images
 
-```
+Image Name  : Deb9Server
+Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
+Format      : qcow2
 
 Create Image. 
+
+```
 
 Wait for "Deb9Server" to become "Active".
 
 We will use this image as basis of all the node operating systems and apply a specific
-cloud init file to each to give it its profile. 
+cloud init file to each to give in its profile. 
 
 ______
      
@@ -229,7 +230,7 @@ Project -> Compute -> Key Pairs
 
 ```
 
-On your desktop system cat your public key if on *nix based system and copy and paste.
+On your desktop system cat your public key if on *NIX based system and copy and paste.
 
 ```
 $ cat ./id_rsa.pub
@@ -238,17 +239,33 @@ $ cat ./id_rsa.pub
 
 ______
 
-17. Create Security Group.
+17. Create Security Groups:
+
+```
+
 PROJECT -> NETWORK -> Security Groups:
+
+```
+Create Security Group for JUMP 
+
+```
      
 +Create Security Group
 Group Name: JUMP
 Description : Access Point SSH=EX + INT
      
 Select Add or Manage Rules
+
 Add ICPM Egress and Ingress
+
 Add TCP SSH 
-     
+
+```
+    
+Create Security Group for SQL
+
+```
+ 
 +Create Security Group
 Group Name: SQL
 Description : Database Server ICPM+MYSQL+SSH=INT
@@ -257,6 +274,13 @@ Select Manage Rules
 Add ICPM Ingress
 Add TCP SSH 
 ADD MYSQL
+
+```
+
+Create Security Group for SQL
+
+
+```
      
 +Create Security Group
 Group Name: WEB
@@ -267,6 +291,7 @@ Add ICPM Ingress Egress
 Add TCP SSH 
 Add HTTP custom TCP port 8080   <--- This can be routed back to port 80 for Internet, or left as proxy.
 
+```
      
 NOTE: If it takes too long to install instances you can
 watch the install of the server.            
@@ -276,7 +301,11 @@ to update your ISO image if you want less time
 for updating packages. 
      
 Basic debian cloud image.
+
+```
 https://cdimage.debian.org/cdimage/openstack/current/
+
+```
      
 TEST IMAGE:
 Excellent to test basic network. 
