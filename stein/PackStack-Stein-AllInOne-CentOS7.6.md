@@ -47,9 +47,13 @@ ______
 5. Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
 ______
 
-6. Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
+6. Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for enp0s3 
 
-`$ ip a`
+```
+
+$ ip a
+
+```
 
 ______
     
@@ -100,7 +104,7 @@ DNS1=8.8.8.8     # use google as nameserver
 ______    
     
 9. From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
-   user we made admin access. This makes tutorial cut and paste easier with local terminal.  
+   user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
 
 ```
    $ reboot
@@ -108,27 +112,52 @@ ______
 ```
 ______
 
-10. Copy your local machines ssh key to virtual box host to make access easy from local host system: 
+10. Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
 
     Make sure to add remote system to known hosts.
 
 ``` 
-    ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
+  $ ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
 
-    ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
+  $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 ```
     You should now be able to log in without password. 
+______ 
     
-11. Edit SSH config to let root in as this will make instaling packstack easier while installilng.     
-    sudo vi /etc/ssh/sshd_config
-    remove the # to have "PermitRootLogin yes" enabled. 
-    sudo service sshd restart 
-    log back out. 
+11. Edit SSH config to let a root in, as this will make instaling packstack easier while installilng.     
+
+```
+	$ sudo vi /etc/ssh/sshd_config
+
+```
+
+ Remove the # to have "PermitRootLogin yes" enabled. 
+
+```
+	$ sudo service sshd restart 
+
+```
+
+ Log back out. 
+
+______
     
-12. See if you can now log into root via remote "ssh root@192.168.1.29"
-     Copy public key to root 
+12. See if you can now log into root 
+
+```
+	$ ssh root@192.168.1.29
+
+```
+
+Copy public key to root 
+
+```
      ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
+
+```
+
+______
 
      
 13. (OPTIONAL) #Log back in root and install useful commandline packages to help debug systems.
