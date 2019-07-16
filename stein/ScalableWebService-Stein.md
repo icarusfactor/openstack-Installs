@@ -239,7 +239,7 @@ $ cat ./.ssh/id_rsa.pub
 
 ______
 
-17. Create Security Groups:
+17. Create Security Groups for each of the instance types:
 
 ```
 
@@ -320,7 +320,7 @@ http://download.cirros-cloud.net/
 ______
     
      
-18. Install JUMP server.      
+18. Install JUMP instance.      
 
 ```
      Project -> Compute -> Instances
@@ -363,7 +363,7 @@ https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/mas
 ______
 
  
-19. Install SQL server.      
+19. Install SQL instance:      
 
 ```
      Project -> Compute -> Instances
@@ -397,7 +397,10 @@ Copy and paste JUMP Server Cloud Init file .
 ```
 ______
      
-20. Install WEB server.      
+20. Install WEB instance:
+
+``` 
+     
      Project -> Compute -> Instances
      Select Launch
      Launch Instance
@@ -415,58 +418,103 @@ ______
      NEXT
      Select MERCURY public key
      NEXT
-     Copy and paste JUMP Server Cloud Init file .
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/WEBSERVER_DEBIAN_9.ci
-     LAUNCH INSTANCE
+
+```
+
+Copy and paste JUMP Server Cloud Init file .
+
+
+```
+
+https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/WEBSERVER_DEBIAN_9.ci
+
+
+```
+
+```
+    LAUNCH INSTANCE
+
      Select Associate Floating IP from drop down.
      Click the Plus on IP address to generate a legal IP address. 
      Pool should be from OCEANUS
      Description: WEB  
      Allocate IP. Then Associate IP.
-     #The floating IP address should appear in your Jump Servers' IP address column.        
+
+```
+
+The floating IP address should appear in your Jump Servers' IP address column.        
 
 ______
     
-21. Now all nodes are setup and have uploaded your public key,mine wass called MERCURY
-     to the servers via cloud-init and a JUMP server to log into as a central server to
-     reduce port activty and manage connections. But to do this you will have to setup 
-     SSH on the JUMP instance as a FORWARDER. 
+21. Now all nodes are setup and have uploaded your public key to them,mine is called MERCURY
+to the servers via cloud-init and a JUMP server to log into as a central server to
+reduce port activty and manage connections. But to do this you will have to setup 
+SSH on the JUMP instance as a FORWARDER. 
 
 ______
      
 22. Log onto JUMP instance:
-     
-     cat /etc/ssh_config
-      # Print out the /etc/ssh_config file
-      Host *
-      SendEnv LANG LC_*
-      ForwardAgent no
+
+```     
+cat /etc/ssh_config
+
+```
+Print out the /etc/ssh_config file
+
+```
+Host *
+SendEnv LANG LC_*
+ForwardAgent no
+
+```
       
-       If you see the following, you will need to comment out the ForwardAgent.
-     This will override your home directory config if so.
+If you see the following, you will need to comment out the ForwardAgent.
+This will override your home directory config if so.
 
 ______
      
-23.  touch ~/.ssh/config
-     Host *
-     ForwardAgent yes
+23.
+ 
+```
+touch ~/.ssh/config
+Host *
+ForwardAgent yes
+
+```
      
-     #Restart ssh server.
-     service sshd restart
+ Restart ssh server.
+
+```
+
+ service sshd restart
+
+```
      
-     #No arguments will add default keys while on host system.  
-     ssh-add 
+No arguments will add default keys while on host system.  
+
+```
+ssh-add 
+
+```
      
-     #List keys to check 
-     ssh-add -L 
+List keys to check 
+
+```
+ssh-add -L 
+
+```
      
-     #You can log back in with SSH with -A to enable forwading.
-     #Only neededon the first jump.
-     ssh -A debian@192.168.1.100
+You can log back in with SSH with -A to enable forwading.
+Only neededon the first jump.
+
+```
+ssh -A debian@192.168.1.100
+
+```
      
-     #Now you should be able to log into all of the internal IPs from 
-     #the jumpbox with your host box SSH key and keep only the JUMP box 
-     #port open from the 192.168.1.x addresses. 
+Now you should be able to log into all of the internal IPs from 
+the jumpbox with your host box SSH key and keep only the JUMP box 
+port open from the 192.168.1.x addresses. 
 
 ______
      
