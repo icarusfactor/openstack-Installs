@@ -256,59 +256,61 @@ ______
 
 ```
      
-     Normally CentOS has this but I run RHEL to get latest version of packages from each.
-     This may change in the future , but works best for now.
+Normally CentOS has this but I run RHEL to get latest version of packages from each.
+This may change in the future , but works best for now.
+
 
 ```
 
-     $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm     
+$ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm     
 
 ```
 
-     Check to make sure the repo made it into the list and enabled.
+Check to make sure the repo made it into the list and enabled.
 
 ```
 
-     $ yum repolist   <--- Look for Openstack stein     
+$ yum repolist   <--- Look for Openstack stein     
 
 ```
 
-     Stein here or what version you want replace the text name. 
+Stein here or what version you want replace the text name. 
 
 ```
 
-     $ sudo yum install -y centos-release-openstack-stein     
+$ sudo yum install -y centos-release-openstack-stein     
 
 ```
 
-     This conflicts with packstack version so remove.
+This conflicts with packstack version so remove.
 
 ```
 
-     $ yum erase mariadb-libs     
-     $ sudo yum update -y
-     $ sudo yum install -y openstack-packstack
+$ yum erase mariadb-libs     
+$ sudo yum update -y
+$ sudo yum install -y openstack-packstack
 
 ```
 
      
-     We need to install the openvswitch before installing packstack (packstack will install it also)
-     So we can reboot and get the OpenVswitch bridge working before the install.     
+We need to install the openvswitch before installing packstack (packstack will install it also)
+So we can reboot and get the OpenVswitch bridge working before the install.     
 
 ```
-     $ sudo yum install openvswitch
-     $ sudo systemctl disable firewalld
-     $ sudo systemctl stop firewalld
-```
-
-     Disable NetworkManager as it conflicts with iptables.
+$ sudo yum install openvswitch
+$ sudo systemctl disable firewalld
+$ sudo systemctl stop firewalld
 
 ```
 
-     $ sudo systemctl disable NetworkManager
-     $ sudo systemctl stop NetworkManager
-     $ sudo systemctl enable network
-     $ sudo systemctl start network
+Disable NetworkManager as it conflicts with iptables.
+
+```
+
+$ sudo systemctl disable NetworkManager
+$ sudo systemctl stop NetworkManager
+$ sudo systemctl enable network
+$ sudo systemctl start network
 
 ```
 
@@ -317,72 +319,135 @@ ______
 17. #Disable SELinux     
 
 ```
-     $ vi /etc/selinux/config
-     $ Change SELINUX=enforcing to SELINUX=disabled
+$ vi /etc/selinux/config
+$ Change SELINUX=enforcing to SELINUX=disabled
 ```
-     
 _____
 
 18. At this point we can reboot to get access to the OpenVswitch device BR-EX 
+
+```
      $ reboot
-     #Once the system is back up check to see BR-EX is enable and has IP address 10.0.2.1.
+
+```
+
+Once the system is back up check to see BR-EX is enable and has IP address 10.0.2.1.
+
+```
      $ ip a
-     #Good to make sure you can still get to the Internet at this point. 
+
+```
+
+Good to make sure you can still get to the Internet at this point. 
+
+______
      
-19. (Optional) Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+19. ***[Optional]*** Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+
+```
+
      $ sudo useradd -s /bin/bash -d /opt/stack -m stack
      $ echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
      S sudo su - stack
+
+```
+
+______
+
     
 20. Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+
+```
+
      $ cd /usr/share/openstack-puppet
      $ grep -Ri "timeout = 300"| grep db_sync_timeout
+
+```
+
      #Select and edit each file from grep output. Change 300 to 0.
 
+______
  
-21. #Now we will install packstack All In One Openstack system.   
-     #This will be for a dry run and generate the answerfile we will use for actual install.
+21. Now we will install packstack All In One Openstack system.   
 
-     #  Generating this dry run will also let us go over all the options and change them if needed before
-     #we install Openstack. You can talor your stack according to your memory,cpu cores,storage,gpu cores
-     #and passthrough and networking setup.Passwords are also set with this file. Note This is "packstack"
-     #so everything is on one node. I've not tested if this setup is good for setting up only compute nodes
-     #on one system and controller on another.I imagine it could do so,but how much configuration is needed,
-     #I can not answer that.
+This will be for a dry run and generate the answerfile we will use for actual install.
+
+Generating this dry run will also let us go over all the options and change them if needed before
+
+we install Openstack. You can talor your stack according to your memory,cpu cores,storage,gpu cores
+
+and passthrough and networking setup.Passwords are also set with this file. Note This is "packstack"
+
+so everything is on one node. I've not tested if this setup is good for setting up only compute nodes
+
+on one system and controller on another.I imagine it could do so,but how much configuration is needed,
+
+I can not answer that.
+
      
-     #Some of the options in the packstack answer file. 
-     #Minimal stack would be Keystone, Glance, Nova and Neutron.
-     -------------------------------------------------
-     #Dashboard or Horion: Web Based Admin. Default set to "Y"
-     #TROVE      : Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. 
-     #MAGNUM     : Container orchestration for Docker and Kubernetes and Apache Mesos
-     #HEAT       : General Orchestration.
-     #CINDER     : Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm
-     #MANILA     : Shared Filesystem.
-     #SWIFT      : Object Store for unstructured data. Default set to "Y"
-     #CEILOMETER( gnocchi ) : Metering, billing, resource tracking,event data . Default set to "Y"
-     #AODH       : Trigger and alerting. Default set to "Y"
-     #IRONIC     : Bare metal provisioning.
-     #PANKO      : Event Service
-     #SAHARA     : Big Data prcoessing for HADOOP,SPARK or STORM
-     #TEMPEST    : Integration Test Suite
-     #DEMO       : Example project
-     #MARIADB    : Primary Database. Default set to "Y"
-     #GLANCE     : Image Service. Images can be saved as file or in Swift. Default set to "Y" and saved as file. 
-     #NEUTRON    : Networking. Default to "Y" and type will be flat. This will work with normal home networks.  
-     #NOVA       : Compute service.  
-     #RABBITMQ   : AMQP broker or message service. Default service.
-     #KEYSTONE   : Identity service version 2 or 3. Backend can be sql or ldap. 3 and sql are the default settings.   
+Some of the options in the packstack answer file. 
 
+Minimal stack would be Keystone, Glance, Nova and Neutron.
+
+-------------------------------------------------
+
+Dashboard or Horion: Web Based Admin. Default set to "Y"
+
+TROVE      : Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. 
+
+MAGNUM     : Container orchestration for Docker and Kubernetes and Apache Mesos
+
+HEAT       : General Orchestration.
+
+CINDER     : Openstack Block Storage.Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default set to "Y" and lvm
+
+MANILA     : Shared Filesystem.
+
+SWIFT      : Object Store for unstructured data. Default set to "Y"
+
+CEILOMETER( gnocchi ) : Metering, billing, resource tracking,event data . Default set to "Y"
+
+AODH       : Trigger and alerting. Default set to "Y"
+
+IRONIC     : Bare metal provisioning.
+
+PANKO      : Event Service
+
+SAHARA     : Big Data prcoessing for HADOOP,SPARK or STORM
+
+TEMPEST    : Integration Test Suite
+
+DEMO       : Example project
+
+MARIADB    : Primary Database. Default set to "Y"
+
+GLANCE     : Image Service. Images can be saved as file or in Swift. Default set to "Y" and saved as file. 
+
+NEUTRON    : Networking. Default to "Y" and type will be flat. This will work with normal home networks.  
+
+NOVA       : Compute service.  
+
+RABBITMQ   : AMQP broker or message service. Default service.
+
+KEYSTONE   : Identity service version 2 or 3. Backend can be sql or ldap. 3 and sql are the default settings.   
+
+
+```
      
      sudo su
      su - stack
      packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debug --dry-run
 
-     #No files are changed but an answerfile is created in the stack directory.
-     #I have diabled the demo project if you are not familiar with this setup you can enable it.
-     #But I will have additional instructions for setting uup different types of network installs.
-          
+
+```
+
+No files are changed but an answerfile is created in the stack directory.
+I have diabled the demo project if you are not familiar with this setup you can enable it.
+But I will have additional instructions for setting uup different types of network installs.
+     
+______
+
+     
 22. #Now we are ready to install Packstack with answerfile that you can modify to add or
      #remove certian capbilities. This can take up some time and you can view var log 
      #messages with updates. 
