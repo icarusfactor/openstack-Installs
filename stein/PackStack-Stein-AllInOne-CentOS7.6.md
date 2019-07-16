@@ -15,7 +15,7 @@ ______
   * Set Memory Size: >=8G.
   * Set Storage Size: >=30 gig should work fine.
 
- Setup one virtual network adapater that'll be needed while using Openstack **flat** network.
+ Setup one virtual network adapter that'll be needed while using the Openstack **flat** network.
 (With a Flat Network setup all tentants use the same virtual switch/router to
 get out to the Internet.)       
 
@@ -28,7 +28,7 @@ to the br-ex device here via OpenVswitch once we have it setup.)
 ______
 
      
-2.  Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch BR-EX device.
+2.  Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch ***br-ex*** device.
     
 ______
  
@@ -47,20 +47,24 @@ ______
 ______
 
 6. Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
-    `$ ip a`
+
+`$ ip a`
 ______
     
 7. We will login to the system with this ip using ssh. 
-    `$ ssh <IP Reported>
-     $ sudo su`
+
+`$ ssh <IP Reported>`
+`$ sudo su`
 ______
     
-8. We'll edit network setting to change it to a static ip to make things easier for switching over to OpenVswitch
-    cd /etc/sysconfig/network-scripts/
-    vi ifcfg-enp0s3
-    
-    #Remove all the lines in the file and add these to become a static IP we can use throughout the rest of this installtion.     
-    
+8. We'll edit network setting to change the VM to a static ip to make things easier for switching over to OpenVswitch
+
+`$ cd /etc/sysconfig/network-scripts/`
+`$ vi ifcfg-enp0s3`
+
+Remove all the lines in the file and add these to become a static IP so we can use it throughout the rest of this
+ installtion.
+
 NAME="enp0s3"   
 DEVICE="enp0s3"
 TYPE="Ethernet"
@@ -82,7 +86,8 @@ IPADDR=192.168.1.29 # Old eth1 IP since we want the network restart to not
 NETMASK=255.255.255.0  # your netmask
 GATEWAY=192.168.1.1  # your gateway
 DNS1=8.8.8.8     # use google as nameserver
-    
+
+______    
     
 9. #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
      #user we made admin.This makes cut and paste easier with local terminal.  
