@@ -53,7 +53,7 @@ ______
 
 ______
     
-7. We will login to the system with this ip using ssh. 
+7. We will login to the system with this IP using ssh. 
 
 ```
   $ ssh <IP Reported>
@@ -62,7 +62,7 @@ ______
 ```
 ______
     
-8. We'll edit network setting to change the VM to a static ip to make things easier for switching over to OpenVswitch
+8. We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
 ```
    $ cd /etc/sysconfig/network-scripts/
@@ -99,16 +99,25 @@ DNS1=8.8.8.8     # use google as nameserver
 ```
 ______    
     
-9. #From here you can reboot the system to use the static IP and then log into the remote system from host with ssh as
-     #user we made admin.This makes cut and paste easier with local terminal.  
-     reboot
+9. From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
+   user we made admin access. This makes tutorial cut and paste easier with local terminal.  
 
-10. #Copy your local machines ssh key to virtual box host to make access easy from local host system: 
+```
+   $ reboot
+
+```
+______
+
+10. Copy your local machines ssh key to virtual box host to make access easy from local host system: 
 
     Make sure to add remote system to known hosts.
+
+``` 
     ssh-keygen -f "/home/factor/.ssh/known_hosts" -R 192.168.1.29
 
     ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
+
+```
     You should now be able to log in without password. 
     
 11. Edit SSH config to let root in as this will make instaling packstack easier while installilng.     
