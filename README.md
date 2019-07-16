@@ -10,7 +10,7 @@
   * CentOS7 Demo network.
 
 * Stein - CENTOS7:
-  * Openstack Stein installs Packstack.
+  * Openstack Stein installs Packstack. [Packstack Install](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)  
   * Manual DEMO Network 
   * Automated DEMO Network with BASH scripts.
 
