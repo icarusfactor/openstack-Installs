@@ -15,11 +15,11 @@ ______
   * Set Memory Size: >=8G.
   * Set Storage Size: >=30 gig should work fine.
 
- Setup one virtual network adapater that'll be needed while using Openstack flat network.
+ Setup one virtual network adapater that'll be needed while using Openstack **flat** network.
 (With a Flat Network setup all tentants use the same virtual switch/router to
 get out to the Internet.)       
 
- For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
+ For Debian or RedHat based hosts,I setup the network adapter as **Bridged**. ( enp0s3 <-- will attach
 to the br-ex device here via OpenVswitch once we have it setup.)
 
  **NOTE:** Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to
@@ -28,24 +28,32 @@ to the br-ex device here via OpenVswitch once we have it setup.)
 ______
 
      
-2.  Setup of Centos 7.6 minimal server and enable one networking device that should be called enp0s3 and hostname
-     packstack.This will be edited later to connect to the OpenVswitch BR-EX device.
-     
-3. Size of disk , I use all of it for / of parition. As virtual vm images will be inside this. 
-    Other disk can be mounted later for Cinder and a /boot is needed also. I do this by selecting 
-    to clear current partition setup and delete the /home and / paritition and add the / paritition
-    back with the capacity empty. This will select the entire free space. 
+2.  Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch BR-EX device.
+    
+______
+ 
+3.  Now setup the size of the disk, I use all of it for the root or ***/*** parition. As virtual vm images
+    will be inside this. Other disk can be mounted later for Cinder and a /boot is needed. I do
+    this by selecting to clear current partition setup and delete the /home and / paritition and add
+    the / paritition back with the capacity empty. This will select the entire free space. 
+
+______
 
 4. Set root and user password and create with admin or sudo capabilites. 
 
-5. Wait for CentOS to install. CentOS minimal version 1810 was used and reboot.
+______
+
+5. Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
+______
 
 6. Logging into the Oracle Virtualbox terminal. Check to see what IP I have for enp0s3 
-    ip a
+    `$ ip a`
+______
     
 7. We will login to the system with this ip using ssh. 
-    ssh <IP Reported>
-    sudo su
+    `$ ssh <IP Reported>
+     $ sudo su`
+______
     
 8. We'll edit network setting to change it to a static ip to make things easier for switching over to OpenVswitch
     cd /etc/sysconfig/network-scripts/
