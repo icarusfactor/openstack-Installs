@@ -84,6 +84,9 @@ NOTE: This is a Java service so it takes up lots of memeory and CPU
 it may be best to manually start it after Openstack has started if
 you're on a single node lab system.     
 
+
+______
+
 8. Test REST interface with curl. 
 
 ```
@@ -91,6 +94,8 @@ you're on a single node lab system.
 $ curl http://127.0.0.1:9200 
 
 ```
+
+______
 
 9. Start and enable persistant services for logstash
 
@@ -102,6 +107,8 @@ $ sudo systemctl status logstash.service
 
 ***OPTIONAL:*** ` $ sudo systemctl enable logstash.service `  
 
+______
+
 10. Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
 
 
@@ -110,9 +117,10 @@ $ sudo systemctl status logstash.service
 $ cd /etc/logstash/conf.d/
 
 ```
+______
 
-#To monitor OPENSTACK networking with OpenVswitch we will need to add a 
-#plugin to gather information for the SDN switch.
+11. To monitor OPENSTACK networking with OpenVswitch we will need to add a 
+plugin to gather information for the SDN switch.
 $ /usr/share/logstash/bin/logstash-plugin install logstash-codec-sflow
 
 #NOTE: These files have to pass a syntax check, if they have any problem it
