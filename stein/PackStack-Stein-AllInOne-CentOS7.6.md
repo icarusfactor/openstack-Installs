@@ -375,7 +375,7 @@ Select and edit each file from grep output. Change ***300*** to ***0***.
 
 ______
  
-21. Now we'll install packstack All In One Packstack system.   
+21. Now we'll install the All In One Packstack system.   
 
 This will be for a dry run and generate the answerfile we will use for actual install.
 Generating this dry run will also let us go over all the options and change them if needed before
@@ -393,10 +393,10 @@ Minimal stack would be ***Keystone***, ***Glance***, ***Nova*** and ***Neutron**
 |Stack Option|Summary
 | ---------- |:-----------:|
 |Dashboard or Horion | Web Based Admin. Default set to "Y" |
-|TROVE      | Database as a service for Cassandra,CouchBase,CouchDB,DataStax,DB2,MariaDB,MongoDB,MySQL,Oracle,Percona,PostgreSQL,Redis and Vertica. |
+|TROVE      | Database as a service for Cassandra, CouchBase, CouchDB, DataStax, DB2, MariaDB, MongoDB, MySQL, Oracle, Percona, PostgreSQL, Redis and Vertica. |
 |MAGNUM     | Container orchestration for Docker and Kubernetes and Apache Mesos |
 |HEAT       | General Orchestration. |
-|CINDER     | Block Storage. Backend can be lvm,gluster,nfs,netapp,vmdk,solidfire. Default "Y" and lvm |
+|CINDER     | Block Storage. Backend can be lvm, gluster, nfs, netapp, vmdk, solidfire. Default "Y" and lvm |
 |MANILA     | Shared Filesystem. |
 |SWIFT      | Object Store for unstructured data. Default set to "Y" |
 |CEILOMETER( gnocchi ) | Metering, billing, resource tracking,event data . Default set to "Y" |
@@ -435,7 +435,7 @@ ______
     messages with updates. 
 
 ```
-    packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
+packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
 
 ```
 Open another terminal on your host and log in to view and monitor log of status.
@@ -459,7 +459,7 @@ I also open a terminal to leave "top" running to see acitivity has not stalled.
 
 _____
      
-23. Wait for message from the installtion. **** Installation completed successfully ******
+23. Wait for message from the installtion. `**** Installation completed successfully ******`
 
      #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
       #If this still does not work you can stop and restart the server.
