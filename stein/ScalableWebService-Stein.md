@@ -22,6 +22,8 @@ Uses 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
 The setup and templates I will be using are on my github that will be posted in this tutorial ending with .ci for Cloud-Init. (OpenSUSE does not use cloud-init so I cant get this QCOW2 to work.)
 
+______
+
 1. Start VirtualBox and the CentOS 7.6 image that had been created with following link. 
 
 ```
@@ -29,6 +31,9 @@ The setup and templates I will be using are on my github that will be posted in 
 https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
 
 ```
+
+______
+
 
 2.  Start SSH session:
 
@@ -47,6 +52,7 @@ Start browser and point to IP and get to the login and Horizon dashboard:
 http://192.168.1.29
 
 ```
+______
     
 3.  With root in terminal, load environment with your keystone adminrc creditials.
 
@@ -58,7 +64,9 @@ $ . ./keystonerc_admin
 
 ```
 
-4.  Login as admin to a clean Openstack install, we will need to add
+______
+
+4.  Login as admin to a clean Openstack install, we will need to add:
 
     * Basic non admin user for the project.
     * Project : Scalable Web Server.
@@ -66,7 +74,10 @@ $ . ./keystonerc_admin
     * Will use "Default" domain so not needed to add another.
 
    ***NOTE:*** We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the first version where I was able to do this. So all of the major networking commands have been ported to the Openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so ,so not recommended in this version.
-    
+   
+______
+
+ 
 5. Create an external network that connects to the flat OVN network we setup with Packstack:
 (A flat network will work with a normal home setup. Unlike the VLAN tagged infrastructure for high density farms.)
 
@@ -74,6 +85,8 @@ $ . ./keystonerc_admin
 $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
 
 ```
+
+______
 
 6. Create external subnet:
 
@@ -89,6 +102,9 @@ $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
 
 ```
 
+______
+
+
 7. Create Private network , attach internal subnet
 
 ```
@@ -98,47 +114,92 @@ $ openstack subnet create --subnet-range 192.0.2.0/24 \
 --network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
 
 ```
-
+______
       
-8. Create router and attach it to internal subnet.
+8. Create a software defined router and attach it to the internal subnet.
 
 ```
 
 $ openstack router create LIMBO
+$ openstack router add subnet LIMBO FIELDS
 
 ```
 
+______
 
-$ openstack router add subnet LIMBO FIELDS
+9. Add a software defined router interface to external network and set its gateway.  
 
-9. Add router interface to external network and set gateway.  
+```
 
 $ openstack router set --external-gateway OCEANUS LIMBO
 
 
-10. Create a non-admin user planner in openstack and the project for the user.     
+```
+
+______
+
+10. Create a non-admin user ***planner*** in openstack and the project for the user.     
+
+```
 
 $ openstack project create --enable "Scalable Web Service"
 $ openstack user create --project "Scalable Web Service" --password easypassword --enable planner    
+
+
+```
+______   
+ 
     
-    
-11. **[Optional]** Create a non-admin user user planner script if you need to run commands as user.
+11. **[Optional]** Create a non-admin user user planner script if you need to run commands as user:
+
+```
+
 $ cp /root/keystonerc_admin /root/keystonerc_planner
+
+```
+
 Edit the script to match these values.
+
+```
+
 export OS_USERNAME=planner
 export OS_PASSWORD=easypassword
 export OS_PROJECT_NAME="Scalable Web Service"
-    
+
+```
+Next source the environment values to start using them.
+
+```
+
 $ . /root/keystonerc_planner
+
+
+```
+______
   
-12. To finalize above step login to HORIZON web GUI as "admin" and add user planner to Scalable Web Service project. 
-     Project->Project->Manage Memembers on the Scalable Web Service
+12. To finalize above step login to HORIZON web GUI as ***admin*** and add user ***planner*** to ***Scalable Web Service*** project. 
+
+```
+Project->Project->Manage Memembers on the Scalable Web Service
+
+```
+
+______
 
 13. Log into Horizon gui as non-admin user planner.
 
+______
+
 14. Verify network setup.
-    Project -> Network -> Network Topology
-    You should see your external and internal network. Non-admin users do not have access to the external router. 
+
+```
+Project -> Network -> Network Topology
+
+```
+
+You should see your external and internal network. Non-admin users do not have access to the external router. 
+
+______
      
 15. Load Operating systems cloud image.   
     Select Project -> Compute -> Images
@@ -149,12 +210,23 @@ $ . /root/keystonerc_planner
     Wait for "Deb9Server" to become "Active".
     We will use this image as basis of all the node operating systems and apply a specific
     cloud init file to each to give it its profile. 
+
+______
      
 16. Import Public Key.     
-    Project -> Compute -> Key Pairs
-    + Import Public Key
-    on your local system cat your public key and copy and paste.
+
+```
+Project -> Compute -> Key Pairs
++ Import Public Key
+
+```
+
+On your local system cat your public key and copy and paste.
+
+```
     cat ./id_rsa.pub
+
+```
 
 17. Create Security Group.
 PROJECT -> NETWORK -> Security Groups:
