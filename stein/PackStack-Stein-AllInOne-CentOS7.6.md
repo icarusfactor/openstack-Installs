@@ -5,7 +5,10 @@
           in a flat configuration and not disrupt your Internet access, but will add
           a couple more IP's to your local Class C IPv4 network. So you will have to make
           sure they're not used by your local DHCP or are still being unused.
->     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
+```
+     Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
+
+```
 
 ______
 
@@ -459,7 +462,7 @@ $ ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/opens
      
 I also open a terminal to leave "top" running to see acitivity has not stalled. 
 
-_____
+______
      
 23. Wait for message from the installtion. `**** Installation completed successfully ******`
 
@@ -491,9 +494,9 @@ $ service rabbitmq-server start
 ```
 
 
-then run the packstack command again.
+Then run the packstack command again.
 
-Check login creditals. 
+Check admin login creditals. 
 
 ```
 
@@ -506,27 +509,63 @@ You will use these to login to the Openstack GUI Horizon.
 
 _____
 
-24. (OPTIONAL)#Extra addon to get login data on your screen from prompt.
-     $ wget -O screenfetch-dev https://git.io/vaHfR
-     $ sudo cp ./screenfetch-dev  /usr/bin/screenfetch
-     $ sudo chmod +x /usr/bin/screenfetch
-     #Test screen fetch out. 
-     $ screenfetch
-     #Now add it to /etc/bashrc and also ~./.bashrc if you wish,so it runs when login.
-     $ vi /etc/bashrc
-     $ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
-     #Logout and then back in to test it. 
-     
-25. #Now to access the webserver for Dashboard to configure Openstack. 
-     #Log into the main system from host. i.e. 192.168.1.29
-     ssh 192.168.1.29      
-     #From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
-     nmap localhost
-     #Use elinks to check if Openstack page to the host device is working. 
-     elinks 192.168.1.29     
-     #Elinks should show openstack dashboard login as text version.
-     #If you see this , then your setup is working. 
+24. ***OPTIONAL*** Extra addon to get login data on your screen from prompt.
 
+```
+
+$ wget -O screenfetch-dev https://git.io/vaHfR
+$ sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+$ sudo chmod +x /usr/bin/screenfetch
+
+```
+
+Test screen fetch out. 
+
+```
+$ screenfetch
+
+```
+
+Now add it to /etc/bashrc and also ~./.bashrc if you wish,so it runs when login.
+
+```
+$ vi /etc/bashrc
+$ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
+
+```
+
+Logout and then back in to test it. 
+
+______
+     
+25. Now to access the webserver for Dashboard to configure Openstack. 
+
+Log into the main system from host. i.e. 192.168.1.29
+
+```
+     ssh 192.168.1.29      
+
+```
+
+From here we can use nmap to check what ports are being used. 80(HTTP) and 5900(VNC)
+
+```
+     nmap localhost
+
+```
+
+Use elinks to check if Openstack page to the host device is working. 
+
+```
+
+elinks 192.168.1.29     
+
+```
+
+Elinks should show openstack dashboard login as text version.
+If you see this , then your setup is working. 
+
+______
      
 26. #The Openstack Server should be setup and running.
      #The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
