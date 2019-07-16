@@ -110,10 +110,8 @@ $ sudo systemctl status logstash.service
 
 ***OPTIONAL:*** ` $ sudo systemctl enable logstash.service `  
 
-______
 
-10. Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
-
+Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
 
 ```
 
@@ -122,7 +120,7 @@ $ cd /etc/logstash/conf.d/
 ```
 ______
 
-11. To monitor OPENSTACK networking with OpenVswitch we will need to add a 
+10. To monitor OPENSTACK networking with OpenVswitch we will need to add a 
 plugin to gather information for the Software Defined Switch.
 
 ```
@@ -149,7 +147,7 @@ segments, unless its an "if" statement. Other progmatic limitation that I have n
 
 ______
 
-12. Create a conf file for sflow in the /tmp directory and test it, then, if okay copy it to conf directory.
+11. Create a conf file for sflow in the /tmp directory and test it, then, if okay copy it to conf directory.
 
 ***NOTE: This file has errors in it!*** Using it as a test. You will have to change the paratheses 
 to the correct ones from “ to ".
@@ -179,7 +177,7 @@ EOF
 ______
 
 
-13. Run test on config file and ***DO NOT PROCEED*** to next step until fixed and says OK
+12. Run test on config file and ***DO NOT PROCEED*** to next step until fixed and says OK
 
 ```
 
@@ -187,7 +185,7 @@ $ /usr/share/logstash/bin/logstash -t -f /tmp/sflow.conf
 
 ```
 
-14. Copy file to conf directory now that it has passed test. 
+13. Copy file to conf directory now that it has passed test. 
 
 ```
 
@@ -196,7 +194,7 @@ $ cp /tmp/sflow.conf /etc/logstash/conf.d/
 ```
 ______
 
-15. If you want to use logstash with local systems logs within the /var/log directory you will
+14. If you want to use logstash with local systems logs within the /var/log directory you will
 have to give permissions to logstash in order to do this. This will be for the Apache
 logs but can be use for any directory in this tree.
 
@@ -231,7 +229,7 @@ $ sudo chgrp adm /var/log/httpd/*
 ______
 
 
-16. Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
+15. Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
 or needing to clear out and start again.
 
 ```
@@ -241,7 +239,7 @@ curl -X DELETE "localhost:9200/osapache-*"
 ```
 
 
-17. Edit Kibana YAML config for your system and use local Elasticsearch server.  
+16. Edit Kibana YAML config for your system and use local Elasticsearch server.  
 
 ```
 
@@ -255,7 +253,7 @@ sudo vim /etc/kibana/kibana.yml
 ```
 
  
-18. Start and enable persistant services for Kibana
+17. Start and enable persistant services for Kibana
 
 ```
 
@@ -263,7 +261,7 @@ sudo systemctl enable --now kibana
 
 ```
 
-19. Packstack IPTABLES will block Kibana access, so we need to open this port.
+18. Packstack IPTABLES will block Kibana access, so we need to open this port.
 Check the line numbers for all of the rules that were added by Packstack.
 Look for the the last rule before any DENY or REJECT rules as putting any
 rules after these will make them useless.
@@ -275,7 +273,7 @@ $ sudo iptables -L --line-numbers
 
 ```
 
-20. Should be okay to insert a rule at line 30 or before. We will put it at the end.
+19. Should be okay to insert a rule at line 30 or before. We will put it at the end.
 
 
 ```
@@ -287,7 +285,7 @@ $ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comme
 ______
 
 
-21. Save state of IPTABLES
+20. Save state of IPTABLES
 
 ```
 
@@ -296,7 +294,7 @@ $ service iptables save
 ```
 ______
 
-22. Now you can start your browser and load the URL on your desktop system.
+21. Now you can start your browser and load the URL on your desktop system.
 
 ```
 
