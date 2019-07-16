@@ -658,9 +658,7 @@ be enabled if you want an example to view. With the new OVN networking and full 
 the older version ScalableWebService will not work in a reliable manner. I've made a new demo proejct that will work
 with Stein.
 
-```
 
-https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein.md
+[Project: Scalable Web Service Stein ](https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein.md)
 
-```
 ______
