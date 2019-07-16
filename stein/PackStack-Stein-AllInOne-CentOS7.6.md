@@ -159,7 +159,7 @@ $ ssh root@192.168.1.29
 Copy public key to root 
 
 ```
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
+$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
 ```
 
@@ -269,15 +269,15 @@ $ sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
 
 ```
 
-Check to make sure the repo made it into the list and enabled.
+Check to make sure the stein repo made it into the list and enabled.
 
 ```
 
-$ yum repolist   <--- Look for Openstack stein     
+$ yum repolist  
 
 ```
 
-Stein here or what version you want replace the text name. 
+Install the Stien Openstack release into the yum db.
 
 ```
 
@@ -290,14 +290,19 @@ This conflicts with packstack version so remove.
 ```
 
 $ yum erase mariadb-libs     
+
+```
+
+Update yum and Install packstack packages. Its not started by this command, just installed.
+
+```
 $ sudo yum update -y
 $ sudo yum install -y openstack-packstack
 
 ```
 
-     
-We need to install the openvswitch before installing packstack (packstack will install it also)
-So we can reboot and get the OpenVswitch bridge working before the install.     
+We need to install the Openvswitch before installing Packstack (packstack will install it also)
+But we need it so we can reboot and get the OpenVswitch bridge working before the install.     
 
 ```
 $ sudo yum install openvswitch
