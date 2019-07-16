@@ -123,7 +123,7 @@ $ cd /etc/logstash/conf.d/
 ______
 
 11. To monitor OPENSTACK networking with OpenVswitch we will need to add a 
-plugin to gather information for the Software Defined Switch switch.
+plugin to gather information for the Software Defined Switch.
 
 ```
 
@@ -142,15 +142,16 @@ in here unless it passes this test.
 ```
 
 
-Logstash has strict block segment parsing for input/filter and out
-You will need an empty line between them. No inital top empty line needed.
-use double parenthese "" on items using them. Strick no empty space inside
-segments, unless its an "if" statement.
+NOTE: Logstash has strict block segment parsing for the input, filter and output sections.
+You'll need an empty line between each section. No inital top empty line needed.
+use double parenthese "" on items. Strick no empty space inside
+segments, unless its an "if" statement. Other progmatic limitation that I have not ran into yet.
 
 ______
 
-12. Create conf file for sflow in tmp directory and test it ,then if OK copy it to conf directory.
-NOTE: This file has errors in it! Using it as a test. You will have to change the paratheses 
+12. Create a conf file for sflow in the /tmp directory and test it, then, if okay copy it to conf directory.
+
+***NOTE: This file has errors in it!*** Using it as a test. You will have to change the paratheses 
 to the correct ones from “ to ".
 
 ```
@@ -178,7 +179,7 @@ EOF
 ______
 
 
-13. Run test on config file and do not proceed to next step until fixed and says OK
+13. Run test on config file and ***DO NOT PROCEED*** to next step until fixed and says OK
 
 ```
 
@@ -195,19 +196,28 @@ $ cp /tmp/sflow.conf /etc/logstash/conf.d/
 ```
 ______
 
-15. If you want to use logstash with local logs within the /var/log directory you will
+15. If you want to use logstash with local systems logs within the /var/log directory you will
 have to give permissions to logstash in order to do this. This will be for the Apache
 logs but can be use for any directory in this tree.
 
 
 Put logstash in the adm group
 
+```
+
 $ sudo usermod -a -G adm logstash
+
+
+```
 
 Change logs directory to group readable and executable and files to group readable. 
 
+```
+
 $ sudo chmod 754 /var/log/httpd/
 $ sudo chmod 640 /var/log/httpd/*
+
+```
 
 Change group to adm for directory and files. 
 
@@ -231,7 +241,7 @@ curl -X DELETE "localhost:9200/osapache-*"
 ```
 
 
-17. Edit Kibana YAML config for your system and use local elasticsearch server.  
+17. Edit Kibana YAML config for your system and use local Elasticsearch server.  
 
 ```
 
@@ -259,17 +269,22 @@ Look for the the last rule before any DENY or REJECT rules as putting any
 rules after these will make them useless.
 
 ```
+
 $ sudo iptables -L --line-numbers
+
 
 ```
 
-20. Should be ok to insert a rule at line 30 or before. We will put it at the end.
+20. Should be okay to insert a rule at line 30 or before. We will put it at the end.
+
 
 ```
 
 $ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comment --comment "Kibana 5601 incoming"
 
 ```
+
+______
 
 
 21. Save state of IPTABLES
@@ -279,15 +294,16 @@ $ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comme
 $ service iptables save
 
 ```
+______
 
-Now you can start your browser and load the URL on your desktop system.
+22. Now you can start your browser and load the URL on your desktop system.
 
 ```
 
 $ elinks http://192.168.1.29:5601    
 
 ```
-
+______
 
 22. KIBANA Index , Visulaize , Dashboard setup.
 
@@ -298,6 +314,9 @@ URL: http://192.168.1.29:5601/
 
 ```
 
+______
+
+
 23. click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
 
 Click on "Index Patterns"
@@ -307,12 +326,17 @@ Click on "Create Index Patterns"
 
 Fill in the Index Pattern entry "osapache=*"
 
+______
 
 24. Once Logstash starts collecting logs and sends it to Elasticsearch archive ,Kibana
 should auto detect that it found information and you should see Success! and "> Next step" will be enabled.
 
+______
 
 25. After clicking the enabled button, click on the drop down box and select "@timestamp".
+
+______
+
 
 26. Now the trick is to "prime the pump" to get the data generated to Elasticsearch we want to monitor.
 Having now setup Openstack,log into the Horizon interface. This will generatee Keystone Access data.
