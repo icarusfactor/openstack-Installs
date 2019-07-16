@@ -565,7 +565,7 @@ $ elinks 192.168.1.29
 ```
 
 Elinks should show openstack dashboard login as text version.
-If you see this , then your setup is working. 
+If you see this , then your web based setup is working. 
 
 ______
      
@@ -614,7 +614,9 @@ have to install a single package.
 A check to find problems around this issue are to 
 
 ```
-     dmesg | grep -E "(rng|random)" 
+
+$ dmesg | grep -E "(rng|random)" 
+
 
 ```
 
@@ -634,7 +636,7 @@ ______
 29. ***(Optional)*** Install the ELKSTACK 7.x to monitor,log and audit activity. ELK stands for
 Elasticsearch & Logstash & Kibana. Each of these systems makes up a system to 
 gather,setup collections and vizualize realtime data from your network. I needed this for
-this lab setup to monitor and test resources on vm's,SDN routers and switch.
+this lab setup to monitor and test resources on vm's,sdn routers and switch.
 
 
 ```
@@ -645,8 +647,8 @@ this lab setup to monitor and test resources on vm's,SDN routers and switch.
 ______
  
 30. You'll now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
-installing Openstack user and projects. With the AllInOne install. We did not enable the demo tentant, this can
-be enabled if you want an example to view .With the new OVN networking and full use of only openstack only commands
+installing Openstack user and projects with the AllInOne install. We did not enable the demo tentant, this can
+be enabled if you want an example to view. With the new OVN networking and full use of only openstack only commands
 the older version ScalableWebService will not work in a reliable manner. I've made a new demo proejct that will work
 with Stein.
 
