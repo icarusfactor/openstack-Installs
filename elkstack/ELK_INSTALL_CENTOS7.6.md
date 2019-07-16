@@ -1,5 +1,11 @@
 ## Install the OSS ELKStack 7.x for logging, monitoring,billing on CentOS7.6  
 
+
+PROLOGUE: Reason for using an ELKStack is for billing,monitoring and tracing to subvert problems
+when they occur in real world situations and act on them. When your systems start to turn into large
+ numbers,the managability aspect reaches a new level and this stackis the answer to this problem. 
+
+
 1. Elasticsearch depends on Java so we will need to install the binaries and development files. 
 
 ```
@@ -196,7 +202,9 @@ ______
 
 14. If you want to use logstash with local systems logs within the /var/log directory you will
 have to give permissions to logstash in order to do this. This will be for the Apache
-logs but can be use for any directory in this tree.
+logs but can be used for any directory in this tree. Alternatly,recommended is to use collectd service
+to gather and ship the logs from local and remote systems to logstash, but more complex to setup. This is for an
+ easy test to show its working. 
 
 
 Put logstash in the adm group
@@ -229,12 +237,15 @@ $ sudo chgrp adm /var/log/httpd/*
 ______
 
 
-15. Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
+15. Helpful but dangerous commands to run on an Eleasticsearch index to see if they are being worked. 
 or needing to clear out and start again.
 
 ```
+
 curl -X GET "http://localhost:9200/osapache-*/_count"
+
 curl -X DELETE "localhost:9200/osapache-*"
+
 
 ```
 
@@ -250,10 +261,12 @@ sudo vim /etc/kibana/kibana.yml
  server.name: "packstack"
  elasticsearch.url: "http://localhost:9200"
 
+
 ```
 
  
 17. Start and enable persistant services for Kibana
+
 
 ```
 
@@ -303,7 +316,7 @@ $ elinks http://192.168.1.29:5601
 ```
 ______
 
-22. KIBANA Index , Visulaize , Dashboard setup.
+22. Now that we have KIBANA setup we will configure a basic Index, Visulaize items and a Dashboard setup.
 
 Go to the URL 
 
@@ -315,7 +328,7 @@ URL: http://192.168.1.29:5601/
 ______
 
 
-23. click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
+23. Click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
 
 Click on "Index Patterns"
 
@@ -326,8 +339,8 @@ Fill in the Index Pattern entry "osapache=*"
 
 ______
 
-24. Once Logstash starts collecting logs and sends it to Elasticsearch archive ,Kibana
-should auto detect that it found information and you should see Success! and "> Next step" will be enabled.
+24. Once Logstash starts collecting logs and sends its data to Elasticsearch archive, Kibana
+should auto detect that it found information and you should see ***Success!*** and "> Next step" will be enabled.
 
 ______
 
@@ -336,8 +349,8 @@ ______
 ______
 
 
-26. Now the trick is to "prime the pump" to get the data generated to Elasticsearch we want to monitor.
-Having now setup Openstack,log into the Horizon interface. This will generatee Keystone Access data.
+26. Now the trick is to ***"prime the pump"*** to get the data generated to Elasticsearch we want to monitor.
+Having now setup Openstack, log into the Horizon interface. This will generatee Keystone Access data.
 
 Wait a short time.Should be less than 5mins.
 
@@ -349,14 +362,22 @@ In Avaialable fields column, click fileds "type".
 
 You should see "keystone-access" with a spyglass + on it. Click it.
 
-After Kibana processes the log "Keystone-access" should be highlighted within the log view. 
+After Kibana processes the log ***"Keystone-access"*** should be highlighted within the log view. 
+
+______
 
 
 27. Next to further refine data is to select "add" on Available field "messages".
-You should now have a list of date timestamps and what ip accessed the Openstack login in log view.
+You should now have a list of date timestamps and what IP accessed the Openstack login in log view.
 
-28. We're wanting to createing useful data to monitor. So we will save this as a saved Index with + filter
+______
+
+
+28. We're wanting to createing useful data to monitor. So we'll save this as a saved Index with + filter
 by clicking on the "Save" option in the upper menu and calling it "Keystone Access".
+
+______
+
 
 29. Now we are going to click on left icon "Visualize".
 
@@ -426,7 +447,7 @@ While this installtion shows you how to monitor local
 logs, you can install Open Source edge computing monitor
 collectd. This is a default Logstash plugin to collect
 metrics from VMs and other systems. I will move this
-section to its own page when I get it worked out. 
+section to its own page when I get it worked out with more details. 
 
 ______
 
@@ -440,7 +461,7 @@ $ vi /etc/collectd.conf
 ```
 ______
 
-35. Edit to add your hostanme
+35. Edit to add your hostanme to the collectd configuration file and start up the service.
 
 ```
 
@@ -470,10 +491,9 @@ LoadPlugin network
 
 ```
 
-37. Example input for collectd Logstash
+Example input for collectd Logstash
 
 ```
-______
 
 input {
   udp {
@@ -485,11 +505,4 @@ input {
 
 ```
 ______
-
-
-38. Reasons for using an ELKSTACK is for billing,monitoring and tracing to subvert problems
-when they occur in real world situations. So next I will setup monitors for  
-OpenVswitch,Apache and basic bare metal systems health checks on controller/compute
-node that the ELKSTACK and OPENSTACK are hosted on so you shoudl see other conf files 
-for logstash in this directory. 
 
