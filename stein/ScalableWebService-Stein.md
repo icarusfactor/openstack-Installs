@@ -341,10 +341,8 @@ ______
 ```
 Copy and paste JUMP Server Cloud Init file .
 
-```
-https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/JUMPSERVER_DEBIAN_9.ci
 
-```
+[SQL DEBIAN INSTANCE](https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci)
 
 ```
      LAUNCH INSTANCE
