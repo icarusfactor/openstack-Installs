@@ -24,7 +24,7 @@
   * WEB
   * SQL
   * PUPPETMASTER
-
+  * PUPPETAGENT
 * ELKSTACK 7.x - Elasticsearch & Logstash & Kibana:
   * Setup on CENTOS7.6 and for Openstack. 
   * Script to setup sFlow device for OpenVswitch.
