@@ -17,10 +17,13 @@ ______
 ______
 
 Setup one virtual network adapater that'll be needed while using Openstack flat network.
+
 (With a Flat Network setup all tentants use the same virtual switch/router to
-get out to the Internet.)        
+get out to the Internet.)       
+ 
 For Debian or RedHat based hosts,I setup the network adapter as Bridged. ( enp0s3 <-- will attach
 to the br-ex device here via OpenVswitch.)
+
 NOTE: Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to multi
 touch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this. 
 ______
