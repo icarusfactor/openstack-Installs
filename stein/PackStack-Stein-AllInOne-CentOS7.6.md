@@ -423,9 +423,9 @@ $ packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debu
 
 ```
 
-No files are changed but an answerfile is created in the stack directory.
+No files are changed but an answerfile is created in the ***stack*** user directory.
 I have diabled the demo project if you are not familiar with this setup you can enable it.
-But I will have additional instructions for setting uup different types of network installs.
+But I will have additional instructions for setting up different types of network installs.
      
 ______
 
@@ -435,22 +435,24 @@ ______
     messages with updates. 
 
 ```
-packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
+$ packstack --debug --timeout=0 --answer-file=packstack-answers-<TIMESTAMP>.txt 
 
 ```
 Open another terminal on your host and log in to view and monitor log of status.
 
 ```
 
-ssh root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
+$ ssh root@192.168.1.29 -t "cd /var/log; tail -f ./messages| grep -iEv '(logind | Session | Reloading )' ; /bin/bash"
+
 
 ```
+
 Open another terminal pointing to location and your specific log file name. 
 
 
 ```
 
-ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/openstack-setup.log"
+$ ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/openstack-setup.log"
 
 
 ```
@@ -461,21 +463,48 @@ _____
      
 23. Wait for message from the installtion. `**** Installation completed successfully ******`
 
-     #NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
-      #If this still does not work you can stop and restart the server.
-      $ sudo service rabbitmq-server stop
-      $ sudo service rabbitmq-server start
-      #To get information if the server is functioning and other system data.
-      $ sudo service rabbitmq-server status
-      #If the server is hung and wont stop you can force it down.
-      $ pkill -KILL -u rabbitmq
-      $ service rabbitmq-server start
-      #then run the packstack command again.
+NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
+If this still does not work you can stop and restart the server.
 
-     #Check login creditals. 
-     $ cat /root/keystonerc_admin 
-     #You will use these to login to the Openstack GUI Horizon.
+```
 
+$ sudo service rabbitmq-server stop
+$ sudo service rabbitmq-server start
+
+```
+
+To get information if the server is functioning and other system data.
+
+```
+
+$ sudo service rabbitmq-server status
+
+```
+
+If the server is hung and wont stop you can force it down.
+
+```
+
+$ pkill -KILL -u rabbitmq
+$ service rabbitmq-server start
+
+```
+
+
+then run the packstack command again.
+
+Check login creditals. 
+
+```
+
+$ cat /root/keystonerc_admin 
+
+```
+
+
+You will use these to login to the Openstack GUI Horizon.
+
+_____
 
 24. (OPTIONAL)#Extra addon to get login data on your screen from prompt.
      $ wget -O screenfetch-dev https://git.io/vaHfR
