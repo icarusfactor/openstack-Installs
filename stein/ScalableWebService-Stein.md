@@ -59,7 +59,7 @@ ______
 ```
 
 $ cat /root/keystonerc_admin
-$ . ./keystonerc_admin
+$ . /root/keystonerc_admin
 
 
 ```
@@ -186,7 +186,7 @@ Project->Project->Manage Memembers on the Scalable Web Service
 
 ______
 
-13. Log into Horizon gui as non-admin user planner.
+13. Log into Horizon gui as non-admin user ***planner***.
 
 ______
 
@@ -202,14 +202,21 @@ You should see your external and internal network. Non-admin users do not have a
 ______
      
 15. Load Operating systems cloud image.   
-    Select Project -> Compute -> Images
-    image Name  : Deb9Server
-    Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
-    Format      : qcow2
-    Create Image. 
-    Wait for "Deb9Server" to become "Active".
-    We will use this image as basis of all the node operating systems and apply a specific
-    cloud init file to each to give it its profile. 
+
+```
+ Select Project -> Compute -> Images
+ Image Name  : Deb9Server
+ Browse      : debian-9-openstack-amd64.qcow2   <--- basic minimal debian install. 
+ Format      : qcow2
+
+```
+
+Create Image. 
+
+Wait for "Deb9Server" to become "Active".
+
+We will use this image as basis of all the node operating systems and apply a specific
+cloud init file to each to give it its profile. 
 
 ______
      
@@ -217,16 +224,19 @@ ______
 
 ```
 Project -> Compute -> Key Pairs
+
 + Import Public Key
 
 ```
 
-On your local system cat your public key and copy and paste.
+On your desktop system cat your public key if on *nix based system and copy and paste.
 
 ```
-    cat ./id_rsa.pub
+$ cat ./id_rsa.pub
 
 ```
+
+______
 
 17. Create Security Group.
 PROJECT -> NETWORK -> Security Groups:
@@ -274,6 +284,7 @@ No SSH key needed.Will post its
 username and password at login.
 http://download.cirros-cloud.net/
 
+______
     
      
 18. Install JUMP server.      
@@ -303,6 +314,9 @@ http://download.cirros-cloud.net/
      Description: ACCESS POINT 
      Allocate IP. Then Associate IP.
      #The floating IP address should appear in your Jump Servers' IP address column. 
+
+______
+
  
 19. Install SQL server.      
      Project -> Compute -> Instances
@@ -325,6 +339,8 @@ http://download.cirros-cloud.net/
      Copy and paste JUMP Server Cloud Init file .
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci
      LAUNCH INSTANCE
+
+______
      
 20. Install WEB server.      
      Project -> Compute -> Instances
@@ -353,11 +369,15 @@ http://download.cirros-cloud.net/
      Description: WEB  
      Allocate IP. Then Associate IP.
      #The floating IP address should appear in your Jump Servers' IP address column.        
+
+______
     
 21. Now all nodes are setup and have uploaded your public key,mine wass called MERCURY
      to the servers via cloud-init and a JUMP server to log into as a central server to
      reduce port activty and manage connections. But to do this you will have to setup 
      SSH on the JUMP instance as a FORWARDER. 
+
+______
      
 22. Log onto JUMP instance:
      
@@ -369,6 +389,8 @@ http://download.cirros-cloud.net/
       
        If you see the following, you will need to comment out the ForwardAgent.
      This will override your home directory config if so.
+
+______
      
 23.  touch ~/.ssh/config
      Host *
@@ -390,4 +412,6 @@ http://download.cirros-cloud.net/
      #Now you should be able to log into all of the internal IPs from 
      #the jumpbox with your host box SSH key and keep only the JUMP box 
      #port open from the 192.168.1.x addresses. 
+
+______
      
