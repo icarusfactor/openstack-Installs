@@ -47,7 +47,7 @@ ______
 5. Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
 ______
 
-6. Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for enp0s3 
+6. Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for ***enp0s3*** 
 
 ```
 
@@ -101,8 +101,8 @@ GATEWAY=192.168.1.1  # your gateway
 DNS1=8.8.8.8     # use google as nameserver
 
 ```
-______    
-    
+______
+
 9. From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
    user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
 
@@ -122,7 +122,7 @@ ______
   $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 ```
-    You should now be able to log in without password. 
+    You should now be able to login without password. 
 ______ 
     
 11. Edit SSH config to let a root in, as this will make instaling packstack easier while installilng.     
@@ -158,17 +158,32 @@ Copy public key to root
 ```
 
 ______
+     
 
-     
-13. (OPTIONAL) #Log back in root and install useful commandline packages to help debug systems.
-     sudo yum -y install mc nmap elinks wget screen curl wireshark
-     
+13. ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
+
+```
+   $ sudo yum -y install mc nmap elinks wget screen curl wireshark
+
+```
+
+_____
      
 14. Log back in and edit hosts file.
+
+```
+
      vi /etc/hosts
-     #Add two lines. Packstack is you Virtualbox host IP.
+
+```
+
+     Add two lines. Packstack is you Virtualbox host IP.
+
+```
      192.168.1.29  packstack
      10.0.2.1      controller   
+
+```
      
 15. Goto the network device directory for CENTOS
      cd /etc/sysconfig/network-scripts/      
