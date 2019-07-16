@@ -507,9 +507,9 @@ $ cat /root/keystonerc_admin
 
 You will use these to login to the Openstack GUI Horizon.
 
-_____
+______
 
-24. ***OPTIONAL*** Extra addon to get login data on your screen from prompt.
+24. ***[OPTIONAL]*** Extra addon to get login data on your screen from prompt.
 
 ```
 
@@ -567,53 +567,106 @@ If you see this , then your setup is working.
 
 ______
      
-26. #The Openstack Server should be setup and running.
-     #The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
-     #Login with "admin" and get the password from the /root/keystone_adminrc file.
+26. The Openstack Server should be setup and running.
+
+The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
+
+Login with "admin" and get the password from the /root/keystone_adminrc file.
+
+```
      DASHBOARD  : 192.168.1.29:80
-     #Browser VNC access of the serial interface to the cloud servers
+
+```
+
+Browser VNC access of the serial interface to the cloud servers
+
+```
      BROWSER VNC: 192.168.1.29:6080
 
-27. #Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
-     #and they are not in the standard repos,so for your system to be ready for the event, we will add
-     #the extra Python3 repo.   
+```
+______
+
+27. Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
+
+and they are not in the standard repos,so for your system to be ready for the event, we will add
+
+the extra Python3 repo.   
+
+```
 
      $ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
      $ sudo yum update
      $ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
      $ python3.6 -V 
-     #Now you're ready for Py2020
 
-28. # With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
-     # newer Linux VM's may run into a Boottime Entropy Starvation condition. For me this casued many
-     # cloud-init problems and is linked to systemd and ssh package and its keys. To resolve this issue
-     # where urandom needs to make sure it gets its randomness checked in a timley manner you should only
-     # have to install a single package.
+```
+
+Now you're ready for Py2020
+
+______
+
+28. With CentOS7.6 using an older 3.10 kernel without the CONFIG_RANDOM_TRUST_CPU option of 4.19+, the
+
+newer Linux VM's may run into a Boottime Entropy Starvation condition. For me this casued many
+
+cloud-init problems and is linked to systemd and ssh package and its keys. To resolve this issue
+
+where urandom needs to make sure it gets its randomness checked in a timley manner you should only
+
+have to install a single package.
+
   
-     #A check to find problems around this issue are to 
+A check to find problems around this issue are to 
+
+```
      dmesg | grep -E "(rng|random)" 
 
-     #Haveged is a user-space daemon that gathers entropy though the timing jitter any CPU has.
-     #This programs runs late in the boot process, but should fix the ssh issue if you cant get 
-     #kernel 4.19 or newer. 
-     yum -y install haveged  
-     
+```
 
-29. #(Optional) Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
-     #Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
+
+Haveged is a user-space daemon that gathers entropy though the timing jitter any CPU has.
+
+This programs runs late in the boot process, but should fix the ssh issue if you cant get 
+
+kernel 4.19 or newer. 
+
+```
+
+$ yum -y install haveged  
+
+```
+
+______     
+
+29. ***(Optional)*** Install ELKSTACK7.x to monitor,log and audit activity. ELK stands for
+
+Elasticsearch - Logstash - Kibana. Each of these systems makes up a system to 
+
      #gather,setup collections and vizualize realtime data from your network. I needed this for
+
      #this lab setup to monitor and test resources on vm's,SDN routers and switch.
+
+```
+
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
-   
+
+```
+______
  
-30. #You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
-     #installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
-     #be enabled if you want an example to view.
-          
-     #With the new OVN networking and full use of only openstack only commands the older version ScalableWebService will not
-     #work in a reliable manner. I have made a new demo proejct that will work with Stein.
-          
+30. You will now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+
+installing Openstack user and projects. With the AllInOne install. We did not enable demo tentant, this can
+
+be enabled if you want an example to view.
+
+With the new OVN networking and full use of only openstack only commands the older version ScalableWebService will not
+
+work in a reliable manner. I have made a new demo proejct that will work with Stein.
+
+
+```
+
      https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/stein/ScalableWebService-Stein
-     
-     
-     
+
+```
+
