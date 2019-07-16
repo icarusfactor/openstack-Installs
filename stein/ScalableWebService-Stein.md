@@ -1,6 +1,6 @@
 ## OpenStack Scalable Web Serice. 
 
-**Prologue** This is a manual install tutorial with a base set of images with secuirty for use with growing a user based webserver farm with the below specifications. Normally you want to automate this proceedure, which I do have scrips for doing this(Bash shell and Python), But you need this knowledge if you have to monitor,troubleshoot or fix issues on the fly.
+**Prologue** This is a manual install tutorial with a base set of images with security for use with growing a user based webserver farm with the below specifications. Normally you want to automate this proceedure, which I do have scrips for doing this(Bash shell and Python), But you need this knowledge if you have to monitor,troubleshoot or fix issues on the fly.
 
 One Jump Server 
 
@@ -48,7 +48,7 @@ http://192.168.1.29
 
 ```
     
-3.  With root, load environment with your keystone adminrc creditials.
+3.  With root in terminal, load environment with your keystone adminrc creditials.
 
 ```
 
@@ -58,27 +58,27 @@ $ . ./keystonerc_admin
 
 ```
 
-4.  Login as admin to a clean Openstack install we will need to add
+4.  Login as admin to a clean Openstack install, we will need to add
 
-    * Basic non admin user
+    * Basic non admin user for the project.
     * Project : Scalable Web Server.
-    * Operating System Image
+    * Operating System Image loading into the Glance service.
     * Will use "Default" domain so not needed to add another.
 
-    We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the
-    first version where I was able to do this. So all of the major networking commands have been ported to the
-    openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so. 
+   ***NOTE:*** We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the first version where I was able to do this. So all of the major networking commands have been ported to the Openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so ,so not recommended in this version.
     
-5.  Create flat external network:
-A flat network will work with a normal home setup.      
+5. Create an external network that connects to the flat OVN network we setup with Packstack:
+(A flat network will work with a normal home setup. Unlike the VLAN tagged infrastructure for high density farms.)
 
 ```
 $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
 
 ```
 
-6.  Create external subnet:
-Subnet with same network as your single device adapter. 
+6. Create external subnet:
+
+Subnet with same network as your single network device adapter. 
+
 
 ```
 
@@ -86,18 +86,28 @@ $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
   --network OCEANUS --allocation-pool start=192.168.1.100,end=192.168.1.200 \
   --dns-nameserver 8.8.4.4 RIVERS
 
+
 ```
 
 7. Create Private network , attach internal subnet
+
+```
   
 $ openstack network create --share ELYSIUM
-
 $ openstack subnet create --subnet-range 192.0.2.0/24 \
 --network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
+
+```
+
       
 8. Create router and attach it to internal subnet.
 
+```
+
 $ openstack router create LIMBO
+
+```
+
 
 $ openstack router add subnet LIMBO FIELDS
 
