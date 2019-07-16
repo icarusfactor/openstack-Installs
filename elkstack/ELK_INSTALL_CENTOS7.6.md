@@ -57,6 +57,7 @@ $ sudo yum -y install logstash-oss
 $ sudo yum -y install kibana-oss
 
 ```
+______
 
 6. Confirm package install
 
@@ -67,6 +68,8 @@ $ rpm -qi logstash-oss
 $ rpm -qi kibana-oss
 
 ```
+
+______
 
 
 7. Start and enable persistant services for eleasticsearch 
@@ -120,22 +123,37 @@ $ cd /etc/logstash/conf.d/
 ______
 
 11. To monitor OPENSTACK networking with OpenVswitch we will need to add a 
-plugin to gather information for the SDN switch.
+plugin to gather information for the Software Defined Switch switch.
+
+```
+
 $ /usr/share/logstash/bin/logstash-plugin install logstash-codec-sflow
 
-#NOTE: These files have to pass a syntax check, if they have any problem it
-#will stop entire losgstash system from working so do not put just any file
-#in here unless it passes this test.
+```
+
+NOTE: These files have to pass a syntax check, if they have any problem it
+will stop entire losgstash system from working so do not put just any file
+in here unless it passes this test.
+
+```
+
 /usr/share/logstash/bin/logstash -t -f <LOGSTASH CONFIG FILE>
 
-#Logstash has strict block segment parsing for input/filter and out
-#You will need an empty line between them. No inital top empty line needed.
-#use double parenthese "" on items using them. Strick no empty space inside
-#segments, unless its an "if" statement.
+```
 
-#Create conf file for sflow in tmp directory and test it ,then if OK copy it to conf directory.
-#NOTE: This file has errors in it! Using it as a test. You will have to change the paratheses 
-#to the correct ones from “ to ".
+
+Logstash has strict block segment parsing for input/filter and out
+You will need an empty line between them. No inital top empty line needed.
+use double parenthese "" on items using them. Strick no empty space inside
+segments, unless its an "if" statement.
+
+______
+
+12. Create conf file for sflow in tmp directory and test it ,then if OK copy it to conf directory.
+NOTE: This file has errors in it! Using it as a test. You will have to change the paratheses 
+to the correct ones from “ to ".
+
+```
  
 sudo cat <<EOF | sudo tee /tmp/sflow.conf
 input {
@@ -155,159 +173,265 @@ codec => rubydebug }
 }
 EOF
 
-#Run test on config file and do not proceed to next step until fixed and says OK
+```
+
+______
+
+
+13. Run test on config file and do not proceed to next step until fixed and says OK
+
+```
+
 $ /usr/share/logstash/bin/logstash -t -f /tmp/sflow.conf
-# copy file to conf directory now that it has passed test. 
+
+```
+
+14. Copy file to conf directory now that it has passed test. 
+
+```
+
 $ cp /tmp/sflow.conf /etc/logstash/conf.d/
 
-#If you want to use logstash with local logs within the /var/log directory you will
-#have to give permissions to logstash in order to do this. This will be for the Apache
-#logs but can be use for any directory in this tree.
+```
+______
 
-#Put logstash in the adm group
+15. If you want to use logstash with local logs within the /var/log directory you will
+have to give permissions to logstash in order to do this. This will be for the Apache
+logs but can be use for any directory in this tree.
+
+
+Put logstash in the adm group
+
 $ sudo usermod -a -G adm logstash
-#Change logs directory to group readable and executable and files to group readable. 
+
+Change logs directory to group readable and executable and files to group readable. 
+
 $ sudo chmod 754 /var/log/httpd/
 $ sudo chmod 640 /var/log/httpd/*
-#Change group to adm for directory and files. 
+
+Change group to adm for directory and files. 
+
+```
+
 $ sudo chgrp adm /var/log/httpd/
 $ sudo chgrp adm /var/log/httpd/*
 
+```
 
-#Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
-#or needing to clear out and start again.
+______
+
+
+16. Helpful but dangerous commands to run on eleasticsearch index to see if they are being worked. 
+or needing to clear out and start again.
+
+```
 curl -X GET "http://localhost:9200/osapache-*/_count"
 curl -X DELETE "localhost:9200/osapache-*"
 
+```
 
-#Edit Kibana YAML config for your system and use local elasticsearch server.  
+
+17. Edit Kibana YAML config for your system and use local elasticsearch server.  
+
+```
+
 sudo vim /etc/kibana/kibana.yml
 
  server.port: 5601
  server.host: "192.168.1.29"
  server.name: "packstack"
  elasticsearch.url: "http://localhost:9200"
+
+```
+
  
-#Start and enable persistant services for Kibana
+18. Start and enable persistant services for Kibana
+
+```
+
 sudo systemctl enable --now kibana
 
+```
 
-#Packstack IPTABLES will block Kibana access, so we need to open this port.
-#Check the line numbers for all of the rules that were added by Packstack.
-#Look for the the last rule before any DENY or REJECT rules as putting any
-#rules after these will make them useless.
+19. Packstack IPTABLES will block Kibana access, so we need to open this port.
+Check the line numbers for all of the rules that were added by Packstack.
+Look for the the last rule before any DENY or REJECT rules as putting any
+rules after these will make them useless.
+
+```
 $ sudo iptables -L --line-numbers
-# Should be ok to insert a rule at line 30 or before. We will put it at the end.
+
+```
+
+20. Should be ok to insert a rule at line 30 or before. We will put it at the end.
+
+```
+
 $ sudo iptables -I INPUT 30 -p tcp -m multiport --dports 5601 -j ACCEPT -m comment --comment "Kibana 5601 incoming"
-#Save state of IPTABLES
+
+```
+
+
+21. Save state of IPTABLES
+
+```
+
 $ service iptables save
-# Now you can start your browser and load the URL on your desktop system.
+
+```
+
+Now you can start your browser and load the URL on your desktop system.
+
+```
+
 $ elinks http://192.168.1.29:5601    
 
-#KIBANA Index , Visulaize , Dashboard setup.
+```
 
-#Go to the URL 
+
+22. KIBANA Index , Visulaize , Dashboard setup.
+
+Go to the URL 
+
+```
 URL: http://192.168.1.29:5601/
 
-#This will bring you to the main page 
-#click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
+```
 
-#Click on "Index Patterns"
-#Click on "Create Index Patterns"
+23. click on "Connect to your Elasticsearch index" under the title: Use Elasticsearch data.
 
-#Fill in the Index Pattern entry "osapache=*"
+Click on "Index Patterns"
 
-#Once Logstash starts collecting logs and sends it to Elasticsearch archive ,Kibana
-#should auto detect that it found information and you should see
-Success! and "> Next step" will be enabled.
+Click on "Create Index Patterns"
 
-#After clicking the enabled button, click on the drop down box and select "@timestamp".
 
-#Now the trick is to "prime the pump" to get the data generated to Elasticsearch we want to monitor.
-#Having now setup Openstack,log into the Horizon interface. This will generatee Keystone Access data.
+Fill in the Index Pattern entry "osapache=*"
 
-#Wait a short time.Should be less than 5mins.
 
-#Click on left menu item "Discovery" tooltip will show up on mouse hover.
+24. Once Logstash starts collecting logs and sends it to Elasticsearch archive ,Kibana
+should auto detect that it found information and you should see Success! and "> Next step" will be enabled.
 
-#Above title "Selected fields" Make sure "osapache-*" is selected in the dropdown. 
 
-#In Avaialable fields column, click fileds "type".
+25. After clicking the enabled button, click on the drop down box and select "@timestamp".
 
-#You should see "keystone-access" with a spyglass + on it. Click it.
+26. Now the trick is to "prime the pump" to get the data generated to Elasticsearch we want to monitor.
+Having now setup Openstack,log into the Horizon interface. This will generatee Keystone Access data.
 
-#After Kibana processes the log "Keystone-access" should be highlighted within the log view. 
+Wait a short time.Should be less than 5mins.
 
-#Next to further refine data is to select "add" on Available field "messages".
-#You should now have a list of date timestamps and what ip accessed the Openstack login in log view.
+Click on left menu item "Discovery" tooltip will show up on mouse hover.
 
-#We're wanting to createing useful data to monitor. So we will save this as a saved Index with + filter
-#by clicking on the "Save" option in the upper menu and calling it "Keystone Access".
+Above title "Selected fields" Make sure "osapache-*" is selected in the dropdown. 
 
-#Now we are going to click on left icon "Visualize".
+In Avaialable fields column, click fileds "type".
 
-#Click on "+ Create new visualization".
+You should see "keystone-access" with a spyglass + on it. Click it.
 
-#This will bring up the type of display we want to conifgure the data for. 
+After Kibana processes the log "Keystone-access" should be highlighted within the log view. 
 
-#We will use "Metric".
-#Then click our configured index pattern+filter we called Keystone Access.
+
+27. Next to further refine data is to select "add" on Available field "messages".
+You should now have a list of date timestamps and what ip accessed the Openstack login in log view.
+
+28. We're wanting to createing useful data to monitor. So we will save this as a saved Index with + filter
+by clicking on the "Save" option in the upper menu and calling it "Keystone Access".
+
+29. Now we are going to click on left icon "Visualize".
+
+Click on "+ Create new visualization".
+
+This will bring up the type of display we want to conifgure the data for. 
+
+We will use "Metric".
+Then click our configured index pattern+filter we called Keystone Access.
  
-#Leave default as count and fill Custom Label with "Keystone Access".
+Leave default as count and fill Custom Label with "Keystone Access".
 
-#Click the play icon to process configuration. You should see the label change. 
+Click the play icon to process configuration. You should see the label change. 
 
-#Next click split group. Then Aggregation, select Date Range field leave as @timestamp.
+Next click split group. Then Aggregation, select Date Range field leave as @timestamp.
 
-#In the "From" change to "now-1w/w" and "to" to now.
+In the "From" change to "now-1w/w" and "to" to now.
   
-#The -1 means only look in the logs back 1 week and /w means round to closest week. 
+The -1 means only look in the logs back 1 week and /w means round to closest week. 
 
-#Next turn off the split group data by moving the slider to off, so we only see the number and label.
+Next turn off the split group data by moving the slider to off, so we only see the number and label.
 
-#Now we will save this visualization as Access Vis.
+Now we will save this visualization as Access Vis.
 
-#Now to make another visual. Pick "Vertical Bar" and "Keystone Access"
+______
 
-#Y axis we want to know amount of access during this time frame so leave as count and fill in label as Accesses.
-#X axis aggregation. Pick Date histogram. @timestamp minimal interval as Auto. Click the play. 
-#Save this vis as Access Time Vis.
+30. Now to make another visual. Pick "Vertical Bar" and "Keystone Access"
 
-#Since we have installed and can access the Openstack Horizon dashboard lets see if it picks up our access.
-#You will have to wait an interval and click on some areas while in the dashboard. 
+Y axis we want to know amount of access during this time frame so leave as count and fill in label as Accesses.
 
-#Now that we have a few active widgets showing Openstack data,lets make a dashbaord.
+X axis aggregation. Pick Date histogram. @timestamp minimal interval as Auto. Click the play. 
 
-#Click on Dahsboard icon. +Create new dashboard.
-#Add Keystone Access. 
-#Add Access Time Vis.
-#Access vis.
+Save this vis as Access Time Vis.
 
-#Then click X to get out of the Add Menu.
+______
+
+31. Since we have installed and can access the Openstack Horizon dashboard lets see if it picks up our access.
+You will have to wait an interval and click on some areas while in the dashboard. 
+
+______
+
+32. Now that we have a few active widgets showing Openstack data,lets make a dashbaord.
+
+Click on Dahsboard icon. +Create new dashboard.
+
+Add Keystone Access. 
+
+Add Access Time Vis.
+
+Access vis.
+
+Then click X to get out of the Add Menu.
+
 You should see your visuals in one page now.
 
-#This dashboard is not static so you can move the items aruond and strech them to your liking. 
-#After you do this. You can "Save" your dashboard as "Keystone Access Dashboard".
+This dashboard is not static so you can move the items aruond and strech them to your liking. 
 
-#Now to set it as a desktop Dashboard you can click "Full Screen" an monitor your data and add refresh plugin
-#to your browser so you can get the latest data. Hope this gives you insight into how to make a dashboard in
-#Kibana to now create your own. 
+After you do this. You can "Save" your dashboard as "Keystone Access Dashboard".
 
-#While this installtion shows you how to monitor local
-#logs, you can install Open Source edge computing monitor
-#collectd. This is a default Logstash plugin to collect
-#metrics from VMs and other systems. I will move this
-#section to its own page when I get it worked out. 
+______
 
-#Make sure you have the epel repo 
+33. Now to set it as a desktop Dashboard you can click "Full Screen" an monitor your data and add refresh plugin
+to your browser so you can get the latest data. Hope this gives you insight into how to make a dashboard in
+Kibana to now create your own. 
+
+While this installtion shows you how to monitor local
+logs, you can install Open Source edge computing monitor
+collectd. This is a default Logstash plugin to collect
+metrics from VMs and other systems. I will move this
+section to its own page when I get it worked out. 
+
+______
+
+34. Make sure you have the epel repo.
+
+
+```
 $ yum install epel-release
 $ yum install collectd
 $ vi /etc/collectd.conf
-#Edit to add your hostanme
+```
+______
+
+35. Edit to add your hostanme
+
+```
+
 $ systemctl enable collectd
 $ systemctl start collectd
 
-#Example collectd configuration. 
+```
+
+______
+
+36. Example collectd configuration. 
+
+```
 Hostname    "host.example.com"
 LoadPlugin interface
 LoadPlugin load
@@ -322,7 +446,13 @@ LoadPlugin network
     </Server>
 </Plugin>
 
-#Example input for collectd Logstash
+```
+
+37. Example input for collectd Logstash
+
+```
+______
+
 input {
   udp {
     port => 25826
@@ -331,9 +461,13 @@ input {
   }
 }
 
-#Reasons for using an ELKSTACK is for billing,monitoring and tracing to subvert problems
-#when they occur in real world situations. So next I will setup monitors for  
-#OpenVswitch,Apache and basic bare metal systems health checks on controller/compute
-#node that the ELKSTACK and OPENSTACK are hosted on so you shoudl see other conf files 
+```
+______
+
+
+38. Reasons for using an ELKSTACK is for billing,monitoring and tracing to subvert problems
+when they occur in real world situations. So next I will setup monitors for  
+OpenVswitch,Apache and basic bare metal systems health checks on controller/compute
+node that the ELKSTACK and OPENSTACK are hosted on so you shoudl see other conf files 
 for logstash in this directory. 
 
