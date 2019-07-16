@@ -131,14 +131,14 @@ ______
 11. Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
 
 ```
-	$ sudo vi /etc/ssh/sshd_config
+$ sudo vi /etc/ssh/sshd_config
 
 ```
 
  Remove the # to have "PermitRootLogin yes" enabled. 
 
 ```
-	$ sudo service sshd restart 
+$ sudo service sshd restart 
 
 ```
 
@@ -149,14 +149,14 @@ ______
 12. See if you can now log into root 
 
 ```
-	$ ssh root@192.168.1.29
+$ ssh root@192.168.1.29
 
 ```
 
 Copy public key to root 
 
 ```
-     ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
 ```
 
@@ -166,7 +166,7 @@ ______
 13. ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
 
 ```
-   $ sudo yum -y install mc nmap elinks wget screen curl wireshark
+$ sudo yum -y install mc nmap elinks wget screen curl wireshark
 
 ```
 
@@ -176,15 +176,15 @@ _____
 
 ```
 
-     vi /etc/hosts
+vi /etc/hosts
 
 ```
 
-     Add two lines. Packstack is you Virtualbox host IP.
+Add two lines. Packstack is you Virtualbox host IP.
 
 ```
-     192.168.1.29  packstack
-     10.0.2.1      controller   
+192.168.1.29  packstack
+10.0.2.1      controller   
 
 ```
 
@@ -193,40 +193,50 @@ ______
 15. Goto the network device directory for CENTOS
 
 ```
-     cd /etc/sysconfig/network-scripts/      
-     vi ifcfg-enp0s3
+cd /etc/sysconfig/network-scripts/      
+vi ifcfg-enp0s3
 
 ```
 
-     Remove any lines in this file and replace them with these below. 
+Remove any lines in this file and replace them with these below. 
 
 
 ```
      
-     DEVICE=enp0s3
-     TYPE=OVSPort
-     DEVICETYPE=ovs
-     OVS_BRIDGE=br-ex
-     ONBOOT=yes
+DEVICE=enp0s3
+TYPE=OVSPort
+DEVICETYPE=ovs
+OVS_BRIDGE=br-ex
+ONBOOT=yes
+
+```
+   
+Edit Bridge Device file. 
+
+```
+
+vi ifcfg-br-ex
+
+```
+
+Add below lines to file. 
+
+```
      
-     Edit Bridge Device file. 
-     vi ifcfg-br-ex
-     Add below lines to file. 
-     
-     NAME=br-ex
-     DEVICE=br-ex
-     ONBOOT=yes
-     DEVICETYPE=ovs
-     TYPE=OVSBridge
-     OVS_BRIDGE=br-ex
-     BOOTPROTO=static
-     NM_CONTROLLED=no
-     IPADDR=192.168.1.29 # Old eth1 IP since we want the network restart to not
+NAME=br-ex
+DEVICE=br-ex
+ONBOOT=yes
+DEVICETYPE=ovs
+TYPE=OVSBridge
+OVS_BRIDGE=br-ex
+BOOTPROTO=static
+NM_CONTROLLED=no
+IPADDR=192.168.1.29 # Old eth1 IP since we want the network restart to not
                          # kill the connection, otherwise pick something outside
                          # your dhcp range
-     NETMASK=255.255.255.0  # your netmask
-     GATEWAY=192.168.1.1  # your gateway
-     DNS1=8.8.8.8     # use google as nameserver
+NETMASK=255.255.255.0  # your netmask
+GATEWAY=192.168.1.1  # your gateway
+DNS1=8.8.8.8     # use google as nameserver
 
 ```
 
