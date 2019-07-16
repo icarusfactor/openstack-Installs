@@ -26,6 +26,9 @@ ______
 
 1. Start VirtualBox and the CentOS 7.6 image that had been created with following link. 
 
+
+[Openstack: OVN flat network for Stein](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)
+
 ```
 
 https://github.com/icarusfactor/openstack-Installs/blob/master/PackStack-Stein-AllInOne-CentOS7.6.md 
