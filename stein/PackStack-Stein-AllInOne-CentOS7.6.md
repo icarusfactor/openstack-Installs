@@ -569,7 +569,7 @@ ______
      
 26. The Openstack Server should be setup and running.
 
-The Openstack web Interface Horizon shoud be avialable from a localhost browser now.
+The Openstack web Interface Horizon shoud be available from a localhost browser now.
 
 Login with "admin" and get the password from the /root/keystone_adminrc file.
 
@@ -578,7 +578,7 @@ Login with "admin" and get the password from the /root/keystone_adminrc file.
 
 ```
 
-Browser VNC access of the serial interface to the cloud servers
+Browser VNC access of the serial interface to the cloud servers. To log into the serial port its good to have a default password becasue you cant use keys with this method.
 
 ```
      BROWSER VNC: 192.168.1.29:6080
