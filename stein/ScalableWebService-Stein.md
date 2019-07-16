@@ -342,7 +342,7 @@ ______
 Copy and paste JUMP Server Cloud Init file .
 
 
-[SQL DEBIAN INSTANCE](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/JUMPSERVER_DEBIAN_10.ci)
+[CLOUD-INIT FOR DEBIAN JUMP](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/JUMPSERVER_DEBIAN_10.ci)
 
 ```
      LAUNCH INSTANCE
@@ -381,10 +381,8 @@ ______
 ```
 Copy and paste JUMP Server Cloud Init file .
 
-```
-     https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/SQLSERVER_DEBIAN_9.ci
 
-```
+[CLOUD-INIT FOR DEBIAN SQL](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/SQLSERVER_DEBIAN_10.ci )
 
 ```
      LAUNCH INSTANCE
@@ -418,13 +416,8 @@ ______
 
 Copy and paste JUMP Server Cloud Init file .
 
+[CLOUD-INIT FOR DEBIAN WEB](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/WEBSERVER_DEBIAN_10.ci )
 
-```
-
-https://raw.githubusercontent.com/icarusfactor/openstack-Installs/cloud-init/master/WEBSERVER_DEBIAN_9.ci
-
-
-```
 
 ```
     LAUNCH INSTANCE
