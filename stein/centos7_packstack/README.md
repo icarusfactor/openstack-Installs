@@ -1,4 +1,4 @@
-## Openstack Stein on Centos 7.6 with AllInOne Packstack.
+## Openstack Stein on Centos 7.6 with Packstack.
 
 **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
 protocol by default,so you can easily work with a single network adapater 
@@ -6,13 +6,10 @@ in a flat configuration and not disrupt your Internet access, but will add
 a couple more IP's to your local Class C IPv4 network. So you will have to make
 sure they're not used by your local DHCP or are still being unused.
 
-```
-Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html 
+[Reference:](https://docs.openstack.org/releasenotes/networking-ovn/stein.html)
 
-```
 
-1.  ______
-
+#### Requirements: 
 
 1. With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
   * Set CPU's to >=4.
