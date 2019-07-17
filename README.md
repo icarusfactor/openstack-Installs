@@ -10,8 +10,8 @@
   * CentOS7 Demo network.
 
 * Stein - CentOS7:
-  * Openstack Stein [Packstack Install](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)  
-  * DEMO Manual install [External & Internal Private Network](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/ScalableWebService-Stein.md) 
+  * Openstack Stein [Packstack Install](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack)  
+  * DEMO Manual install [External & Internal Private Network](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack_manual_demo)  
   * Automated DEMO Network with BASH scripts.
 
 * Cloud-init - Loads for many of the primary Linux OS's:
