@@ -14,7 +14,8 @@
   * DEMO Manual install [External & Internal Private Network](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack_manual_demo)  
   * Automated DEMO Network with BASH scripts.
 
-* Cloud-init - Loads for many of the primary Linux OS's:
+
+* [Cloud-init](https://github.com/icarusfactor/openstack-Installs/tree/master/cloud-init) - Loads for many of the primary Linux OS's:
   * Debian 9/10
   * Ubuntu 18
   * CentOS 7
