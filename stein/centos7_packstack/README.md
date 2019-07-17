@@ -9,7 +9,7 @@
  [Reference: OVN Networking ](https://docs.openstack.org/releasenotes/networking-ovn/stein.html)
 
 
-## Requirements : STEP 01 :
+## Requirements :
 
 With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
   * Set CPU's to >=4.
@@ -30,7 +30,7 @@ to the br-ex device here via OpenVswitch once we have it setup.)
      
 Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch ***br-ex*** device.
     
-## Setup Disk : STEP 03 : 
+## Setup Disk : 
 
 Now setup the size of the disk, I use all of it for the root or / parition. As virtual VM images
 will be inside this. Other disk can be mounted later for Cinder and a /boot is needed.
@@ -38,15 +38,15 @@ will be inside this. Other disk can be mounted later for Cinder and a /boot is n
 I do this by selecting to clear current partition setup and delete the /home and / paritition and add
 the / paritition back with the capacity empty. This will select the entire free space. 
 
-## Setup users : STEP 04 :
+## Setup users :
 
 Set root and user password and create with admin or sudo capabilites. 
 
-## Install OS : STEP 05 :
+## Install OS :
 
 Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
 
-## Check IP : STEP 06 :
+## Check IP :
 
 Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for ***enp0s3*** 
 
@@ -56,7 +56,7 @@ $ ip a
 
 ```
 
-## Login via SSH : STEP 07 :   
+## Login via SSH :  
 
 We will login to the system with this IP using ssh. 
 
@@ -66,7 +66,7 @@ $ sudo su
 
 ```
    
-## Edit Network Settings : STEP 08 :
+## Edit Network Settings :
  
 We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
@@ -104,7 +104,7 @@ DNS1=8.8.8.8     # use google as nameserver
 
 ```
 
-## Reboot to static IP : STEP 09 :
+## Reboot to static IP : 
 
 From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
    user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
@@ -114,7 +114,7 @@ $ reboot
 
 ```
 
-## SSH KEY COPY : STEP 10 :
+## SSH KEY COPY :
 
 Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
 
@@ -129,7 +129,7 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 You should now be able to login without password. 
 
-## REMOTE ROOT ACCESS : STEP 11 :
+## REMOTE ROOT ACCESS :
     
 Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
 
@@ -147,9 +147,9 @@ $ sudo service sshd restart
 
 Log back out. 
 
-______
+## SSH COPY TO ROOT
     
-12. See if you can now log into root 
+See if you can now log into root 
 
 ```
 $ ssh root@192.168.1.29
@@ -163,19 +163,18 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
 ```
 
-______
-     
+## USEFUL COMMANDS 
 
-13. ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
+ ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
 
 ```
 $ sudo yum -y install mc nmap elinks wget screen curl wireshark
 
 ```
 
-______
-     
-14. Log back in and edit hosts file.
+## EDIT DNS HOST FILE  
+ 
+Log back in and edit hosts file.
 
 ```
 
@@ -191,9 +190,10 @@ Add two lines. Packstack is you Virtualbox host IP.
 
 ```
 
-______
+## CONFIGURE NETWORK AS AN OVS 
+
      
-15. Goto the network device directory for CENTOS
+Goto the network device directory for CENTOS
 
 ```
 cd /etc/sysconfig/network-scripts/      
