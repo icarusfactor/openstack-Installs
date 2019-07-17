@@ -9,23 +9,30 @@
   * Opensuse15 DevStack
   * CentOS7 Demo network.
 
+______
+
 * Stein - CentOS7:
   * Openstack Stein [Packstack Install](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack)  
   * DEMO Manual install [External & Internal Private Network](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack_manual_demo)  
   * Automated DEMO Network with BASH scripts.
 
+______
 
 * [Cloud-init](https://github.com/icarusfactor/openstack-Installs/tree/master/cloud-init) - Loads for many of the primary Linux OS's:
   * Debian 9/10
   * Ubuntu 18
   * CentOS 7
   * Fedora 30
-* Cloud-init - Automated script to generate specific types of servers:
+
+  * Automated script to generate specific types of servers:
   * JUMP
   * WEB
   * SQL
   * PUPPETMASTER
   * PUPPETAGENT
+
+______
+
 * ELKSTACK 7.x - Elasticsearch & Logstash & Kibana:
   * [Setup ELKStack on CentOS7.6](https://github.com/icarusfactor/openstack-Installs/blob/master/elkstack/ELK_INSTALL_CENTOS7.6.md) for Openstack.
   * Script to setup sFlow device for OpenVswitch.
@@ -33,6 +40,8 @@
     * Openstack 
     * Apache2
     * System Resources using SAR.   
+
+______
 
 * MISC - Various programs that can help facilitate Openstack
 
@@ -46,6 +55,8 @@
  - [ ] Puppet SQL and WEB setups for Fedora 
  - [ ] Puppet working with gihub repo. 
  - [ ] Python Openstack SDK script examples.
+
+______
 
 ## FAR OFF TODO:
   * Magnum:   Docker Openstack images.
