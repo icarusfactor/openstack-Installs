@@ -26,7 +26,7 @@ to the br-ex device here via OpenVswitch once we have it setup.)
  **NOTE:** Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to
  multitouch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this.
 
-## Setup Networking : STEP 02 :
+## Setup Networking :
      
 Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch ***br-ex*** device.
     
@@ -66,7 +66,7 @@ $ sudo su
 
 ```
    
-## Edit Network Settings :
+## Make Network A Static IP :
  
 We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
@@ -114,7 +114,7 @@ $ reboot
 
 ```
 
-## SSH KEY COPY :
+## SSH Key Copy :
 
 Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
 
@@ -129,7 +129,7 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 You should now be able to login without password. 
 
-## REMOTE ROOT ACCESS :
+## Remote Root Access :
     
 Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
 
@@ -147,7 +147,7 @@ $ sudo service sshd restart
 
 Log back out. 
 
-## SSH COPY TO ROOT
+## SSH Copy To Root :
     
 See if you can now log into root 
 
@@ -163,7 +163,7 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
 
 ```
 
-## USEFUL COMMANDS 
+## Useful Commands :
 
  ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
 
@@ -172,7 +172,7 @@ $ sudo yum -y install mc nmap elinks wget screen curl wireshark
 
 ```
 
-## EDIT DNS HOST FILE  
+## Edit DNS Host File :  
  
 Log back in and edit hosts file.
 
@@ -190,7 +190,7 @@ Add two lines. Packstack is you Virtualbox host IP.
 
 ```
 
-## CONFIGURE NETWORK AS AN OVS 
+## Set Network As An OVS : 
 
      
 Goto the network device directory for CENTOS
@@ -243,10 +243,9 @@ DNS1=8.8.8.8     # use google as nameserver
 
 ```
 
-______
-      
+##       
 
-16. Update system and remove and add needed packages for networking and packstack:     
+Update system and remove and add needed packages for networking and packstack:     
     
 
  
@@ -322,9 +321,8 @@ $ sudo systemctl start network
 
 ```
 
-______
-     
-17. Disable SELinux     
+## Disable SELinux :   
+ 
 
 ```
 $ vi /etc/selinux/config
@@ -333,9 +331,9 @@ $ vi /etc/selinux/config
 
 Change SELINUX=enforcing to SELINUX=disabled
 
-______
+## Reboot to OVS :
 
-18. At this point we can reboot to get access to the OpenVswitch device BR-EX 
+At this point we can reboot to get access to the OpenVswitch device BR-EX 
 
 ```
 $ reboot
@@ -356,9 +354,9 @@ $ ping www.yahoo.com
 
 ```
 
-______
+## Create Openstack User :
      
-19. ***[Optional]*** Create stack user. I like to keep all of my login scripts and custom vm files and binaries in here.       
+***[Optional]*** I like to keep all of my login scripts and custom vm files and binaries in here.       
 
 ```
 
