@@ -6,7 +6,7 @@
  a couple more IP's to your local Class C IPv4 network. So you will have to make
  sure they're not used by your local DHCP or are still being unused.
 
- [Reference:](https://docs.openstack.org/releasenotes/networking-ovn/stein.html)
+ [Reference: OVN Networking ](https://docs.openstack.org/releasenotes/networking-ovn/stein.html)
 
 
 ## Requirements : STEP 01 :
