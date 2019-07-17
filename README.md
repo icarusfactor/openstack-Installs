@@ -14,7 +14,7 @@ ______
 * Stein - CentOS7:
   * Openstack Stein [Packstack Install](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack)  
   * DEMO Manual install [External & Internal Private Network](https://icarusfactor.github.io/openstack-Installs/stein/centos7_packstack_manual_demo)  
-  * Automated DEMO Network with BASH scripts.
+  * Automated DEMO Network with [BASH scripts](  ).
 
 ______
 
