@@ -24,7 +24,7 @@ ______
   * CentOS 7
   * Fedora 30
 
-  * Automated script to generate specific types of servers:
+* Automated script to generate specific types of servers:
   * JUMP
   * WEB
   * SQL
