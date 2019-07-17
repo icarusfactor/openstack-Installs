@@ -11,7 +11,7 @@ Reference: https://docs.openstack.org/releasenotes/networking-ovn/stein.html
 
 ```
 
-______
+1.  ______
 
 
 1. With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
