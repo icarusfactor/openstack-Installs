@@ -57,8 +57,10 @@ $ ip a
 ```
 
 ______
-    
-7. We will login to the system with this IP using ssh. 
+
+## STEP 7 : Login via SSH :    
+
+We will login to the system with this IP using ssh. 
 
 ```
 $ ssh <IP Reported>
