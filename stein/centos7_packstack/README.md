@@ -243,7 +243,7 @@ DNS1=8.8.8.8     # use google as nameserver
 
 ```
 
-##       
+## Server Package Preperation        
 
 Update system and remove and add needed packages for networking and packstack:     
     
