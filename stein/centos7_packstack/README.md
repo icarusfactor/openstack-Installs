@@ -366,10 +366,9 @@ $ sudo su - stack
 
 ```
 
-______
-
+## Change Puppet Timeout Value
     
-20. Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
+Log in as root and clear DEFAULT values with Puppet installer. As this many remove RabbitMQ timeout issues.
 
 ```
 
@@ -380,10 +379,8 @@ $ grep -Ri "timeout = 300"| grep db_sync_timeout
 
 Select and edit each file from grep output. Change ***300*** to ***0***.
 
-______
+## Dry-Run Of Packstack
  
-21. Now we'll install the All In One Packstack system.   
-
 This will be for a dry run and generate the answerfile we will use for actual install.
 Generating this dry run will also let us go over all the options and change them if needed before
 we install Openstack. You can taylor your stack according to your memory,cpu cores,storage,gpu cores
@@ -433,10 +430,10 @@ $ packstack --allinone --provision-demo=n --os-heat-install=y --timeout=0 --debu
 No files are changed but an answerfile is created in the ***stack*** user directory.
 I have disabled the demo project if you are not familiar with this setup you can enable it.
      
-______
-
-     
-22. Now we're ready to install Packstack with the answerfile that you can modify to add or
+    
+## Install Of Packstack 
+ 
+Now we're ready to install Packstack with the answerfile that you can modify to add or
 remove certian capbilities. This can take up some time and you can view var log 
 messages with updates. 
 
@@ -465,9 +462,10 @@ $ ssh  root@192.168.1.29 -t "tail -f /var/tmp/packstack/<TIMESTAMP>-_eR_sW/opens
      
 I also open a terminal to leave "top" running to see acitivity has not stalled. 
 
-______
+
+## Wait or Debug Issues
      
-23. Wait for message from the installtion. `**** Installation completed successfully ******`
+Wait for message from the installtion. `**** Installation completed successfully ******`
 
 NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
 If this still does not work you can stop and restart the server.
@@ -513,9 +511,11 @@ $ cat /root/keystonerc_admin
 
 You will use these to login to the Openstack GUI Horizon to manage the system.
 
-______
 
-24. ***[OPTIONAL]*** Extra addon to get login data on your screen from prompt.
+## Login Terminal Mod
+
+
+***[OPTIONAL]*** Extra addon to get login data on your screen from prompt.
 
 ```
 
@@ -542,9 +542,10 @@ $ if [ -f /usr/bin/screenfetch ]; then screenfetch; fi
 
 Logout and then back in to test it. 
 
-______
-     
-25. Now to access the webserver for Dashboard to configure Openstack. 
+    
+## Test Dashboard Access
+ 
+Now to access the webserver for Dashboard to configure Openstack. 
 
 Log into the main system from host. i.e. 192.168.1.29
 
@@ -571,9 +572,8 @@ $ elinks 192.168.1.29
 Elinks should show openstack dashboard login as text version.
 If you see this , then your web based setup is working. 
 
-______
      
-26. The Openstack Server should be setup and running.
+## Openstack Should Be Up.
 
 The Openstack web Interface Horizon shoud be available from a desktop browser now.
 
@@ -590,9 +590,10 @@ Browser VNC access of the serial interface to the cloud servers. To log into the
 BROWSER VNC: 192.168.1.29:6080
 
 ```
-______
 
-27. Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
+## Update Python
+
+Using Centos7.6 and Python2.x EOL coming on Jan 1 2020. We need to install python 3.x packages
 and they are not in the standard repos,so for your system to be ready for the event, we will add
 the extra Python3 repo.   
 
@@ -607,9 +608,10 @@ $ python3.6 -V
 
 Now you're ready for Py2020
 
-______
 
-28. With CentOS7.6 using an older 3.10 kernel without the ***CONFIG_RANDOM_TRUST_CPU*** option of 4.19+, the
+## Urandom Issue
+
+With CentOS7.6 using an older 3.10 kernel without the ***CONFIG_RANDOM_TRUST_CPU*** option of 4.19+, the
 newer Linux VM's may run into a ***BoottimeEntropyStarvation*** condition. For me this casued many
 cloud-init problems and is linked to ***systemd*** and ***ssh*** package and its keys. To resolve this issue
 when urandom needs to make sure it gets its randomness checked in a timley manner you should only
@@ -635,9 +637,10 @@ $ yum -y install haveged
 
 ```
 
-______     
 
-29. ***(Optional)*** Install the ELKSTACK 7.x to monitor,log and audit activity. ELK stands for
+## Setup Monitoring
+
+***(Optional)*** Install the ELKSTACK 7.x to monitor,log and audit activity. ELK stands for
 Elasticsearch & Logstash & Kibana. Each of these systems makes up a system to 
 gather,setup collections and vizualize realtime data from your network. I needed this for
 this lab setup to monitor and test resources on vm's,sdn routers and switch.
@@ -648,9 +651,10 @@ this lab setup to monitor and test resources on vm's,sdn routers and switch.
 https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/elkstack/ELK_INSTALL_CENTOS7.6.txt
 
 ```
-______
+
+## Outro
  
-30. You'll now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
+You'll now have a clean Openstack Stein install and able to explore and add projects. Look on the Internet for 
 installing Openstack user and projects with the AllInOne install. We did not enable the demo tentant, this can
 be enabled if you want an example to view. With the new OVN networking and full use of only openstack only commands
 the older version ScalableWebService will not work in a reliable manner. I've made a new demo proejct that will work
