@@ -9,7 +9,7 @@
  [Reference:](https://docs.openstack.org/releasenotes/networking-ovn/stein.html)
 
 
-## STEP 1 : Requirements : 
+## Requirements : STEP 01 :
 
 With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
   * Set CPU's to >=4.
@@ -26,11 +26,11 @@ to the br-ex device here via OpenVswitch once we have it setup.)
  **NOTE:** Sometime Oracle Virtualbox mouse interaction does not work , you have to set the mouse to
  multitouch. VirtualBox bug maybe on Debian,CentOS,OpenSuse,but as bare metal host has no issue with this.
 
-## STEP 2 : Setup Networking :
+## Setup Networking : STEP 02 :
      
 Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch ***br-ex*** device.
     
-## STEP 3 : Setup Disk  : 
+## Setup Disk : STEP 3 : 
 
 Now setup the size of the disk, I use all of it for the root or / parition. As virtual VM images
 will be inside this. Other disk can be mounted later for Cinder and a /boot is needed.
@@ -38,15 +38,15 @@ will be inside this. Other disk can be mounted later for Cinder and a /boot is n
 I do this by selecting to clear current partition setup and delete the /home and / paritition and add
 the / paritition back with the capacity empty. This will select the entire free space. 
 
-## STEP 4 : Setup users :
+## Setup users : STEP 4 :
 
 Set root and user password and create with admin or sudo capabilites. 
 
-## STEP 5 : Install OS :
+## Install OS : STEP 5 :
 
 Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
 
-## STEP 6 : Check IP :
+## Check IP : STEP 6 :
 
 Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for ***enp0s3*** 
 
@@ -58,7 +58,7 @@ $ ip a
 
 ______
 
-## STEP 7 : Login via SSH :    
+## Login via SSH : STEP 7 :   
 
 We will login to the system with this IP using ssh. 
 
@@ -67,9 +67,10 @@ $ ssh <IP Reported>
 $ sudo su
 
 ```
-______
-    
-8. We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
+   
+## Edit Network Settings : STEP 8 :
+ 
+We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
 ```
 $ cd /etc/sysconfig/network-scripts/
