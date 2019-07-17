@@ -1,5 +1,5 @@
-theme: jekyll-theme-leap-day
-title: [Openstack Installs]
-description: [Learn how to install Openstack and take advantage of its capabilites]
-show_downloads: ["false"]
+theme: jekyll-theme-cayman
+title: Openstack Installs
+description: Learn how to install Openstack and take advantage of its capabilites
+show_downloads: "false"
 
