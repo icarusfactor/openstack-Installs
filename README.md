@@ -15,7 +15,7 @@
   * Automated DEMO Network with BASH scripts.
 
 * Cloud-init - Loads for many of the primary Linux OS's:
-  * Debian 8/9
+  * Debian 9/10
   * Ubuntu 18
   * CentOS 7
   * Fedora 30
