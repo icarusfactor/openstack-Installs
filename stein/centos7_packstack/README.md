@@ -1,4 +1,4 @@
-## Openstack Stein on Centos 7.6 with Packstack.
+## Stein on Centos 7.6 with Packstack.
 
  **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
  protocol by default,so you can easily work with a single network adapater 
@@ -30,7 +30,7 @@ to the br-ex device here via OpenVswitch once we have it setup.)
      
 Setup new VM of CentOS 7.6 minimal server and enable one networking device that should be called ***enp0s3*** and hostname ***packstack*** .This will be edited later to connect to the OpenVswitch ***br-ex*** device.
     
-## Setup Disk : STEP 3 : 
+## Setup Disk : STEP 03 : 
 
 Now setup the size of the disk, I use all of it for the root or / parition. As virtual VM images
 will be inside this. Other disk can be mounted later for Cinder and a /boot is needed.
@@ -38,15 +38,15 @@ will be inside this. Other disk can be mounted later for Cinder and a /boot is n
 I do this by selecting to clear current partition setup and delete the /home and / paritition and add
 the / paritition back with the capacity empty. This will select the entire free space. 
 
-## Setup users : STEP 4 :
+## Setup users : STEP 04 :
 
 Set root and user password and create with admin or sudo capabilites. 
 
-## Install OS : STEP 5 :
+## Install OS : STEP 05 :
 
 Wait for CentOS to install. CentOS minimal version 1810 was used,then reboot.
 
-## Check IP : STEP 6 :
+## Check IP : STEP 06 :
 
 Once the VM is up and running log into the Oracle Virtualbox terminal. Check to see what IP the VM has for ***enp0s3*** 
 
@@ -56,9 +56,7 @@ $ ip a
 
 ```
 
-______
-
-## Login via SSH : STEP 7 :   
+## Login via SSH : STEP 07 :   
 
 We will login to the system with this IP using ssh. 
 
@@ -68,7 +66,7 @@ $ sudo su
 
 ```
    
-## Edit Network Settings : STEP 8 :
+## Edit Network Settings : STEP 08 :
  
 We'll edit network setting to change the VM to a static IP to make things easier for switching over to OpenVswitch
 
@@ -106,7 +104,7 @@ DNS1=8.8.8.8     # use google as nameserver
 
 ```
 
-## Reboot to static IP : STEP 9 :
+## Reboot to static IP : STEP 09 :
 
 From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
    user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
@@ -115,9 +113,10 @@ From here you can reboot the system to use a static IP and then log into the rem
 $ reboot
 
 ```
-______
 
-10. Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
+## SSH KEY COPY : STEP 10 :
+
+Copy your local machines ssh key to virtual box host to make access easy from host system running VirtualBox: 
 
 Make sure to add remote system to known hosts.
 
@@ -130,9 +129,9 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub datasci@192.168.1.29
 
 You should now be able to login without password. 
 
-______ 
+## REMOTE ROOT ACCESS : STEP 11 :
     
-11. Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
+Edit the ssh config file to let root user in, as this will make instaling packstack easier.     
 
 ```
 $ sudo vi /etc/ssh/sshd_config
