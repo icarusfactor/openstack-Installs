@@ -105,9 +105,10 @@ GATEWAY=192.168.1.1  # your gateway
 DNS1=8.8.8.8     # use google as nameserver
 
 ```
-______
 
-9. From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
+## Reboot to static IP : STEP 9 :
+
+From here you can reboot the system to use a static IP and then log into the remote system from host with ssh as
    user we made with admin access. This makes tutorial cut and paste easier with local terminal.  
 
 ```
