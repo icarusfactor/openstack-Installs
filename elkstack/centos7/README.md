@@ -5,7 +5,7 @@ when they occur in real world situations and act on them. When your systems star
  numbers,the managability aspect reaches a new level and this stackis the answer to this problem. 
 
 
-##Install Java
+## Install Java
 
 Elasticsearch needs binaries and the development files. 
 
@@ -35,7 +35,7 @@ EOF
 
 ```
 
-## Clear and update YUM 
+## Clear And Update YUM 
 
 ```
 
@@ -45,7 +45,7 @@ $ sudo yum makecache
 ```
 
 
-## Import GPG key
+## Import GPG Key
 
 Make sure Elasticsearch packages are sourced from correct repository. 
 
@@ -83,7 +83,7 @@ $ sudo systemctl start elasticsearch.service
 
 ```
 
-***OPTIONAL:*** ` $ sudo systemctl enable elasticsearch.service `
+***OPTIONAL:*** ```$ sudo systemctl enable elasticsearch.service```
 
 NOTE: This is a Java service so it takes up lots of memeory and CPU
 it may be best to manually start it after Openstack has started if
@@ -107,7 +107,7 @@ $ sudo systemctl status logstash.service
 
 ```
 
-***OPTIONAL:*** ` $ sudo systemctl enable logstash.service `  
+***OPTIONAL:***  ``` $ sudo systemctl enable logstash.service ```  
 
 
 Custom INPUT/FILTER/OUPUT logstash config files go into this directory. 
@@ -267,7 +267,7 @@ sudo systemctl enable --now kibana
 
 ```
 
-## Conifgure Access to Kibana
+## Configure Kibana Access
 
 Packstack IPTABLES will block Kibana access, so we need to open this port.
 Check the line numbers for all of the rules that were added by Packstack.
@@ -298,7 +298,7 @@ $ service iptables save
 
 ```
 
-## Test Kibana Web Acess
+## Test Kibana Acess
 
 Now you can start your browser and load the URL on your desktop system.
 
@@ -357,12 +357,12 @@ After Kibana processes the log ***"Keystone-access"*** should be highlighted wit
 Next to further refine data is to select "add" on Available field "messages".
 You should now have a list of date timestamps and what IP accessed the Openstack login in log view.
 
-## Save Index with Filter
+## Save Index With Filter
 
 We're wanting to createing useful data to monitor. So we'll save this as a saved Index with + filter
 by clicking on the "Save" option in the upper menu and calling it "Keystone Access".
 
-## Add Visual for Index
+## Add Visual For Index
 
 Now we are going to click on left icon "Visualize".
 
@@ -398,13 +398,13 @@ X axis aggregation. Pick Date histogram. @timestamp minimal interval as Auto. Cl
 Save this vis as Access Time Vis.
 
 
-## Generate some Logstash Data
+## Generate Logstash Data
 
 Since we have installed and can access the Openstack Horizon dashboard lets see if it picks up our access.
 You will have to wait an interval and click on some areas while in the dashboard. 
 
 
-## Create a Dashboard with Visuals
+## Create Dashboard With Visuals
 
 Now that we have a few active widgets showing Openstack data,lets make a dashbaord.
 
@@ -441,7 +441,7 @@ metrics from VMs and other systems. I will move this
 section to its own page when I get it worked out with more details. 
 
 
-## Install Collectd from EPEL Repo
+## Install Collectd From EPEL Repo
 
 
 ```
@@ -450,7 +450,7 @@ $ yum install collectd
 $ vi /etc/collectd.conf
 ```
 
-## Add Hostanme To Config File
+## Add Hostname To Config File
 
 ```
 
