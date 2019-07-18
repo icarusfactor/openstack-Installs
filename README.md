@@ -34,7 +34,7 @@ ______
 ______
 
 * ELKSTACK 7.x - Elasticsearch & Logstash & Kibana:
-  * [Setup ELKStack on CentOS7.6](https://github.com/icarusfactor/openstack-Installs/blob/master/elkstack/ELK_INSTALL_CENTOS7.6.md) for Openstack.
+  * [Setup ELKStack on CentOS7.6](https://icarusfactor.github.io/openstack-Installs/elkstack/centos7/) for Openstack.
   * Script to setup sFlow device for OpenVswitch.
 * Logstash configuration examples:
     * Openstack 

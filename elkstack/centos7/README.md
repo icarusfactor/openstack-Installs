@@ -489,7 +489,7 @@ LoadPlugin network
 
 ```
 
-## Example Logstash Input for Collectd
+## Example Logstash Input For Collectd
 
 ```
 

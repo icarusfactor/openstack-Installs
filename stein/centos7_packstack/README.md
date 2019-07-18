@@ -646,7 +646,7 @@ gather,setup collections and vizualize realtime data from your network. I needed
 this lab setup to monitor and test resources on vm's,sdn routers and switch.
 
 
-[Setup & Install ELKStack ](https://github.com/icarusfactor/openstack-Installs/blob/master/elkstack/ELK_INSTALL_CENTOS7.6.md)
+[Setup & Install ELKStack ](https://icarusfactor.github.io/openstack-Installs/elkstack/centos7/)
 
 
 ## Outro
