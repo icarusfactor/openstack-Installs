@@ -1,6 +1,6 @@
 ## OpenStack Scalable Web Serice. 
 
-**Prologue** This is a manual install tutorial with a base set of images with security for use with growing a user based webserver farm with the below specifications. Normally you want to automate this proceedure, which I do have scrips for doing this(Bash shell and Python), But you need this knowledge if you have to monitor,troubleshoot or fix issues on the fly.
+**Prologue** This is a manual install tutorial with a base set of images with port security for use with a growing webserver farm with the below specifications. Normally you want to automate this proceedure, which I do have scrips for doing this(Bash shell and Python), But you need this knowledge if you have to monitor,troubleshoot or fix issues on the fly.
 
 One Jump Server 
 
