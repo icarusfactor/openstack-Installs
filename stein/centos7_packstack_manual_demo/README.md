@@ -22,17 +22,15 @@ Uses 1 vcpu/Ram 2G/20G for mysql service. MariaDB Database Setup.
 
 The setup and templates I will be using are on my github that will be posted in this tutorial ending with .ci for Cloud-Init. (OpenSUSE does not use cloud-init so I cant get this QCOW2 to work.)
 
-______
+## Start Virtualbox On Centos 7.6 with Packstack.
 
-1. Start VirtualBox and the CentOS 7.6 image that had been created with following link. 
-
+Using the image that had been created with following below link tutorial. 
 
 [Openstack: OVN flat network for Stein](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)
 
-______
 
+## Start SSH session:
 
-2.  Start SSH session:
 
 ```
 
@@ -41,7 +39,9 @@ $ ssh root@192.168.1.29
 
 ```
 
-Start browser and point to IP and get to the login and Horizon dashboard:
+## Access Dashboard with Browser
+
+Point to IP and get to login to Horizon dashboard:
 
 
 ```
@@ -49,9 +49,10 @@ Start browser and point to IP and get to the login and Horizon dashboard:
 http://192.168.1.29
 
 ```
-______
-    
-3.  With root in terminal, load environment with your keystone adminrc creditials.
+   
+#Load Admin Creditials 
+
+As root, load environment with your keystone adminrc creditials.
 
 ```
 
@@ -61,9 +62,9 @@ $ . /root/keystonerc_admin
 
 ```
 
-______
+## Project Requirements
 
-4.  Login as admin to a clean Openstack install, we will need to add:
+We will need to add:
 
     * Basic non admin user for the project.
     * Project : Scalable Web Server.
@@ -72,22 +73,19 @@ ______
 
    ***NOTE:*** We will perform the following commands with "Horizon Web Page" and "openstack command line tool". This is the first version where I was able to do this. So all of the major networking commands have been ported to the Openstack CLI interface. You can still use neutron commandline tool, but have had unstable outcomes from doing so ,so not recommended in this version.
    
-______
-
+## Create Flat External Network
  
-5. Create an external network that connects to the flat OVN network we setup with Packstack:
-(A flat network will work with a normal home setup. Unlike the VLAN tagged infrastructure for high density farms.)
+A flat network will work with a normal home setup. Unlike the VLAN tagged infrastructure for high density farms.
 
 ```
 $ openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
 
 ```
 
-______
 
-6. Create external subnet:
+## Create External Subnet:
 
-Subnet with same network as your single network device adapter. 
+A subnet with same network as your single network device adapter. 
 
 
 ```
@@ -99,10 +97,10 @@ $ openstack subnet create --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 \
 
 ```
 
-______
 
+## Create Private network 
 
-7. Create Private network , attach internal subnet
+Attach internal subnet and create internal network. 
 
 ```
   
@@ -111,9 +109,11 @@ $ openstack subnet create --subnet-range 192.0.2.0/24 \
 --network ELYSIUM --dns-nameserver 8.8.4.4 FIELDS
 
 ```
-______
       
-8. Create a software defined router and attach it to the internal subnet.
+
+## Create & Setup Router
+
+Create a software defined router and attach it to the internal subnet.
 
 ```
 
@@ -122,9 +122,10 @@ $ openstack router add subnet LIMBO FIELDS
 
 ```
 
-______
 
-9. Add a software defined router interface to external network and set its gateway.  
+## Connect Networks Via Gateway 
+
+Add a software defined router interface to external network and set its gateway.  
 
 ```
 
@@ -133,9 +134,10 @@ $ openstack router set --external-gateway OCEANUS LIMBO
 
 ```
 
-______
 
-10. Create a non-admin user ***planner*** in openstack and the project for the user.     
+## Create Project And Its User 
+
+A non-admin user ***planner*** in openstack and the project for user.     
 
 ```
 
@@ -144,10 +146,11 @@ $ openstack user create --project "Scalable Web Service" --password easypassword
 
 
 ```
-______   
  
     
-11. **[Optional]** Create a non-admin user planner script if you need to run commands as user:
+## User CLI Script
+
+ **[Optional]** Create a non-admin user planner script if you need to run commands as user:
 
 ```
 
@@ -172,22 +175,22 @@ $ . /root/keystonerc_planner
 
 
 ```
-______
   
-12. To finalize above step login to HORIZON web GUI as ***admin*** and add user ***planner*** to ***Scalable Web Service*** project. 
+## Give User Access to Project
+
+To finalize above step login to HORIZON web GUI as ***admin*** and add user ***planner*** to ***Scalable Web Service*** project. 
 
 ```
 Project->Project->Manage Memembers on the Scalable Web Service
 
 ```
 
-______
+## Login As Non-Admin User
 
-13. Log into Horizon gui as non-admin user ***planner***.
+Log into Horizon gui as ***planner***.
 
-______
 
-14. Verify network setup.
+## Verify network setup:
 
 ```
 Project -> Network -> Network Topology
@@ -196,9 +199,9 @@ Project -> Network -> Network Topology
 
 You should see your external and internal network. Non-admin users do not have access to the external router. 
 
-______
-     
-15. Load Operating system cloud image.   
+    
+ 
+## Load Cloud Image.   
 
 ```
 Select Project -> Compute -> Images
@@ -216,9 +219,8 @@ Wait for "Deb9Server" to become "Active".
 We will use this Glance image as basis of all the node operating systems and apply a specific
 cloud init file to each to give in its profile. 
 
-______
      
-16. Import Public Key.     
+## Import Public Key.     
 
 ```
 Project -> Compute -> Key Pairs
@@ -234,9 +236,9 @@ $ cat ./.ssh/id_rsa.pub
 
 ```
 
-______
+## Create Security Groups 
 
-17. Create Security Groups for each of the instance types:
+for each of the instance type:
 
 ```
 
@@ -314,10 +316,9 @@ http://download.cirros-cloud.net/
 
 ```
 
-______
-    
+  
      
-18. Install JUMP instance.      
+## Install JUMP instance.      
 
 ```
      Project -> Compute -> Instances
@@ -355,10 +356,7 @@ Copy and paste JUMP Server Cloud Init file .
 
 ```
 
-______
-
- 
-19. Install SQL instance:      
+## Install SQL instance:      
 
 ```
      Project -> Compute -> Instances
@@ -388,9 +386,8 @@ Copy and paste JUMP Server Cloud Init file .
      LAUNCH INSTANCE
 
 ```
-______
      
-20. Install WEB instance:
+## Install WEB instance:
 
 ``` 
      
@@ -432,16 +429,16 @@ Copy and paste JUMP Server Cloud Init file .
 
 The floating IP address should appear in your Jump Servers' IP address column.        
 
-______
+
+## Finishing Up 
     
-21. Now all nodes are setup and have uploaded your public key to them,mine is called MERCURY
+Now all nodes are setup and have uploaded your public key to them,mine is called MERCURY
 to the servers via cloud-init and a JUMP server to log into as a central server to
 reduce port activty and manage connections. But to do this you will have to setup 
 SSH on the JUMP instance as a FORWARDER. 
 
-______
      
-22. Log onto JUMP instance:
+## Log onto JUMP instance:
 
 ```     
 $ cat /etc/ssh_config
@@ -459,9 +456,10 @@ ForwardAgent no
 If you see the following, you will need to comment out the ForwardAgent.
 This will override your home directory config if so.
 
-______
      
-23. Create user configuration file and add forwarding capabilites to ssh.
+## Create SSH configuration file
+
+Add forwarding capabilites to ssh.
  
 ```
 touch ~/.ssh/config
@@ -470,13 +468,16 @@ ForwardAgent yes
 
 ```
      
-Restart ssh server.
+## Restart ssh server.
 
 ```
 
 $ service sshd restart
 
 ```
+
+
+## Add Default Keys
      
 No arguments will add default keys while on host system.  
 
@@ -487,7 +488,7 @@ $ ssh-add
 
 ```
      
-List keys to check 
+## List Keys  
 
 
 ```
@@ -496,18 +497,20 @@ $ ssh-add -L
 
 
 ```
+
+## Login With SSH Forwarding 
      
-You can log back in with SSH with -A to enable forwading.
+Use SSH with -A to enable forwading.
 Only needed on the first jump.
 
 ```
 ssh -A debian@192.168.1.100
 
 ```
+
+## Outro
      
 Now you should be able to log into all of the internal IPs from 
 the jumpbox with your desktop SSH key and keep only the JUMP box 
 port open from the 192.168.1.x addresses. 
 
-______
-     
