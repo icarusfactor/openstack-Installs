@@ -459,7 +459,7 @@ This will override your home directory config if so.
      
 ## Create SSH configuration file
 
-Add forwarding capabilites to ssh.
+Add forwarding capabilites to ssh user account.
  
 ```
 touch ~/.ssh/config
