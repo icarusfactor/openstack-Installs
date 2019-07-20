@@ -50,7 +50,7 @@ http://192.168.1.29
 
 ```
    
-#Load Admin Creditials 
+## Load Admin Creditials 
 
 As root, load environment with your keystone adminrc creditials.
 
@@ -150,7 +150,7 @@ $ openstack user create --project "Scalable Web Service" --password easypassword
     
 ## User CLI Script
 
- **[Optional]** Create a non-admin user planner script if you need to run commands as user:
+**[Optional]** Create a non-admin user planner script if you need to run commands as user:
 
 ```
 
@@ -176,7 +176,7 @@ $ . /root/keystonerc_planner
 
 ```
   
-## Give User Access to Project
+## Give User Access To Project
 
 To finalize above step login to HORIZON web GUI as ***admin*** and add user ***planner*** to ***Scalable Web Service*** project. 
 
@@ -190,7 +190,7 @@ Project->Project->Manage Memembers on the Scalable Web Service
 Log into Horizon gui as ***planner***.
 
 
-## Verify network setup:
+## Verify Network Setup:
 
 ```
 Project -> Network -> Network Topology
