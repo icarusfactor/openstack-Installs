@@ -49,6 +49,12 @@ URL       | http://cloud-images.ubuntu.com/bionic/current/
 TESTED    | bionic-server-cloudimg-amd64.img 
 LOGIN     | username:ubuntu password:cloud
 
+OS        | Ubuntu 19                                        
+--------- | --------------------------------------
+URL       | https://cloud-images.ubuntu.com/disco/current/
+TESTED    | disco-server-cloudimg-amd64.img 
+LOGIN     | username:ubuntu password:cloud
+
 OS        | CentOS 7                                       
 --------- | --------------------------------------
 URL       | https://cloud.centos.org/centos/7/images/
