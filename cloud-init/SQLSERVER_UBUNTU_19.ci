@@ -1,0 +1,60 @@
+#cloud-config
+hostname: codex
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+#
+# Install the SQL server.
+runcmd:
+# Support packages.
+ - apt-get install -y elinks mc screen nmap wget curl
+ - apt-get install -y taskwarrior
+ - apt-get install -y python-openstacksdk
+# Remote monitor package and utils.
+ - apt-get install -y collectd collectd-utils
+# install ASCII art packages
+ - apt-get install -y figlet lolcat 
+ - apt-get install -y fonts-powerline powerline
+# create dynamic files
+ - sudo touch /etc/update-motd.d/00-header && touch /etc/update-motd.d/90-footer
+# make files executable
+ - sudo chmod +x /etc/update-motd.d/*
+# remove MOTD file and create an empty file
+ - sudo rm /etc/motd
+ - touch /etc/motd
+#comment out line /etc/pam.d/login 
+ - sed -i 's/^session    optional   pam_motd.so noupdate/#session    optional   pam_motd.so noupdate/g' /etc/pam.d/login
+#add 3 lines to the end of /etc/ssh/sshd_config to stop ssh from printing banner.
+ - echo ' ' >> /etc/ssh/sshd_config
+ - echo 'PrintMotd   no' >> /etc/ssh/sshd_config
+ - echo 'Banner      none' >> /etc/ssh/sshd_config
+ - echo 'UsePAM      yes' >> /etc/ssh/sshd_config
+# Install the MYSQL server .
+# Support packages.
+ - apt install -y build-essential cmake 
+# Setup Password Questions for MariaDB
+ - echo "mysql-server mysql-server/root_password password easyone" | sudo debconf-set-selections
+ - echo "mysql-server mysql-server/root_password_again password easyone" | sudo debconf-set-selections
+# Setup MariaDB
+ - apt install -y mariadb-server mariadb-client
+ - sed -i 's/bind-address.*/bind-address = '"$(hostname -I)"'/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+ - mysqld_safe --skip-grant-tables
+ - systemctl restart mariadb.service 
+ - systemctl enable mariadb.service 
+# Database testing programs.
+ - apt-get install -y sysbench
+#SQLServer Install Finished
+#Need to put bash MOTD files here. 
+write_files:
+ -  encoding: b64
+    content: IyEvYmluL3NoICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgMDAtaGVhZGVyIC0gY3JlYXRlIHRoZSBoZWFkZXIgb2YgdGhlIE1PVEQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICBDb3B5cmlnaHQgKGMpIDIwMTMgTmljayBDaGFybHRvbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIENvcHlyaWdodCAoYykgMjAwOS0yMDEwIENhbm9uaWNhbCBMdGQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgTW9kaWZpZWQgICAgICAyMDE5IGJ5IERhbmllbCBZb3VudCAKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIEF1dGhvcnM6IE5pY2sgQ2hhcmx0b24gPGhlbGxvQG5pY2tjaGFybHRvbi5uZXQ+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgICAgICAgICAgRHVzdGluIEtpcmtsYW5kIDxraXJrbGFuZEBjYW5vbmljYWwuY29tPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMgICAgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKIyAgICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvciAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAojICAgIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiMKIyAgICBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKIyAgICBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgojICAgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKIyAgICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgojCiMgICAgWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYWxvbmcKIyAgICB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLCBJbmMuLAojICAgIDUxIEZyYW5rbGluIFN0cmVldCwgRmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCiAKWyAtciAvZXRjL2xzYi1yZWxlYXNlIF0gJiYgLiAvZXRjL2xzYi1yZWxlYXNlCiAKaWYgWyAteiAiJERJU1RSSUJfREVTQ1JJUFRJT04iIF0gJiYgWyAteCAvdXNyL2Jpbi9sc2JfcmVsZWFzZSBdOyB0aGVuCiAgICAgICAgIyBGYWxsIGJhY2sgdG8gdXNpbmcgdGhlIHZlcnkgc2xvdyBsc2JfcmVsZWFzZSB1dGlsaXR5CiAgICAgICAgRElTVFJJQl9ERVNDUklQVElPTj0kKGxzYl9yZWxlYXNlIC1zIC1kKQpmaQogCmZpZ2xldCAkKGhvc3RuYW1lKSB8IC91c3IvZ2FtZXMvbG9sY2F0IC1mCnByaW50ZiAiXG4iCiAKcHJpbnRmICJXZWxjb21lIHRvICVzICglcykuXG4iICIkRElTVFJJQl9ERVNDUklQVElPTiIgIiQodW5hbWUgLXIpIgpwcmludGYgIlxuIg==
+    owner: root:root
+    path: /etc/update-motd.d/00-header
+    permissions: '0644'
+ -  encoding: b64
+    content: IyEvYmluL3NoCiMKIyAgICA5MC1mb290ZXIgLSB3cml0ZSB0aGUgYWRtaW4ncyBmb290ZXIgdG8gdGhlIE1PVEQKIyAgICBDb3B5cmlnaHQgKGMpIDIwMTMgTmljayBDaGFybHRvbgojICAgIENvcHlyaWdodCAoYykgMjAwOS0yMDEwIENhbm9uaWNhbCBMdGQuCiMKIyAgICBBdXRob3JzOiBOaWNrIENoYXJsdG9uIDxoZWxsb0BuaWNrY2hhcmx0b24ubmV0PgojICAgICAgICAgICAgIER1c3RpbiBLaXJrbGFuZCA8a2lya2xhbmRAY2Fub25pY2FsLmNvbT4KIwojICAgIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5CiMgICAgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKIyAgICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mIHRoZSBMaWNlbnNlLCBvcgojICAgIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCiMKIyAgICBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKIyAgICBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgojICAgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKIyAgICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgojCiMgICAgWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYWxvbmcKIyAgICB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLCBJbmMuLAojICAgIDUxIEZyYW5rbGluIFN0cmVldCwgRmlmdGggRmxvb3IsIEJvc3RvbiwgTUEgMDIxMTAtMTMwMSBVU0EuCiAKWyAtZiAvZXRjL21vdGQudGFpbCBdICYmIGNhdCAvZXRjL21vdGQudGFpbCB8fCB0cnVlCg==
+    owner: root:root
+    path: /etc/update-motd.d/90-footer
+    permissions: '0644'
+
