@@ -44,4 +44,16 @@ runcmd:
  - echo ". /opt/rh/rh-ruby25/enable" >> /etc/profile.d/rh-ruby25.sh
  - source /opt/rh/rh-ruby25/enable
  #Install Puppet Master 6.6
+ - yum install -y puppetserver
+ - systemctl start  puppetmaster.service
+ - puppet resource package puppetmaster ensure=latest
+ - puppet resource service puppetmaster ensure=running enable=true
+ - yum install -y httpd httpd-devel mod_ssl ruby-devel rubygems gcc-c++ curl-devel zlib-devel make automake openssl-devel
+ - yum install -y gpg gcc libyaml libyaml-devel
+ - gem install bundler --no-ri --no-rdoc
+ - gem install rack
+ #This version of Passenger has SELinux capabilites.
+ - sudo yum install -y mod_passenger || sudo yum-config-manager --enable cr && sudo yum install -y mod_passenger
+ # Manually edit FQDNS /etc/puppet/puppet.conf TBA
+
 
