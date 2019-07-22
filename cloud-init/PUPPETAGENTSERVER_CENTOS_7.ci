@@ -1,26 +1,26 @@
 #cloud-config
-hostname: puppetagent                                                                                                                                           
-ssh_pwauth: False                                                                                                                                                
-password: cloud                                                                                                                                                  
-package_upgrade: true                                                                                                                                            
-package_update: true                                                                                                                                             
-#                                                                                                                                                                
-# Install the PUPPET AGENT server.                                                                                                                              
-runcmd:                                                                                                                                                          
-# Enable Extra Repos                                                                                                                                             
- #RDO Packstack                                                                                                                                                  
- - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm                                                                                          
- #RHEL EPEL                                                                                                                                                      
- - sudo wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm                                                                               
- - sudo rpm -ivh epel-release-latest-7.noarch.rpm                                                                                                                
- # Python 3                                                                                                                                                      
- - sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm                                                                                          
- - sudo yum update -y --skip-broken                                                                                                                              
- # Support packages.                                                                                                                                             
- - yum -y install curl wget nmap pciutils                                                                                                                        
- - yum -y install elinks mc screen                                                                                                                               
- - yum -y install taskwarrior                                                                                                                                    
- - yum -y install python2-openstacksdk                                                                                                                           
+hostname: puppetagent
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+# 
+# Install the PUPPET AGENT server. 
+runcmd:
+# Enable Extra Repos  
+ #RDO Packstack 
+ - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
+ #RHEL EPEL
+ - sudo wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ - sudo rpm -ivh epel-release-latest-7.noarch.rpm
+ # Python 3
+ - sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+ - sudo yum update -y --skip-broken 
+ # Support packages.
+ - yum -y install curl wget nmap pciutils 
+ - yum -y install elinks mc screen 
+ - yum -y install taskwarrior
+ - yum -y install python2-openstacksdk
  # Remote monitor package.
  - yum -y install collectd collectd-lvm collectd-ping collectd-rrdtool collectd-sensors
  #create login MOTD
