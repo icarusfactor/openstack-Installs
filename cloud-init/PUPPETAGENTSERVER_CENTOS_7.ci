@@ -4,7 +4,6 @@ ssh_pwauth: False
 password: cloud
 package_upgrade: true
 package_update: true
-# 
 # Install the PUPPET AGENT server. 
 runcmd:
 # Enable Extra Repos  
