@@ -37,7 +37,7 @@ runcmd:
  - echo '#!/bin/bash' > /etc/profile.d/rh-ruby25.sh
  - echo ". /opt/rh/rh-ruby25/enable" >> /etc/profile.d/rh-ruby25.sh
  - source /opt/rh/rh-ruby25/enable
- #Install Puppet Agent 5.5
+ #Install Puppet Agent 6.6
  - yum install -y puppet-agent
 
 #Edit following file to setup agent to master puppet server.
