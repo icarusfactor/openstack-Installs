@@ -7,19 +7,24 @@ package_update: true
 #
 # Install the PUPPET MASTER server.
 runcmd:
-# Enable Extra Repos
+ # Enable Extra Repos
  #RDO Packstack
  - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
  #RHEL EPEL
- - sudo wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
- - sudo rpm -ivh epel-release-latest-7.noarch.rpm
+ - sudo yum install -y epel-release yum-utils
+ - sudo yum-config-manager --enable epel
+ - sudo yum clean all && sudo yum update -y
+ - sudo yum install -y pygpgme curl
+ - sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+ #
+ - sudo rpm -Uvh https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
+ - sudo yum install --skip-broken puppetserver puppetdb puppetdb-termini
  # Python 3
  - sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
  - sudo yum update -y --skip-broken
  # Support packages.
  - yum -y install curl wget nmap pciutils
  - yum -y install elinks mc screen
- - yum -y install taskwarrior
  - yum -y install python2-openstacksdk
  # Remote monitor package.
  - yum -y install collectd collectd-lvm collectd-ping collectd-rrdtool collectd-sensors
@@ -38,13 +43,5 @@ runcmd:
  - echo '#!/bin/bash' > /etc/profile.d/rh-ruby25.sh
  - echo ". /opt/rh/rh-ruby25/enable" >> /etc/profile.d/rh-ruby25.sh
  - source /opt/rh/rh-ruby25/enable
- #Install Puppet Master 5.5
- - yum install -y puppet-server
- - systemctl start  puppetmaster.service
- - puppet resource package puppetmaster ensure=latest
- - puppet resource service puppetmaster ensure=running enable=true
- - yum install -y httpd httpd-devel mod_ssl ruby-devel rubygems gcc-c++ curl-devel zlib-devel make automake openssl-devel
- - yum install -y gpg gcc libyaml libyaml-devel
- - gem install rack passenger
- - passenger-install-apache2-module
- # Manually edit FQDNS /etc/puppet/puppet.conf TBA
+ #Install Puppet Master 6.6
+
