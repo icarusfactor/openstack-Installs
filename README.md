@@ -20,7 +20,7 @@ ______
 
 * [Cloud-init](https://github.com/icarusfactor/openstack-Installs/tree/master/cloud-init) - Loads for many of the primary Linux OS's:
   * Debian 9/10
-  * Ubuntu 18
+  * Ubuntu 18/19
   * CentOS 7
   * Fedora 30
 
