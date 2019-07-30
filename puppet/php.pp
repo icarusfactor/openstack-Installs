@@ -7,5 +7,6 @@ include ::php::ldap
 include ::php::mysql
 include ::php::pgsql
 include ::php::xcache
-include ::php::apache
+include ::php::xml
+include ::php::intl
 
