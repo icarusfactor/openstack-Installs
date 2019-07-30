@@ -46,8 +46,8 @@ runcmd:
  #Install Puppet Master 6.6
  - yum install -y puppetserver
  - systemctl start  puppetmaster.service
- - puppet resource package puppetmaster ensure=latest
- - puppet resource service puppetmaster ensure=running enable=true
+ - /opt/puppetlabs/bin/puppet resource package puppetmaster ensure=latest
+ - /opt/puppetlabs/bin/puppet resource service puppetmaster ensure=running enable=true
  - yum install -y httpd httpd-devel mod_ssl ruby-devel rubygems gcc-c++ curl-devel zlib-devel make automake openssl-devel
  - yum install -y gpg gcc libyaml libyaml-devel
  - gem install bundler --no-ri --no-rdoc
