@@ -1,0 +1,61 @@
+#cloud-config
+hostname: codex
+ssh_pwauth: False
+password: cloud
+package_upgrade: true
+package_update: true
+#
+# Install the PUPPET MASTER server.
+runcmd:
+ # Enable Extra Repos
+ #RDO Packstack
+ - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
+ #RHEL EPEL
+ - sudo yum install -y epel-release yum-utils
+ - sudo yum-config-manager --enable epel
+ - sudo yum clean all && sudo yum update -y
+ - sudo yum install -y pygpgme curl
+ - sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+ #
+ - sudo rpm -Uvh https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
+ - sudo yum install --skip-broken puppetserver puppetdb puppetdb-termini
+ # Python 3
+ - sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+ - sudo yum update -y --skip-broken
+ # Support packages.
+ - yum -y install curl wget nmap pciutils
+ - yum -y install elinks mc screen
+ - yum -y install python2-openstacksdk
+ # Remote monitor package.
+ - yum -y install collectd collectd-lvm collectd-ping collectd-rrdtool collectd-sensors
+ #create login MOTD
+ - wget -O screenfetch-dev https://git.io/vaHfR
+ - sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+ - sudo chmod +x /usr/bin/screenfetch
+ #add 2 lines to the end of /etc/bashrc
+ - echo ' ' >> /etc/bashrc
+ - echo 'if [ -f /usr/bin/screenfetch ]; then screenfetch; fi' >> /etc/bashrc
+ #Install Ruby 2.5
+ - yum -y install centos-release-scl-rh centos-release-scl
+ - yum --enablerepo=centos-sclo-rh -y install rh-ruby25
+ - scl enable rh-ruby25 bash
+ - touch /etc/profile.d/rh-ruby25.sh
+ - echo '#!/bin/bash' > /etc/profile.d/rh-ruby25.sh
+ - echo ". /opt/rh/rh-ruby25/enable" >> /etc/profile.d/rh-ruby25.sh
+ - source /opt/rh/rh-ruby25/enable
+ #Install Puppet Master 6.6
+ - yum install -y puppetserver
+ - systemctl start  puppetmaster.service
+ - puppet resource package puppetmaster ensure=latest
+ - puppet resource service puppetmaster ensure=running enable=true
+ - yum install -y httpd httpd-devel mod_ssl ruby-devel rubygems gcc-c++ curl-devel zlib-devel make automake openssl-devel
+ - yum install -y gpg gcc libyaml libyaml-devel
+ - gem install bundler --no-ri --no-rdoc
+ - gem install rack
+ #This version of Passenger has SELinux capabilites.
+ - sudo yum install -y mod_passenger || sudo yum-config-manager --enable cr && sudo yum install -y mod_passenger
+ # Get mysql manifest from github. 
+ - wget -O /etc/puppetlabs/code/environments/production/manifests/centos7_mysql.pp https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/puppet/centos7_mysql.pp
+ - cd /etc/puppetlabs/puppet
+ - /opt/puppetlabs/bin/puppet module install puppetlabs/mysql
+ - /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/centos7_mysql.pp -v
