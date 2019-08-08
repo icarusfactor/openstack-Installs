@@ -3,7 +3,7 @@
 
 ## CLOUD IMAGE INFORMATION
 
-> I've only Debian and Ubuntu made for all three image items currently.
+> I've only Debian and Ubuntu and CentOS made for all three image items currently.
 > Will make a ***WEB*** and ***SQL*** server image for CENTOS and Fedora. But
 > have to configure them with Puppet instead of debconf. OpenSUSE does not have
 > or use cloud-init. Will have to figure out what they use to boot thier cloud 
