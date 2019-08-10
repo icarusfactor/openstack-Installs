@@ -67,6 +67,13 @@ URL       | https://alt.fedoraproject.org/cloud/
 TESTED    | Fedora-Cloud-Base-30-1.2.x86_64.qcow2
 LOGIN     | username:fedora password:cloud
 
+OS        | CloudLinux 7                                       
+--------- | --------------------------------------
+URL       | https://download.cloudlinux.com/cloudlinux/images/ 
+TESTED    | cloudlinux-7.5-x86_64-openstack-20180801.qcow2
+LOGIN     | username:cloudlinux password:cloud
+
+
 ## Os's I've tested but not gotten to work yet.
 
 OS        | OpenSUSE 15 or 42/43                                       
