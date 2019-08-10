@@ -9,8 +9,8 @@
 > or use cloud-init. Will have to figure out what they use to boot thier cloud 
 > images. CloudLinux 7 qcow2 image does not show logs while installing you can view
 > the serial console before its avaialbe on the network with limited feedback.
-> But it does work fine otherwise and has a sparse RPM package list. 
-> ***NOTE: The Cirros and Ubuntu QCOW2 image are an .img file.*** 
+> But it does work fine otherwise which makes it fast to install and boot and has a
+> sparse RPM package list. ***NOTE: The Cirros and Ubuntu QCOW2 image are an .img file.*** 
 > I've ran into a problem with older kernels(Older than 4.19)and newer images
 > not working at all or with long delays. This problem has been diagnosed as
 > a ***BoottimeEntropyStarvation*** problem. This is a problem with SystemD 
