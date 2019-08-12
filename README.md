@@ -23,6 +23,7 @@ ______
   * Ubuntu 18/19
   * CentOS 7
   * Fedora 30
+  * CloudLinux 7
 
 * Automated script to generate specific types of servers:
   * JUMP
