@@ -1,9 +1,14 @@
 
 ![AWS EC2 Openstack Cloud-init Hack](../gh_img/openstack_cloud-init.png)
 
-## Booting Amazon Linux 2 on OpenStack
+## Booting Amazon Elastic Cloud Linux 2 on OpenStack
 
+
+> Image location:
+
+`
 https://cdn.amazonlinux.com/os-images/latest/
+`
 
 > It will redirect you to the newest version.
 > then go to the "kvm" directory.
@@ -17,7 +22,10 @@ wget https://cdn.amazonlinux.com/os-images/2.0.20190612/kvm/amzn2-kvm-2.0.201906
 sudo yum install qemu-img
 `
 
-## Now we can convert the Amazon Linux 2 image from the qcow2 format to the raw format:
+## Convert AWS To RAW.
+
+> Now we can convert Amazon Linux 2 image from the qcow2 format to the raw format:
+
 `
 qemu-img convert -f qcow2 -O raw amzn2-kvm-2.0.20190612-x86_64.xfs.gpt.qcow2 amzn2-kvm.raw
 `
@@ -41,8 +49,8 @@ $ fdisk -l amzn2-kvm.raw
 `
  sudo vi /mnt/etc/cloud/cloud.cfg
 `
-## Change file to give Openstack access to boot.Leave end to say None. 
-
+## Change file to give Openstack access to boot.
+> Make sure to leave end to say "None". 
 `
 datasource_list: [ NoCloud, AltCloud, ConfigDrive, OVF, None ]
 
@@ -55,9 +63,9 @@ sudo umount /mnt
 `
 
 ## Convert RAW image back to QCOW2
-'
+`
 qemu-img convert -f raw -O qcow2 amzn2-kvm.raw amzn2-kvm.qcow2
-'
+`
 
 ## Now the image should be able to load and launch from openstack Glance. 
 

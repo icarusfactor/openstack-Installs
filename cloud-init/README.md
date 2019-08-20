@@ -81,7 +81,7 @@ OS        | AWS Elastic Cloud 2
 URL       | https://cdn.amazonlinux.com/os-images/2.0.20190612/kvm/
 TESTED    | amzn2-kvm-2.0.20190612-x86_64.xfs.gpt.qcow2
 LOGIN     | username:ec2-user no password 
-NOTES     | Modify cloud-init to support Openstack [HOWTO](https://icarusfactor.github.io/openstack-Installs/tree/master/cloud-init/awsEC2_modify_instance_for_openstack.md).
+NOTES     | Modify cloud-init to support Openstack [HOWTO](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/awsEC2_modify_instance_for_openstack.md).
 
 ## Os's I've tested but not gotten to work yet.
 
