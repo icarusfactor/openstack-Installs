@@ -1,0 +1,23 @@
+#cloud-config
+hostname: jump
+package_upgrade: true
+package_update: true
+#
+# Install the JUMP server.
+runcmd:
+# Enable Extra Repos
+ #RDO Packstack
+ - sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm  
+ #RHEL EPEL 
+ - sudo wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ - sudo rpm -ivh epel-release-latest-7.noarch.rpm 
+ # Support packages.
+ - yum -y install curl wget
+ # create login MOTD
+ - wget -O screenfetch-dev https://git.io/vaHfR
+ - sudo cp ./screenfetch-dev  /usr/bin/screenfetch
+ - sudo chmod +x /usr/bin/screenfetch
+ #add 2 lines to the end of /etc/bashrc
+ - echo ' ' >> /etc/bashrc
+ - echo 'if [ -f /usr/bin/screenfetch ]; then screenfetch; fi' >> /etc/bashrc 
+ #Jump Server Install Finished
