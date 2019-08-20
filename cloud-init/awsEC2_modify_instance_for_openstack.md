@@ -51,6 +51,7 @@ $ fdisk -l amzn2-kvm.raw
 `
 ## Change file to give Openstack access to boot.
 > Make sure to leave end to say "None". 
+
 `
 datasource_list: [ NoCloud, AltCloud, ConfigDrive, OVF, None ]
 
@@ -67,6 +68,6 @@ sudo umount /mnt
 qemu-img convert -f raw -O qcow2 amzn2-kvm.raw amzn2-kvm.qcow2
 `
 
-## Now the image should be able to load and launch from openstack Glance. 
+## Now the image should be able to load and launch from Openstack Glance. 
 
 
