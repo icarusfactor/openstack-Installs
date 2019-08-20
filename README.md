@@ -53,9 +53,7 @@ ______
  - [ ] Software Defined Router data for Logstash to view. 
  - [ ] Basic Puppet Server cloud-init image for Fedora 
  - [ ] Basic Puppet Client setup for cloud-init Fedora 
- - [ ] Puppet SQL and WEB setups for CentOS7 
  - [ ] Puppet SQL and WEB setups for Fedora 
- - [ ] Puppet working with gihub repo. 
  - [ ] Python Openstack SDK script examples.
 
 ______
