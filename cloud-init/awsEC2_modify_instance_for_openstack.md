@@ -52,11 +52,11 @@ $ fdisk -l amzn2-kvm.raw
 ## Change file to give Openstack access to boot.
 > Make sure to leave end to say "None". 
 
-`
+```
 datasource_list: [ NoCloud, AltCloud, ConfigDrive, OVF, None ]
 
 datasource_list: [ OpenStack, NoCloud, AltCloud, ConfigDrive, OVF, None ]
-`
+```
 
 ## Save and unmount the file system. 
 `
