@@ -24,6 +24,7 @@ ______
   * CentOS 7
   * Fedora 30
   * CloudLinux 7
+  * AWS-EC 2
 
 * Automated script to generate specific types of servers:
   * JUMP
