@@ -76,12 +76,20 @@ URL       | https://download.cloudlinux.com/cloudlinux/images/
 TESTED    | cloudlinux-7.5-x86_64-openstack-20180801.qcow2
 LOGIN     | username:cloudlinux password:cloud
 
-OS        | AWS Elastic Cloud 2                                        
+OS        | AWS Elastic Cloud 2 KVM                                      
 --------- | --------------------------------------
 URL       | https://cdn.amazonlinux.com/os-images/latest/ cd to kvm 
 TESTED    | amzn2-kvm-2.0.20190612-x86_64.xfs.gpt.qcow2
 LOGIN     | username:ec2-user  
 NOTE      | Modify cloud-init to support Openstack [HOWTO](https://github.com/icarusfactor/openstack-Installs/blob/master/cloud-init/awsEC2_modify_instance_for_openstack.md).
+
+OS        | Microsoft Windows Server 2012 KVM                                       
+--------- | --------------------------------------
+URL       | https://cloudbase.it/windows-cloud-images/#download
+TESTED    | windows_server_2012_r2_standard_eval_kvm_20170321.qcow2
+LOGIN     | username:Administrator Will make you change password on startup.
+NOTE      | No ssh,you'll have to login via openvnc port 6080 
+
 
 ## Os's I've tested but not gotten to work yet.
 

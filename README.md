@@ -25,6 +25,7 @@ ______
   * Fedora 30
   * CloudLinux 7
   * AWS-EC 2
+  * MS Windows Server 2012
 
 * Automated script to generate specific types of servers:
   * JUMP
