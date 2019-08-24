@@ -1,3 +1,4 @@
+#cloud-config
 hostname: papyrus 
 ssh_pwauth: False
 password: cloud

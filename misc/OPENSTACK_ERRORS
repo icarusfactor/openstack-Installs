@@ -1,0 +1,9 @@
+Adding and Removing Instance Can Cause Resources To Get Mangled. 
+
+ When deleting an instance for what ever reason,the local IP's do get returned,
+but floating IP's get lost and volumes are left taking up gigs of space that can
+leave you with errors pointing to incorrect root problem that may say something
+about out of hosts, which can happen, if you run out of vcpus to distruibute.
+May also say it can not allocte floating IP's due to no netowrking access. One
+should first look at the Project->Volumes to make sure you have space available.
+If any volumes have been orphaned, remove them if you can not rerepurpose them. 
