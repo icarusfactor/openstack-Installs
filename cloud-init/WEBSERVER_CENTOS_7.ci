@@ -71,13 +71,14 @@ runcmd:
  - wget -O /etc/puppetlabs/code/environments/production/modules/php/manifests/intl.pp https://raw.githubusercontent.com/icarusfactor/openstack-Installs/master/puppet/intl.pp 
  - /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/php.pp -v
  - yum install -y texlive 
+ - yum -y install phpmyadmin
  - "echo '<?php phpinfo();' > /var/www/html/index.php"
  - "rm /var/www/html/index.html"
  #MediaWiki
  - "wget https://releases.wikimedia.org/mediawiki/1.33/mediawiki-1.33.0.tar.gz -P /opt/"         
  - "tar -zxf /opt/mediawiki-*.tar.gz -C /var/www/"
  - "mv /var/www/mediawiki-1.33.0 /var/www/html/mediawiki"
- #WordPress
- - "wget http://wordpress.org/latest.tar.gz -P /opt/"
- - "tar -zxf /opt/latest.tar.gz -C /var/www/html/"
+ #WordPress 5.1 which works with php5.5
+ - "wget https://wordpress.org/wordpress-5.1.1.tar.gz -P /opt/"
+ - "tar -zxf /opt/wordpress-5.1.1.tar.gz -C /var/www/html"
  
