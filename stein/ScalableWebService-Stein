@@ -246,6 +246,7 @@ The setup and templates I will be using are on my github ending with .ci for Clo
      
 [23]    
      touch ~/.ssh/config
+     chmod 600 ~/.ssh/config
      Host *
      ForwardAgent yes
      
