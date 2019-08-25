@@ -463,6 +463,7 @@ Add forwarding capabilites to ssh user account.
  
 ```
 touch ~/.ssh/config
+chmod 600 ~/.ssh/config
 Host *
 ForwardAgent yes
 
