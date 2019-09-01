@@ -1,0 +1,14 @@
+
+#Create a flat network to subnet against. This is the software defined networks host connection. 
+#You can setup your real router to only allocate Dynamic IPs in the 1-14 address range (i.e 192.168.1.1 - 192.168.1.14)
+#If you use your host systems Dynamic DNS instead of Openstacks Dymanic agents,your range can be 1-30. 
+openstack network create --provider-network-type flat --provider-physical-network extnet --share --external OCEANUS
+
+#Create a subnet for DYNAMIC range boxes above our hosts systems 16 addresses,so we dont interfere with out main system. 
+openstack subnet create --subnet-range 192.168.1.16/28 --gateway 192.168.1.1 --network OCEANUS --allocation-pool start=192.168.1.17,end=192.168.1.30   --dns-nameserver 8.8.4.4 RIVERS_DYNAMIC
+
+#Create a subnet for STATIC ranges boxes above the subnet of the DYMANIC instances.   
+#Note: Openstack does not control if your instances are static or dynamic. So be sure to only use STATIC configured instances on this subnet. 
+openstack subnet create --subnet-range 192.168.1.32/28 --gateway 192.168.1.1 --network OCEANUS --allocation-pool start=192.168.1.33,end=192.168.1.46   --dns-nameserver 8.8.4.4 RIVERS_STATIC
+
+#NOTE:This is showing a setup only by admin. For your project,you can run your users CLI configs on the subnet commands for use as private in your projects. 
