@@ -1,4 +1,4 @@
-## Stein on Centos 7.6 with Packstack.
+## Stein on Centos 7.6(7.7) with Packstack.
 
  **Prologue:** A new feature in Stein,is the use of the OVN networking and Geneve routing
  protocol by default,so you can easily work with a single network adapater 
@@ -12,6 +12,7 @@
 ## Requirements :
 
 With this tutorial we will be using [Oracle Virtualbox](https://www.virtualbox.org) to install a [CentOS7.6 1810 minimal server](https://cloud.centos.org/centos/7/images) QCOW2 image to be the core virtual server that the nested Openstack VM's will use.
+(I've also tested with CentOS7.7 and it also works. )
   * Set CPU's to >=4.
   * Set Memory Size: >=8G.
   * Set Storage Size: >=30 gig should work fine.
@@ -467,8 +468,11 @@ I also open a terminal to leave "top" running to see acitivity has not stalled.
      
 Wait for message from the installtion. `**** Installation completed successfully ******`
 
-NOTE: If you get ERROR with RabbitIM, just rerun packstack AllInOne command again. 
-If this still does not work you can stop and restart the server.
+NOTE: If you get ERROR with RabbitMQ, just rerun packstack AllInOne command again. 
+If this still does not work you can stop and restart the server. If you continue to have
+ problems with RabbitMQ you cant resolve, you dont need it for a single node install and
+ Openstack can work fine without it while using only one node so you can either disregard or
+ remove it from the answer file. 
 
 ```
 
