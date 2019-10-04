@@ -470,9 +470,8 @@ Wait for message from the installtion. `**** Installation completed successfully
 
 NOTE: If you get ERROR with RabbitMQ, just rerun packstack AllInOne command again. 
 If this still does not work you can stop and restart the server. If you continue to have
- problems with RabbitMQ you cant resolve, you dont need it for a single node install and
- Openstack can work fine without it while using only one node so you can either disregard or
- remove it from the answer file. 
+ problems with RabbitMQ you cant resolve, make sure your "hostname -s" is in the /etc/hosts file
+match , if not, this is the problem change to correct this and rerun answerfile. 
 
 ```
 
