@@ -609,6 +609,12 @@ $ python3.6 -V
 
 ```
 
+UPDATE: Using Centos7.7,they've updated the repos to include python 3,so all you have to do is the below.
+```
+$ sudo yum install -y python3 python3-libs python3-devel python3-pip
+
+```
+
 Now you're ready for Py2020
 
 
