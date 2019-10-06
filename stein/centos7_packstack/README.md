@@ -645,6 +645,11 @@ kernel 4.19 or newer installed.
 $ yum -y install haveged  
 
 ```
+UPDATE: With CentOS7.7 its no longer in the default repo so you can install it manually from below address.
+
+```
+wget https://rpmfind.net/linux/epel/7/x86_64/Packages/h/haveged-1.9.1-1.el7.x86_64.rpm
+```
 
 
 ## Setup Monitoring
