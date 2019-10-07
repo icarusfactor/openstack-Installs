@@ -169,6 +169,7 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.29
  ***[OPTIONAL]*** Log back in root and install useful commandline packages to help debug systems.
 
 ```
+$ sudo yum -y update
 $ sudo yum -y install mc nmap elinks wget screen curl wireshark
 
 ```
