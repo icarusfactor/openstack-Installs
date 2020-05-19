@@ -26,7 +26,7 @@ The setup and templates I will be using are on my github that will be posted in 
 
 Using the image that had been created with following below link tutorial. 
 
-[Openstack: OVN flat network for Stein](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/PackStack-Stein-AllInOne-CentOS7.6.md)
+[Openstack: OVN flat network for Stein](https://github.com/icarusfactor/openstack-Installs/blob/master/stein/centos7_packstack/README.md)
 
 
 ## Start SSH session:
